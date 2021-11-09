@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.time.LocalDateTime;
 
 public class OrderController {
-    
+
     private static ArrayList<Order> orders = new ArrayList<Order>();
     private static OrderController orderController = null;
     private TableController tableController = TableController.getInstance();
@@ -93,6 +93,9 @@ public class OrderController {
         order.printOrders();
     }
 
+    public void removeOrder(int OrderID){
+        orders.removeIf(order -> order.getOrder_ID() == OrderID);
+    }
 
     public Order getOrderByID(int OrderID){
         for(Order i: orders){
