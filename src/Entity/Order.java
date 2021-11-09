@@ -56,7 +56,7 @@ public class Order {
 
     public void removeOrderItem(int index){
         for(OrderItem i: orderItems){
-            if(i.getOrder_ID == index){target = i.getOrder_ID} //currently orderitem id doesn't exist, should we add?
+            if(i.getOrder_ID == index){target = i.getOrder_ID;} //currently orderitem id doesn't exist, should we add?
         }
         target = -1;
         if(target == -1) System.out.println("This item is not in the order.");

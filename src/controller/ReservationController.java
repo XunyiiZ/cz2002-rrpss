@@ -84,103 +84,127 @@ public class ReservationController extends AbstractController {
 
 
         public void createReservation(String name, String contact, int numberOfPax, LocalDate date, LocalTime time)
-        {try{
-            clearReservation();
-            // get all table of specific pax
-            ArrayList<Integer> tableList = tableController.getTableByPax(numberOfPax);
+        {
+            try{
+                clearReservation();
+                // get all table of specific pax
+                ArrayList<Integer> tableList = tableController.getTableByPax(numberOfPax);
 
-            // check time to remove the reserved table from table list
-            for(Reservation reservation : reservationList){
-                LocalTime otherTime = reservation.getAppointmentTime().plusMinutes(119);
-                if(reservation.getAppointmentDate().equals(date) && otherTime.isAfter(time)){
-                    if(tableList.contains(reservation.getTableId())) {
-                        System.out.println(reservation.getTableId());
-                        int idx = tableList.indexOf(reservation.getTableId());
-                        tableList.remove(idx);
+                // check time to remove the reserved table from table list
+                for(Reservation reservation : reservationList){
+                    LocalTime otherTime = reservation.getAppointmentTime().plusMinutes(119);
+                    if(reservation.getAppointmentDate().equals(date) && otherTime.isAfter(time)){
+                        if(tableList.contains(reservation.getTableId())) {
+                            System.out.println(reservation.getTableId());
+                            int idx = tableList.indexOf(reservation.getTableId());
+                            tableList.remove(idx);
+                        }
                     }
                 }
-            }
 
-            // display available table id and ask user to choose the id
-            System.out.println("unreserved table: " + tableList.toString());
-            System.out.println("enter the table id to reserve the table");
-            int tableId = in.nextInt();
-            do {
-                try {
-                    if (!tableList.contains(tableId)) {
-                        throw new Exception("Invalid table number!");
+                // display available table id and ask user to choose the id
+                System.out.println("unreserved table: " + tableList.toString());
+                System.out.println("enter the table id to reserve the table");
+                int tableId = in.nextInt();
+                do {
+                    try {
+                        if (!tableList.contains(tableId)) {
+                            throw new Exception("Invalid table number!");
+                        }
+                    } 	catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("enter the table id to reserve the table");
+                        tableId = in.nextInt();
+                        continue;
                     }
-                } 	catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("enter the table id to reserve the table");
-                    tableId = in.nextInt();
-                    continue;
-                }
-                break;
-            } while (true);
+                    break;
+                } while (true);
 
-            reservationId = reservationId + 1;
+                reservationId = reservationList.get(reservationList.size()-1).getReservationId()+1;
 
-            // create the reservation
-            Reservation reservation = new Reservation(reservationId, name, contact, numberOfPax, tableId, date, time);
-            reservationList.add(reservation);
-            save(dir,reservationList);
-        }catch (IOException e) {
-            System.out.println("shen me error? ");
-            e.printStackTrace();
+                // create the reservation
+                Reservation reservation = new Reservation(reservationId, name, contact, numberOfPax, tableId, date, time);
+                reservationList.add(reservation);
+                save(dir,reservationList);
+            }catch (IOException e) {
+                System.out.println("shen me error? ");
+                e.printStackTrace();
         }
    }
 
 
         // check reservation method: clearReservation method + search by contact no.
-        public boolean checkReservation (String contact) {
+        // return the reservation by contact
+        public ArrayList<Reservation> getReservationByContact(String contact) {
+            clearReservation();
+ //         boolean found = false;
+            ArrayList<Reservation> foundList = new ArrayList<>();
+            try {
+                if (contact.length() != 8)
+                    throw new Exception("Invalid contact number!");
+                for (Reservation r : reservationList) {
+                    if (r.getContact().contains(contact)){
+                        foundList.add(r);
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        return foundList;
+    }
+
+    // method to remove expired Reservations: clearReservation method + loop through all reservations and return index of reservation(s)
+
+        public void removeReservationByContact(String contact) {
         clearReservation();
-        boolean found = false;
         try {
             if (contact.length() != 8)
                 throw new Exception("Invalid contact number!");
-            for (Reservation r : reservationList) {
-                if (r.getContact().contains(contact)) {
-                    System.out.println(r.toString());
-                    found = true;
+
+            //boolean found = checkReservation(contact);
+            ArrayList<Reservation> foundList = getReservationByContact(contact);
+            if (foundList != null) {
+                for(Reservation res: foundList){
+                    System.out.println(res.toString());
                 }
-            }
-            if (!found) {
-                System.out.println("No reservation found!");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return found;
-    }
-        // method to remove expired Reservations: clearReservation method + loop through all reservations and return index of reservation(s)
 
-        public void removeReservation(String contact) {
-        clearReservation();
-        try {
-            if (contact.length() != 8)
-                throw new Exception("Invalid contact number!");
-
-            boolean found = checkReservation(contact);
-            if (found) {
-
-                    System.out.println("Enter reservation no. to delete: ");
-                    int Id = in.nextInt();
-                in.nextLine();
-                System.out.println("Do you wish to remove this reservation? Y/N");
-                if (in.nextLine().charAt(0) == 'Y')
-                {
-                    reservationList.removeIf(reservation -> reservation.getReservationId() == Id);
-                    save(dir,reservationList);
-                    System.out.println("Reservation removed!");
+                System.out.println("Enter reservation no. to delete: ");
+                int Id = in.nextInt();
+                Reservation res = getReservationById(Id);
+                if(foundList.contains(res)){
+                    System.out.println("Do you wish to remove this reservation? Y/N");
+                    if (in.nextLine().charAt(0) == 'Y')  removeReservationById(Id);
                 }
+                else System.out.println("the reservation is not found");
             }
+            else System.out.println("there are no reservation found for this contact");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
+
+    private boolean removeReservationById(int id){
+        try{
+            Reservation res = getReservationById(id);
+            if(res == null){
+                System.out.println("remove unsuccessfully");
+                return false;
+            }
+            reservationList.remove(res);
+            save(dir,reservationList);
+            System.out.println("Reservation removed!");
+            return true;
+        } catch (IOException e) {
+            System.out.println("save reservation unsuccessfull");
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+
 
         //   load method will be different between different controller
         public ArrayList load(String filename) throws IOException {

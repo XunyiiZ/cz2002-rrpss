@@ -1,4 +1,5 @@
 package boundary;
+import Entity.Reservation;
 import controller.*;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -90,17 +92,23 @@ public class ReservationUI {
                         break;
                     }
                     reservationController.createReservation(name, contact, numberOfPax, appointmentDate, appointmentTime);
-                    reservationController.checkReservation(contact);
+                    reservationController.getReservationByContact(contact);  //zhe ge shi gan ma?
                     break;
                 case 2:
                     System.out.println("Please enter your contact: ");
                     contact = in.nextLine();
-                    reservationController.checkReservation(contact);
+                    ArrayList<Reservation> resList = reservationController.getReservationByContact(contact);
+                    if(resList == null) System.out.println("no reservation found");
+                    else{
+                        for(Reservation res : resList){
+                            System.out.println(res.toString());
+                        }
+                    }
                     break;
                 case 3:
                     System.out.println("Please enter your contact: ");
                     contact = in.nextLine();
-                    reservationController.removeReservation(contact);
+                    reservationController.removeReservationByContact(contact);
 
                     break;
                 case 4:

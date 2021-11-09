@@ -1,8 +1,8 @@
 package controller;
 
-/*
+/**
     InvoiceController
-    @ Xunyi Zeng
+    @Xunyi Zeng
     1. make use of InvoiceList
  */
 

@@ -2,7 +2,7 @@ package Entity;
 
 public class AlaCarte extends MenuItem{
 
-    Category type;
+    private Category type;
 
     public enum Category {
         MAINCOURSE, DRINKS, DESSERTS
