@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 import java.time.LocalDate;
+
 public class InvoiceUI {
-    private static InvoiceUI single_instance = null;
+    private static InvoiceUI invoiceUI = null;
     private InvoiceController invoiceController = InvoiceController.getInstance();
 
     private static Scanner in = new Scanner(System.in);
@@ -15,22 +16,23 @@ public class InvoiceUI {
     private InvoiceUI() throws IOException {}
 
     public static InvoiceUI getInstance() throws IOException {
-        if (single_instance == null)
-            single_instance = new InvoiceUI();
-        return single_instance;
+        if (invoiceUI == null)
+            invoiceUI = new InvoiceUI();
+        return invoiceUI;
     }
 
     public void run(){
 
 
         System.out.println("--------Invoice and Report Panel--------");
-        System.out.println("1. printInvoice"+
+        System.out.println("0. Go back to MainUI" +
+                "\n1. printInvoice"+
                 "\n2. print daily revenue report"+
                 "\n3. print monthly revenue report"+
                 "\n4. back to main panel");
 
         int choice = in.nextInt();
-        while(true) {
+        while(choice != 0) {
             switch (choice) {
                 case 1:
                     createInvoice();
@@ -45,9 +47,9 @@ public class InvoiceUI {
                     System.out.println("back to main panel...");
                     return;
                 default:
-                    System.out.println("invalid input!");
+                    System.out.println("Invalid input");
             }
-            System.out.println("enter option:");
+            System.out.println("Enter option:");
             choice = in.nextInt();
         }
     }

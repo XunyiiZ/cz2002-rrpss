@@ -1,20 +1,25 @@
 package Entity;
-public class OrderItem extends MenuItem{
+public class OrderItem{
 
-    private MenuItem item;
+    //public int OrderItemID; //added to identify for addOrderItem and removeOrderItem
+    private int MenuItemID;
     private String name;
     private String description;
     private double price;
-    private int quantity;
 
-    public OrderItem(MenuItem item , int quantity){
-        super(item.getName(), item.getDescription(), item.getPrice());
-        //this.OrderItemID = OrderID;
+    private int quantity;
+    //String name, String description, double price
+
+    public OrderItem(int MenuItemID , int quantity){
+        this.MenuItemID = MenuItemID;
         this.quantity = quantity;
     }
 
-    public MenuItem getItem(){
-        return item;
+    public int getMenuItemID(){
+        return MenuItemID;
+    }
+    public String getName(){
+        return name;
     }
     public int getQuantity(){
         return quantity;

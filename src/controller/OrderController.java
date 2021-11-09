@@ -1,4 +1,6 @@
 package controller;
+
+import java.io.IOException;
 import Entity.*;
 import java.util.*;
 import java.util.ArrayList;
@@ -17,7 +19,10 @@ public class OrderController {
     private static Scanner sc = new Scanner(System.in);
     private static int orderID = 0;
 
-    public static OrderController getInstance() {
+    public OrderController() throws IOException {
+    }
+
+    public static OrderController getInstance() throws IOException {
         if (orderController == null) {
             orderController = new OrderController();
         }
@@ -49,7 +54,7 @@ public class OrderController {
                 while(count<0){
                     System.out.println("Enter reservation ID: ");
                     resID = sc.nextInt();
-                    Reservation reservation = getReservationById(resID); //Reservation reservation = getReservationById(resID); --> if null, then ask again for reservation id, if null 2x then break out loop
+                    Reservation reservation = resController.getReservationById(resID); //Reservation reservation = getReservationById(resID); --> if null, then ask again for reservation id, if null 2x then break out loop
                     if (reservation == null){
                         System.out.println("Reservation not found. Please try again.");
                     }
@@ -61,6 +66,7 @@ public class OrderController {
                 }
                 break;
             /*case 'N':
+            //call tablecontroller and show unoccupied unreserved tables
                 System.out.println("Enter no. of pax: ");
                 numOfPax = sc.nextInt();
                 resController.convertIntoEnum();
@@ -70,14 +76,16 @@ public class OrderController {
         orderID = orderID+1;
         Order order = new Order(staffID, orderID, tabID);
         orders.add(order);
-
-        menuController.displayAllMenuItems();
+        tableController.setOccupied(tabID);
+        menuController.displayMenu();
         //while loop
         char res = 'N';
         do{
             System.out.println("Enter ID of Menu Item: ");
             int menuchoice = sc.nextInt();
-            order.addOrderItem(menuchoice);
+            System.out.println("Enter ID of Menu Item: ");
+            int addQuantity = sc.nextInt();
+            order.addOrderItem(menuchoice, addQuantity); //exception handle
             System.out.println("Order Item has been added.");
 
             //now display the current orderitems inside

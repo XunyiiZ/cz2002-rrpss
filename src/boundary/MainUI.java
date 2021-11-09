@@ -29,12 +29,20 @@ public class MainUI {
 
             switch(choice) {
                 case 1:
-                    ReservationUI reservationUI = new ReservationUI();
+                    ReservationUI reservationUI = ReservationUI.getInstance();
                     reservationUI.run();
                     break;
                 case 2:
                     TableUI tableUI = new TableUI();
                     tableUI.run();
+                    break;
+                case 3:
+                    MenuUI menuUI = MenuUI.getInstance();
+                    menuUI.run();
+                    break;
+                case 4:
+                    OrderUI orderUI = OrderUI.getInstance();
+                    orderUI.run();
                     break;
                 case 5:
                     MemberUI memberUI = MemberUI.getInstance();

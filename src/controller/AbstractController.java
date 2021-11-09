@@ -3,7 +3,6 @@ package controller;
 import java.io.*;
 import java.util.*;
 
-
 import Entity.*;
 public abstract class AbstractController{
 
@@ -38,7 +37,7 @@ public abstract class AbstractController{
         return data;
     }
 
-    public abstract  ArrayList load(String filename) throws IOException;
+    public abstract ArrayList load(String filename) throws IOException;
 
     public static void save(String filename, List al) throws IOException {
     }

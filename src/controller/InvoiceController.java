@@ -179,7 +179,7 @@ public class InvoiceController extends AbstractController{
         try {
             /** +1 使之id 从1开始 */
             int invoiceId = invoiceList.size() + 1;       // USE arrayList size to get the invoice ID  /
-            Order order = orderController.getOrderById(id);
+            Order order = orderController.getOrderByID(id);
            // double subtotal = order.getOrderPrice();
             double subtotal = 10.0;
             double afterDiscount = subtotal;
@@ -222,7 +222,7 @@ public class InvoiceController extends AbstractController{
     }
 
     private void unAssignTable(int orderId){
-        Order order = orderController.getOrderById(orderId);
+        Order order = orderController.getOrderByID(orderId);
         //int tableId = order.getTableId();
         int tableId = 0;
         tableController.setUnoccupied(tableId);   // print unAssign message
@@ -248,7 +248,7 @@ public class InvoiceController extends AbstractController{
 
             int invoiceId = Integer.parseInt(star.nextToken().trim());
             int orderId = Integer.parseInt(star.nextToken().trim());
-            Order order = orderController.getOrderById(orderId);
+            Order order = orderController.getOrderByID(orderId);
             LocalDate date = LocalDate.parse(star.nextToken().trim()); // 神奇
             LocalTime time = LocalTime.parse(star.nextToken().trim());
             double subtotal = Double.parseDouble(star.nextToken().trim());

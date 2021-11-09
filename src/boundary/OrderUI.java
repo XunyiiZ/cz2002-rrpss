@@ -1,16 +1,31 @@
+package boundary;
+import controller.*;
+
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class OrderUI {
 
     private OrderController oc = OrderController.getInstance();
+    private static OrderUI orderUI = null;
     private static Scanner sc = new Scanner(System.in);
+
+    public OrderUI() throws IOException {
+
+    }
+
+    public static OrderUI getInstance() throws IOException {
+        if (orderUI == null)
+            orderUI = new OrderUI();
+        return orderUI;
+    }
 
     public void run() {
         int option;
 
         option = choose();
-        while(option<=5){
+        while(option != 0){
             switch(option){
                 case 1: //create order
                     oc.createOrder();
@@ -29,7 +44,7 @@ public class OrderUI {
                     int addChoice = sc.nextInt();
                     //find order
 
-                    Order.addOrderItem(addChoice);
+                    //Order.addOrderItem(addChoice);
                     break;
                 case 4: //remove order, KIV
                     System.out.println("Enter the ID of item to remove.");
@@ -40,11 +55,14 @@ public class OrderUI {
                     //display all orders
                     oc.getOrders();
                     break;
+                default: 
+                    System.out.println("Invalid input");
+                    break;
             }
         }
     }
     private static int choose(){
-        System.out.println("Select option: ");
+        System.out.println("--------Order System--------");
         System.out.println("1. Create Order");
         System.out.println("2. View Order Items");
         System.out.println("3. Add Order Item to Order");

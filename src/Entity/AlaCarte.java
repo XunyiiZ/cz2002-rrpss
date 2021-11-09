@@ -5,7 +5,7 @@ public class AlaCarte extends MenuItem{
     private Category type;
 
     public enum Category {
-        MAINCOURSE, DRINKS, DESSERTS
+        MAINCOURSE, DRINKS, SIDES
     }
 
     public AlaCarte(String name, String description, double price, Category type) {

@@ -37,6 +37,7 @@ public class MenuItem {
     }
 
     public String toString(){
-        return "Name: "+ name + ", Description: " + description + ", Price: " + price + "\n";
+        String statement = String.format("Name: %s \nDescription %s \nPrice: %.1f0 \n", name, description, price);
+        return statement;
     }
 }
