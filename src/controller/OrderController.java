@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.time.LocalDateTime;
 
 public class OrderController {
-
+    
     private static ArrayList<Order> orders = new ArrayList<Order>();
     private static OrderController orderController = null;
     private TableController tableController = TableController.getInstance();
@@ -72,6 +72,7 @@ public class OrderController {
         orders.add(order);
 
         menuController.displayAllMenuItems();
+        //while loop
         char res = 'N';
         do{
             System.out.println("Enter ID of Menu Item: ");
