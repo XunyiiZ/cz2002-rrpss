@@ -1,20 +1,29 @@
 package Entity;
-public class OrderItem extends MenuItem{
 
-    private MenuItem item;
+import java.awt.*;
+
+public class OrderItem {
+
+    //public int OrderItemID; //added to identify for addOrderItem and removeOrderItem
+    private int menuItemId;
+ //   private int orderItemId;
     private String name;
-    private String description;
+//    private String description;
     private double price;
-    private int quantity;
 
-    public OrderItem(MenuItem item , int quantity){
-        super(item.getName(), item.getDescription(), item.getPrice());
-        //this.OrderItemID = OrderID;
+    private int quantity;
+    //String name, String description, double price
+    public OrderItem(int MenuItemID , int quantity){
+        this.menuItemId = MenuItemID;
         this.quantity = quantity;
     }
 
-    public MenuItem getItem(){
-        return item;
+    public int getMenuItemID(){
+        return menuItemId;
+    }
+
+    public String getName(){
+        return name;
     }
     public int getQuantity(){
         return quantity;
@@ -22,6 +31,10 @@ public class OrderItem extends MenuItem{
 
     public double getPrice(){
         return price;
+    }
+
+    public String toString(){
+        return  menuItemId + " name: "+name+" price: "+price;
     }
 
 }

@@ -1,5 +1,7 @@
 package Entity;
 
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,16 +10,18 @@ public class Order {
     private static int order_ID;
     private static int staffID;
     private static int tableId;
+    private static int pax;
     private static ArrayList <OrderItem> orderItems;
-    private static int orderSize;
+//    private static int orderSize;
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int staffID, int order_ID, int tableId){
+    public Order(int staffID, int order_ID, int tableId, int pax){
         this.order_ID = order_ID;
         this.tableId = tableId;
         ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
+        this.pax=pax;
     }
 
     public int getTableId(){
@@ -28,59 +32,77 @@ public class Order {
         return order_ID;
     }
 
-    public void getOrderItems(){
-        for(OrderItem i: orderItems){
-            String itemName = i.getName();
-            //String itemDesc = i.getDescription();
-            //double itemPrice = i.getPrice();
-            //int itemQuantity = i.getQuantity();
+    public int getPax(){return pax;}
 
-            System.out.println("Name: "+itemName);
-        }
+    public int getStaffID(){return staffID;}
+
+//    public void getOrderItems(){
+//        for(OrderItem i: orderItems){
+//            String itemName = i.getName();
+//            //String itemDesc = i.getDescription();
+//            //double itemPrice = i.getPrice();
+//            int itemQuantity = i.getQuantity();
+//
+//            System.out.println("Name: "+itemName +", Quantity: "+itemQuantity);
+//        }
+//    }
+    public ArrayList<OrderItem> getOrderItems(){
+        return orderItems;
     }
 
-    public static void addOrderItem(int index){
-        if (orderSize>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
+//    public static void addOrderItem(int index, int quantity){ //quantity
+//        if (orderSize>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
+//        else{
+//            System.out.println("Enter the ID of the item: ");
+//            int itemID = sc.nextInt();
+//            System.out.println("Enter Quantity: ");
+//            int quant = sc.nextInt();
+//
+//            OrderItem item = new OrderItem(itemID,quant); //which to input?
+//            orderItems.add(item);
+//            orderSize++;
+//        }
+//        return;
+//    }
+
+    public static void addOrderItem(int menuItemId, int quantity){ //quantity
+        if (orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
         else{
-            System.out.println("Enter the ID of the item: ");
 
-            String itemName = sc.next(); //which to use?
-            int itemID = sc.nextInt();
-
-            OrderItem item = new OrderItem(); //which to input?
+            OrderItem item = new OrderItem(menuItemId,quantity); //which to input?
             orderItems.add(item);
-            orderSize++;
         }
         return;
     }
 
-    public void removeOrderItem(int index){
-        for(OrderItem i: orderItems){
-            if(i.getOrder_ID == index){target = i.getOrder_ID;} //currently orderitem id doesn't exist, should we add?
-        }
-        target = -1;
-        if(target == -1) System.out.println("This item is not in the order.");
-        else{
-            for(int i=target;i<orderSize-1;i++){
-                orderItems.set(i, orderItems.get(i + 1));
-            }
-            orderSize--;
-        }
+    public void removeOrderItemByIdx(int index){
+
+        orderItems.remove(index);
+
     }
 
     public double getOrderPrice(){
-        double price1 = 0.0;
-        for(int i=0;i<orderSize;i++){
-            price1 += orderItems.get(i).getPrice();
+        double totalPrice = 0.0;
+        for(int i=0;i<orderItems.size();i++){
+            totalPrice += orderItems.get(i).getPrice();
         }
-        return price1;
+        return totalPrice;
     }
 
-    public void printOrders(){
+    public void displayAllItems(){
         System.out.println("Item           Quantity            Price\n");
-        for(int i=0;i<orderSize;i++){
-            System.out.println(orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ orderItems.get(i).getPrice()+ "\n");
+        for(int i=0;i<orderItems.size();i++){
+            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ orderItems.get(i).getQuantity()*orderItems.get(i).getPrice()+ "\n");
         }
+    }
+
+    public void displayOrder(){
+        System.out.println("order id " + order_ID+
+                "\nstaff id " + staffID+
+                "\ntable id "+tableId+
+                "\nnumber of pax " + pax +"\n");
+        displayAllItems();
+
     }
 
 }

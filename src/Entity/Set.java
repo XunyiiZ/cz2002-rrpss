@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Set extends MenuItem{
 
-    private ArrayList<AlaCarte> item;
+    private ArrayList<AlaCarte> itemList;
     private static double SET_DISCOUNT = 0.95;
 
 
@@ -25,16 +25,37 @@ public class Set extends MenuItem{
 
     /** new one */
     public void addAlaCarte(AlaCarte newItem){
-        item.add(newItem);                             // after add a new item in the set, the price of the set will change
+        itemList.add(newItem);                             // after add a new item in the set, the price of the set will change
         super.setPrice(setSetPrice());
     }
 
     private double setSetPrice(){
         double total =0.0;
-        for(AlaCarte alaCarte : item){
+        for(AlaCarte alaCarte : itemList){
             total += alaCarte.getPrice();
         }
         return total*SET_DISCOUNT;
+    }
+
+    private ArrayList<AlaCarte> getItemList(){
+        return itemList;
+    }
+    public void deleteFromSet(int itemID){
+        if(itemList.size() == 0){
+            System.out.println("No more Ala Carte to delete!");
+        }
+        else{
+            while(true){
+                try{
+                    AlaCarte alacarte = itemList.get(int) ;
+                    set.remove(menuitemID);
+                    return;
+                }catch(IndexOutOfBoundsException e){
+                    System.out.println("Invalid ID please input again!");
+                    return;
+                }
+            }
+        }
     }
 
 }
