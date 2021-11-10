@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import Entity.*;
 
@@ -177,7 +180,7 @@ public class TableController {
         return tablePax;
     }
     /**get table by pax*/
-    public ArrayList<Integer> getTableByPax(int pax){
+    public ArrayList<Integer> getTableByTablePax(int pax){
 
         ArrayList<Integer> tables = new ArrayList<>();
 
@@ -187,5 +190,16 @@ public class TableController {
             }
         }
         return tables;
+    }
+
+    public ArrayList<Integer> getCurrentReservedTable(int tablePax) throws IOException {
+        ArrayList<Integer> tableList = new ArrayList<>();
+        LocalTime time = LocalTime.now();
+        LocalDate date = LocalDate.now();
+        ReservationController reservationController = ReservationController.getInstance();
+        for(Reservation res : reservationController.getConflictReservation(date,time,tablePax)){
+            tableList.add(res.getTableId());
+        }
+        return tableList;
     }
 }

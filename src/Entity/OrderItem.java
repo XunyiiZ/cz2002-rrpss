@@ -1,23 +1,28 @@
 package Entity;
-public class OrderItem{
+
+import java.awt.*;
+
+public class OrderItem {
 
     //public int OrderItemID; //added to identify for addOrderItem and removeOrderItem
-    private int MenuItemID;
+    private int menuItemId;
+ //   private int orderItemId;
     private String name;
-    private String description;
+//    private String description;
     private double price;
 
     private int quantity;
     //String name, String description, double price
-
-    public OrderItem(int MenuItemID , int quantity){
-        this.MenuItemID = MenuItemID;
+    public OrderItem(int MenuItemID , int quantity, String name){
+        this.menuItemId = MenuItemID;
         this.quantity = quantity;
+        this.name = name;
     }
 
     public int getMenuItemID(){
-        return MenuItemID;
+        return menuItemId;
     }
+
     public String getName(){
         return name;
     }
@@ -27,6 +32,10 @@ public class OrderItem{
 
     public double getPrice(){
         return price;
+    }
+
+    public String toString(){
+        return  menuItemId + " name: " + name + " price: " + price;
     }
 
 }

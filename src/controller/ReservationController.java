@@ -45,6 +45,7 @@ public class ReservationController extends AbstractController {
                 LocalTime curTime = LocalTime.now();
 
                 ArrayList<Reservation> toRemove = new ArrayList<>();
+
                 for (Reservation reservation : reservationList) {
                     LocalTime expireTime = reservation.getAppointmentTime().plusMinutes(EXPIRE_PERIOD);
                     if (reservation.getAppointmentDate().equals(today) && curTime.isAfter(expireTime)) {
@@ -81,30 +82,38 @@ public class ReservationController extends AbstractController {
 
         //clearReservation() is to remove the expired Reservations from reservation list
 
-
+        public ArrayList<Reservation> getConflictReservation(LocalDate date, LocalTime time, int tablePax){
+            ArrayList<Reservation> conflictReservation = new ArrayList<>();
+            for(Reservation reservation : reservationList){
+                LocalTime otherTime = reservation.getAppointmentTime().plusMinutes(119);
+                int curTablePax = tableController.getTablePax(reservation.getNumberOfPax());
+                if(curTablePax == tablePax && reservation.getAppointmentDate().equals(date) && otherTime.isAfter(time)){
+                    conflictReservation.add(reservation);
+                    }
+                }
+            return conflictReservation;
+        }
 
         public void createReservation(String name, String contact, int numberOfPax, LocalDate date, LocalTime time)
         {
             try{
                 clearReservation();
                 // get all table of specific pax
-                ArrayList<Integer> tableList = tableController.getTableByPax(numberOfPax);
+                int tablePax = tableController.getTablePax(numberOfPax);
+                ArrayList<Integer> tableList = tableController.getTableByTablePax(tablePax);
 
                 // check time to remove the reserved table from table list
-                for(Reservation reservation : reservationList){
-                    LocalTime otherTime = reservation.getAppointmentTime().plusMinutes(119);
-                    if(reservation.getAppointmentDate().equals(date) && otherTime.isAfter(time)){
-                        if(tableList.contains(reservation.getTableId())) {
-                            System.out.println(reservation.getTableId());
-                            int idx = tableList.indexOf(reservation.getTableId());
-                            tableList.remove(idx);
-                        }
+                for(Reservation reservation : getConflictReservation(date,time,tablePax)){
+                    if(tableList.contains(reservation.getTableId())) {
+                        System.out.println(reservation.getTableId());
+                        int idx = tableList.indexOf(reservation.getTableId());
+                        tableList.remove(idx);
                     }
                 }
 
                 // display available table id and ask user to choose the id
-                System.out.println("unreserved table: " + tableList.toString());
-                System.out.println("enter the table id to reserve the table");
+                System.out.println("Unreserved table: " + tableList.toString());
+                System.out.println("Enter the table id to reserve the table");
                 int tableId = in.nextInt();
                 do {
                     try {
@@ -113,7 +122,7 @@ public class ReservationController extends AbstractController {
                         }
                     } 	catch (Exception e) {
                         System.out.println(e.getMessage());
-                        System.out.println("enter the table id to reserve the table");
+                        System.out.println("Enter the table id to reserve the table");
                         tableId = in.nextInt();
                         continue;
                     }
@@ -154,9 +163,11 @@ public class ReservationController extends AbstractController {
         return foundList;
     }
 
+
+
     // method to remove expired Reservations: clearReservation method + loop through all reservations and return index of reservation(s)
 
-        public void removeReservationByContact(String contact) {
+    public void removeReservationByContact(String contact) {
         clearReservation();
         try {
             if (contact.length() != 8)
@@ -186,7 +197,7 @@ public class ReservationController extends AbstractController {
 
     }
 
-    private boolean removeReservationById(int id){
+    public boolean removeReservationById(int id){
         try{
             Reservation res = getReservationById(id);
             if(res == null){
@@ -260,9 +271,8 @@ public class ReservationController extends AbstractController {
             st.append("|");
             st.append(reservation.getAppointmentTime());
             alw.add(st.toString());
-
-            write(filename, alw);
         }
-    }
+            write(filename, alw);
+   }
+}
 
-    }

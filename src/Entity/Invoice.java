@@ -89,9 +89,9 @@ public class Invoice{
 
                 "=========================RESTAURANT=========================="+
                         "\nINVOICE #: "  + invoiceID + " \t\t\t"+
-                        "\nServer: " + "order.getStaff()" + "\t\tTable: " + "order.getTableId()" +
+                        "\nServer: " + order.getStaffID() + "\t\tTable: " + order.getTableId() +
                         "\nDate Time: " + date+"    "+time.truncatedTo(ChronoUnit.SECONDS)+
-                        "\nClient: " + "order.getNumber()"+
+                        "\nClient: " + order.getPax()+
                         "\n--------------------------------------------------------------" +
                         "\norder.toString()"+
                         "\n--------------------------------------------------------------" +

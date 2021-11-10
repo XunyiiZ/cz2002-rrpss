@@ -1,16 +1,21 @@
 package Entity;
 public class MenuItem {
 
+    private int menuItemId;
     private String name;
     private String description;
     private double price;
 
-    public MenuItem(String name, String description, double price) {
+    public MenuItem(int menuItemId, String name, String description, double price) {
+        this.menuItemId = menuItemId;
         this.name = name;
         this.description = description;
         this.price = price;
     }
 
+    public int getMenuItemId(){
+        return menuItemId;
+    }
 
     public double getPrice(){
         return price;

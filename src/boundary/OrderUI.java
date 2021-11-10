@@ -1,6 +1,8 @@
 package boundary;
 import controller.*;
+import Entity.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,21 +11,20 @@ public class OrderUI {
 
     private OrderController oc = OrderController.getInstance();
     private static OrderUI orderUI = null;
+    private MenuController mc = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
 
     public OrderUI() throws IOException {
-
     }
 
     public static OrderUI getInstance() throws IOException {
-        if (orderUI == null)
+        if (orderUI == null) {
             orderUI = new OrderUI();
+        }
         return orderUI;
     }
-
-    public void run() {
+    public void run() throws IOException {
         int option;
-
         option = choose();
         while(option != 0){
             switch(option){
@@ -35,25 +36,23 @@ public class OrderUI {
                     //check order
                     System.out.println("Enter OrderID: ");
                     int orderID = sc.nextInt();
-                    System.out.println("Orders:");
-                    oc.getOrderByID(orderID).printOrders();
+                    displayOrder(orderID);
                     break;
                 case 3: //add order item, KIV
-                    System.out.println("Enter OrderID.");
-                    System.out.println("Enter the ID of item to add.");
-                    int addChoice = sc.nextInt();
-                    //find order
 
-                    //Order.addOrderItem(addChoice);
+                    System.out.println("Enter OrderID.");
+                    int orderId = sc.nextInt();
+                    addItem(orderId);
                     break;
-                case 4: //remove order, KIV
+               case 4: //remove order, KIV
                     System.out.println("Enter the ID of item to remove.");
-                    int removeChoice = sc.nextInt();
+                    int id = sc.nextInt();
+                    removeItem(id);
                     //code for removing here
                     break;
                 case 5:
                     //display all orders
-                    oc.getOrders();
+                    oc.displayAllOrders();
                     break;
                 default: 
                     System.out.println("Invalid input");
@@ -61,6 +60,33 @@ public class OrderUI {
             }
         }
     }
+
+    private void displayOrder(int id){
+        Order order = oc.getOrderByID(id);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            order.displayOrder();
+        }
+    }
+
+    private void addItem(int orderId) throws IOException {
+        Order order = oc.getOrderByID(orderId);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            System.out.println("order found");
+            oc.addItemToOrder(order);
+        }
+    }
+
+    private void removeItem(int orderId) throws IOException {
+        Order order = oc.getOrderByID(orderId);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            System.out.println("order found");
+            oc.removeItemFromOrder(order);
+        }
+    }
+
     private static int choose(){
         System.out.println("--------Order System--------");
         System.out.println("1. Create Order");

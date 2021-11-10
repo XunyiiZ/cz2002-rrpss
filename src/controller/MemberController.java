@@ -133,7 +133,8 @@ public class MemberController extends AbstractController{
             st.append("|");
             st.append(member.getContact());
             alw.add(st.toString());
+        }
             write(filename, alw);
         }
     }
-}
+
