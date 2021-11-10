@@ -5,21 +5,21 @@ import controller.*;
 public class TableUI {
 
     Scanner in = new Scanner(System.in);
-    private static TableController single_instance = null;
+    private static TableUI tableUI = null;
     private TableController tableController = TableController.getInstance();
     public TableUI() {}
 
-    public static TableController getInstance() {
-        if(single_instance == null) {
-            single_instance = new TableController();
+    public static TableUI getInstance() {
+        if(tableUI == null) {
+            tableUI = new TableUI();
         }
-        return single_instance;
+        return tableUI;
     }
 
     public void run() {
 
         int choice = this.displayOptions();
-        do {
+        while(choice!=0){
             switch(choice) {
                 case 1:
                     tableController.displayAllTables();
@@ -30,11 +30,13 @@ public class TableUI {
                 case 3:
                     tableController.displayOccupiedTables();
                     break;
+                default: 
+                    System.out.println("Invalid input");
+                    break;
             }
 
             choice = this.displayOptions();
-
-        } while (choice != 0);
+        } 
 
     }
 
@@ -42,9 +44,9 @@ public class TableUI {
     private int displayOptions() {
         System.out.println("--------TableUI--------");
         System.out.println("0. Go back to MainUI" +
-                "\n1. displayAllTables"+
-                "\n2. displayUnoccupiedTables"+
-                "\n3. displayOccupiedTables");
+                "\n1. Display all tables"+
+                "\n2. Display unoccupied tables"+
+                "\n3. Display occupied tables");
         int choice = in.nextInt();
         in.nextLine();
         return choice;

@@ -1,7 +1,5 @@
 package Entity;
 
-
-
 import java.util.ArrayList;
 
 public class Set extends MenuItem{
@@ -10,9 +8,10 @@ public class Set extends MenuItem{
     private static double SET_DISCOUNT = 0.95;
 
 
-    public Set(String name, String description, double price)
+    public Set(int id, String name, String description, double price)
     {
-        super(name, description,price);
+        super(id, name, description, price);
+        itemList = new ArrayList<AlaCarte>();
     }
 
 //    public void addAlaCarte(MenuItem fooditem1, MenuItem fooditem2, MenuItem fooditem3)
@@ -30,8 +29,8 @@ public class Set extends MenuItem{
     }
 
     private double setSetPrice(){
-        double total =0.0;
-        for(AlaCarte alaCarte : itemList){
+        double total = 0.0;
+        for(AlaCarte alaCarte :itemList){
             total += alaCarte.getPrice();
         }
         return total*SET_DISCOUNT;
@@ -40,6 +39,7 @@ public class Set extends MenuItem{
     private ArrayList<AlaCarte> getItemList(){
         return itemList;
     }
+
     public void deleteFromSet(int itemID){
         if(itemList.size() == 0){
             System.out.println("No more Ala Carte to delete!");
@@ -47,8 +47,8 @@ public class Set extends MenuItem{
         else{
             while(true){
                 try{
-                    AlaCarte alacarte = itemList.get(int) ;
-                    set.remove(menuitemID);
+                    // AlaCarte alacarte = itemList.get(int) ;
+                    // set.remove(menuitemID);
                     return;
                 }catch(IndexOutOfBoundsException e){
                     System.out.println("Invalid ID please input again!");

@@ -1,4 +1,6 @@
 package controller;
+
+import java.io.IOException;
 import Entity.*;
 
 import java.io.File;
@@ -90,11 +92,11 @@ public class OrderController extends AbstractController {
             int tablePax = tableController.getTablePax(numOfPax);
             ArrayList<Integer> availableTables = getAvailableTable(tablePax);
             if (availableTables.size() == 0) {
-                System.out.println("there is no available table now");
+                System.out.println("There is no available table now");
             } else {
-                System.out.println("available table:" + availableTables.toString());
+                System.out.println("Available table:" + availableTables.toString());
             }
-            System.out.println("assign the table id:");
+            System.out.println("Assign the Table id:");
             int tableId = sc.nextInt();
             do {
                 try {
@@ -103,7 +105,7 @@ public class OrderController extends AbstractController {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    System.out.println("enter the table id to reserve the table");
+                    System.out.println("Enter the table id to reserve the table");
                     tableId = sc.nextInt();
                     continue;
                 }
@@ -111,7 +113,7 @@ public class OrderController extends AbstractController {
             } while (true);
 
         } else {
-            System.out.println("invalid input!");
+            System.out.println("Invalid input!");
         }
 
 
@@ -122,22 +124,21 @@ public class OrderController extends AbstractController {
         orders.add(order);
         tableController.setOccupied(tabID);
 
-
         //while loop
-        System.out.println("1. add item, 2.remove item 3. dispaly all items and 4. finish");
+        System.out.println("1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
         int choice = sc.nextInt();
         while (true) {
             if (choice > 4 || choice < 1)
-                System.out.println("invalid input! \n 1. add item, 2.remove item 3. dispaly all items and 4. finish ");
+                System.out.println("invalid input! \n1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
             else {
                 switch (choice) {
                     case 1:
                         addItemToOrder(order);
-                        System.out.println("add successfully");
+                        System.out.println("Added successfully");
                         break;
                     case 2:
                         removeItemFromOrder(order);
-                        System.out.println("remove successfully");
+                        System.out.println("Removed successfully");
                         break;
                     case 3:
                         order.displayAllItems();
@@ -179,32 +180,32 @@ public class OrderController extends AbstractController {
     //when display menu item can use index
 
     public void addItemToOrder(Order order) throws IOException {
-        menuController.displayAllMenuItems();  // need to display the index
-        System.out.println("enter the index of menu item");
+        menuController.displayMenu();  // need to display the index
+        System.out.println("Which menu item would you like to add?");
         int itemIdx = sc.nextInt();
-        if (itemIdx < 0 || itemIdx >= menuController.getAllMenu().size()) {
-            System.out.println("invalid input, add item unsuccessfully");
+        if (itemIdx < 0 || itemIdx >= menuController.getSizeOfMenu()) {
+            System.out.println("Invalid input, add item unsuccessfully");
             return;
         } else {
-            OrderItem item = menuController.getItemByIdx(itemIdx);
-            int itemId = item.getMenuItemID();
-            System.out.println("enter quantity:");
+            MenuItem item = menuController.getItemById(itemIdx);
+            int itemId = item.getMenuItemId();
+            System.out.println("Enter quantity:");
             int quantity = sc.nextInt();
             order.addOrderItem(itemId, quantity, item.getName());
             save(dir,orders);
-            System.out.println("add item successfully");
+            System.out.println("Item added successfully");
         }
     }
 
     public void removeItemFromOrder(Order order) throws IOException {
         order.displayAllItems();
-        System.out.println("enter the index of menu item");
+        System.out.println("Enter the index of menu item");
         int itemIdx = sc.nextInt();
         if (order.getOrderItems().size() == 0) {
-            System.out.println("empty order, nothing to delete!");
+            System.out.println("Empty order, nothing to delete!");
             return;
         } else if (itemIdx < 0 || itemIdx >= order.getOrderItems().size()) {
-            System.out.println("invalid input, remove item unsuccessfully");
+            System.out.println("Invalid input, remove item unsuccessfully");
             return;
         } else {
             order.removeOrderItemByIdx(itemIdx);

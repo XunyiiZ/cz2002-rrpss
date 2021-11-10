@@ -10,9 +10,9 @@ import java.util.Scanner;
 public class OrderUI {
 
     private OrderController oc = OrderController.getInstance();
+    private static OrderUI orderUI = null;
     private MenuController mc = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
-    private static OrderUI orderUI = null;;
 
     public OrderUI() throws IOException {
     }
@@ -26,8 +26,7 @@ public class OrderUI {
     public void run() throws IOException {
         int option;
         option = choose();
-
-        while(option<=5){
+        while(option != 0){
             switch(option){
                 case 1: //create order
                     oc.createOrder();
@@ -54,6 +53,9 @@ public class OrderUI {
                 case 5:
                     //display all orders
                     oc.displayAllOrders();
+                    break;
+                default: 
+                    System.out.println("Invalid input");
                     break;
             }
         }
@@ -86,7 +88,7 @@ public class OrderUI {
     }
 
     private static int choose(){
-        System.out.println("Select option: ");
+        System.out.println("--------Order System--------");
         System.out.println("1. Create Order");
         System.out.println("2. View Order Items");
         System.out.println("3. Add Order Item to Order");

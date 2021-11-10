@@ -59,6 +59,7 @@ public class MemberUI {
                     break;
 
                 default:
+                    System.out.println("Invalid input");
                     break;
             }
             choice = this.displayOptions();
@@ -66,6 +67,7 @@ public class MemberUI {
     }
 
     private int displayOptions() {
+        System.out.println("--------Member System--------");
         System.out.println("0. Go back to MainUI");
         System.out.println("1. Create a new member");
         System.out.println("2. Check for membership");

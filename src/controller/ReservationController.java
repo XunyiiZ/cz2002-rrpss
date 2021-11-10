@@ -112,8 +112,8 @@ public class ReservationController extends AbstractController {
                 }
 
                 // display available table id and ask user to choose the id
-                System.out.println("unreserved table: " + tableList.toString());
-                System.out.println("enter the table id to reserve the table");
+                System.out.println("Unreserved table: " + tableList.toString());
+                System.out.println("Enter the table id to reserve the table");
                 int tableId = in.nextInt();
                 do {
                     try {
@@ -122,7 +122,7 @@ public class ReservationController extends AbstractController {
                         }
                     } 	catch (Exception e) {
                         System.out.println(e.getMessage());
-                        System.out.println("enter the table id to reserve the table");
+                        System.out.println("Enter the table id to reserve the table");
                         tableId = in.nextInt();
                         continue;
                     }
@@ -220,7 +220,7 @@ public class ReservationController extends AbstractController {
         //   load method will be different between different controller
         public ArrayList load(String filename) throws IOException {
         ArrayList stringArray = (ArrayList) read(filename);
-        ArrayList alr = new ArrayList();  // to store invoices data
+        ArrayList alr = new ArrayList();  // to store reservation data
 
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
@@ -235,10 +235,10 @@ public class ReservationController extends AbstractController {
             LocalDate date = LocalDate.parse(star.nextToken().trim());
             LocalTime time = LocalTime.parse(star.nextToken().trim());
 
-            // create Invoice object from file data
+            // create reservation object from file data
             Reservation reservation = new Reservation(reservationId,name,contact,numOfPax,tableId,date,time);
 
-            //add to Invoice List
+            //add to reservationList
             alr.add(reservation);
         }
         return alr;
@@ -248,7 +248,7 @@ public class ReservationController extends AbstractController {
 
         /**
          * save method
-         * save method will be different with different controlelr
+         * save method will be different with different controller
          */
 
         public static void save(String filename, List al) throws IOException {

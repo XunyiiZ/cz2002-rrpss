@@ -76,6 +76,8 @@ public class TableController {
     // Showing in general all unoccupied tables
     public void displayUnoccupiedTables()
     {
+        int count = 0;
+
         System.out.println("Showing all unoccupied tables: ");
         int j = 1;
         for (Table i: listOfTables)
@@ -84,6 +86,7 @@ public class TableController {
             {
 
                 System.out.println("Table " + i.getTableId());
+                count++;
             }
 
             j++;
@@ -91,6 +94,11 @@ public class TableController {
                 break;
             }
 
+        }
+
+        if (count == 0)
+        {
+            System.out.println("All tables are occupied");
         }
     }
 
@@ -120,13 +128,23 @@ public class TableController {
 
     public void displayOccupiedTables()
     {
+        int count = 0;
+
+        System.out.println("Showing all occupied tables: ");
         for (Table i: listOfTables)
         {
             if (i.getOccupied() == true)
             {
                 System.out.println("Table " + i.getTableId());
+                count++;
             }
         }
+
+        if (count == 0)
+        {
+            System.out.println("No tables are occupied");
+        }
+
     }
 
     public void getTableByID(int tableId)

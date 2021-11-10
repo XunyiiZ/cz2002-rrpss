@@ -35,7 +35,7 @@ public class OrderItem {
     }
 
     public String toString(){
-        return  menuItemId + " name: "+name+" price: "+price;
+        return  menuItemId + " name: " + name + " price: " + price;
     }
 
 }

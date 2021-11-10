@@ -112,10 +112,11 @@ public class ReservationUI {
 
                     break;
                 case 4:
-                    System.out.println("in case 4 to display the reservations");
                     reservationController.displayAllReservations();
                     break;
-
+                default: 
+                    System.out.println("Invalid input");
+                    break;
             }
 
             choice = this.displayOptions();

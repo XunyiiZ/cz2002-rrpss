@@ -5,11 +5,11 @@ public class AlaCarte extends MenuItem{
     private Category type;
 
     public enum Category {
-        MAINCOURSE, DRINKS, DESSERTS
+        MAINCOURSE, DRINKS, SIDES
     }
 
-    public AlaCarte(String name, String description, double price, Category type) {
-        super(name, description, price);
+    public AlaCarte(int id,String name, String description, double price, Category type) {
+        super(id, name, description, price);
         this.type = type;
     }
 }
