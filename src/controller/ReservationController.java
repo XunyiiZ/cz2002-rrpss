@@ -271,9 +271,8 @@ public class ReservationController extends AbstractController {
             st.append("|");
             st.append(reservation.getAppointmentTime());
             alw.add(st.toString());
-
-            write(filename, alw);
         }
-    }
+            write(filename, alw);
+   }
+}
 
-    }

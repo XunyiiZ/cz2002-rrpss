@@ -293,11 +293,10 @@ public class InvoiceController extends AbstractController{
             st.append("|");
             st.append(invoice.getTotal());
             alw.add(st.toString());
-
+        }
             write(filename, alw);
         }
     }
-}
 
 
 

@@ -1,6 +1,8 @@
 package boundary;
 import controller.*;
+import Entity.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,6 +10,7 @@ import java.util.Scanner;
 public class OrderUI {
 
     private OrderController oc = OrderController.getInstance();
+    private MenuController mc = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
     private static OrderUI orderUI = null;;
 
@@ -20,7 +23,7 @@ public class OrderUI {
         }
         return orderUI;
     }
-    public void run() {
+    public void run() throws IOException {
         int option;
         option = choose();
 
@@ -30,31 +33,55 @@ public class OrderUI {
                     oc.createOrder();
                     System.out.println("Order has been created.");
                     break;
-//                case 2: //display
-//                    //check order
-//                    System.out.println("Enter OrderID: ");
-//                    int orderID = sc.nextInt();
-//                    System.out.println("Orders:");
-//                    oc.getOrderByID(orderID).printOrders();
-//                    break;
-//                case 3: //add order item, KIV
-//                    System.out.println("Enter OrderID.");
-//                    System.out.println("Enter the ID of item to add.");
-//                    int addChoice = sc.nextInt();
-//                    //find order
-//
-//                    Order.addOrderItem(addChoice);
-//                    break;
-//                case 4: //remove order, KIV
-//                    System.out.println("Enter the ID of item to remove.");
-//                    int removeChoice = sc.nextInt();
-//                    //code for removing here
-//                    break;
+                case 2: //display
+                    //check order
+                    System.out.println("Enter OrderID: ");
+                    int orderID = sc.nextInt();
+                    displayOrder(orderID);
+                    break;
+                case 3: //add order item, KIV
+
+                    System.out.println("Enter OrderID.");
+                    int orderId = sc.nextInt();
+                    addItem(orderId);
+                    break;
+               case 4: //remove order, KIV
+                    System.out.println("Enter the ID of item to remove.");
+                    int id = sc.nextInt();
+                    removeItem(id);
+                    //code for removing here
+                    break;
                 case 5:
                     //display all orders
                     oc.displayAllOrders();
                     break;
             }
+        }
+    }
+
+    private void displayOrder(int id){
+        Order order = oc.getOrderByID(id);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            order.displayOrder();
+        }
+    }
+
+    private void addItem(int orderId) throws IOException {
+        Order order = oc.getOrderByID(orderId);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            System.out.println("order found");
+            oc.addItemToOrder(order);
+        }
+    }
+
+    private void removeItem(int orderId) throws IOException {
+        Order order = oc.getOrderByID(orderId);
+        if(order == null) System.out.println("invalid order id");
+        else{
+            System.out.println("order found");
+            oc.removeItemFromOrder(order);
         }
     }
 

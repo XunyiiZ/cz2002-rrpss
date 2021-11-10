@@ -13,9 +13,10 @@ public class OrderItem {
 
     private int quantity;
     //String name, String description, double price
-    public OrderItem(int MenuItemID , int quantity){
+    public OrderItem(int MenuItemID , int quantity, String name){
         this.menuItemId = MenuItemID;
         this.quantity = quantity;
+        this.name = name;
     }
 
     public int getMenuItemID(){

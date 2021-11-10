@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Order {
 
-    private static int order_ID;
+    private static int orderID;
     private static int staffID;
     private static int tableId;
     private static int pax;
@@ -16,8 +16,8 @@ public class Order {
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int staffID, int order_ID, int tableId, int pax){
-        this.order_ID = order_ID;
+    public Order(int staffID, int orderID, int tableId, int pax){
+        this.orderID = orderID;
         this.tableId = tableId;
         ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
@@ -28,8 +28,8 @@ public class Order {
         return tableId;
     }
 
-    public int getOrder_ID(){
-        return order_ID;
+    public int getOrderID(){
+        return orderID;
     }
 
     public int getPax(){return pax;}
@@ -65,11 +65,10 @@ public class Order {
 //        return;
 //    }
 
-    public static void addOrderItem(int menuItemId, int quantity){ //quantity
+    public static void addOrderItem(int menuItemId, int quantity, String name){ //quantity
         if (orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
         else{
-
-            OrderItem item = new OrderItem(menuItemId,quantity); //which to input?
+            OrderItem item = new OrderItem(menuItemId,quantity,name); //which to input?
             orderItems.add(item);
         }
         return;
@@ -97,7 +96,7 @@ public class Order {
     }
 
     public void displayOrder(){
-        System.out.println("order id " + order_ID+
+        System.out.println("order id " + orderID+
                 "\nstaff id " + staffID+
                 "\ntable id "+tableId+
                 "\nnumber of pax " + pax +"\n");

@@ -90,7 +90,7 @@ public class MenuUI {
         String description = sc.nextLine();
 
         menuController.addSet(name,description);
-        Set setItem;
+        Set setItem = null;
         int choice;
         do{
             System.out.println("manage this set: 1.add item 2.remove item 3. display the item in it 4. finish");

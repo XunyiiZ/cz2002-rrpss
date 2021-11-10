@@ -61,10 +61,10 @@ public class MenuController extends AbstractController {
     public void displayAlaCarte(){
             }
 
-    public MenuItem getItemById(){
+    public MenuItem getItemById(int id){
         return (new MenuItem("name","description", 0.0));
     }
 
-    public void save(String filenmae, List list){}
+    public static void save(String filenmae, List list){}
 }
 
