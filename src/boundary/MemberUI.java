@@ -94,7 +94,16 @@ public class MemberUI {
 //                    break;
                     memberController.displayAllMembers();
                     break;
-
+                case 5:
+                    System.out.println("Enter new member discount rate: ");
+                    double rate = sc.nextDouble();
+                    if (rate > 1)
+                        memberController.setDiscountRate(rate/100);
+                    else{
+                        memberController.setDiscountRate(rate);
+                    }
+                    System.out.println("New discount rate set at: " + memberController.getDiscountRate());
+                    break;
                 default:
                     System.out.println("Invalid input");
                     break;
@@ -110,6 +119,7 @@ public class MemberUI {
         System.out.println("2. Check for membership");
         System.out.println("3. Remove member");
         System.out.println("4. Get member list");
+        System.out.println("5. Change discount rate");
         int choice;        
         while (true) {
             try {      

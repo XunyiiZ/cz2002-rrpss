@@ -28,6 +28,11 @@ public class Set extends MenuItem{
         super.setPrice(setSetPrice());
     }
 
+    // public void removeAlaCarte(int id){
+    //     itemList
+    //     itemList.remove(item);
+    // }
+
     private double setSetPrice(){
         double total = 0.0;
         for(AlaCarte alaCarte :itemList){
@@ -36,25 +41,32 @@ public class Set extends MenuItem{
         return total*SET_DISCOUNT;
     }
 
-    private ArrayList<AlaCarte> getItemList(){
+    public ArrayList<AlaCarte> getItemList(){
         return itemList;
     }
 
-    public void deleteFromSet(int itemID){
+    public void deleteFromSet(int itemIndex){
         if(itemList.size() == 0){
             System.out.println("No more Ala Carte to delete!");
         }
         else{
             while(true){
                 try{
-                    // AlaCarte alacarte = itemList.get(int) ;
-                    // set.remove(menuitemID);
+                    itemList.remove(itemIndex);
                     return;
                 }catch(IndexOutOfBoundsException e){
                     System.out.println("Invalid ID please input again!");
                     return;
                 }
             }
+        }
+    }
+
+    public void displayItemsInSet(){
+        int count = 0;
+        for (MenuItem item: itemList){
+            System.out.println("============== AlaCarte Item " + count++ + " ==============");
+            item.toString();
         }
     }
 

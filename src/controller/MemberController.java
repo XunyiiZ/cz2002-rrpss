@@ -90,6 +90,10 @@ public class MemberController extends AbstractController{
         return discountRate;
     }
 
+    public void setDiscountRate(double rate){
+        this.discountRate = rate;
+    }
+
     public void displayAllMembers(){
         for (Member m : memberController.getAllMembers()) {
            System.out.println(m.toString());

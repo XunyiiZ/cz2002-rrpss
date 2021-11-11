@@ -2,9 +2,11 @@ package controller;
 
 import Entity.*;
 import Entity.Set;
+import Entity.AlaCarte.Category;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.DrbgParameters.Capability;
 import java.util.*;
 
 /**
@@ -113,58 +115,165 @@ public class MenuController extends AbstractController {
         }
     }
 
-    public void addSet(String name, String description){
-        //menuList.add(new Set(name, description, 0.0));
-        // add alaCarte in it
+    public Set addSet(String name, String description){
+        menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
+        Set set = new Set(menuItemId, name, description, 0.0);
+        menuList.add(set);
+        return set;
+        //add alaCarte in it
     }
 
     public void displayAlaCarte(){
+        System.out.println("Displaying all AlaCarte items");
+        int count = 0;
+        for(MenuItem item : menuList){
+            if (item instanceof AlaCarte)
+            {
+                System.out.println("============== AlaCarte Item " + count++ + " ==============");
+                System.out.println(item.toString());
             }
+        }
+        return;
+    }
 
     public MenuItem getItemById(int id){
-        return menuList.get(id-1);
+
+        for (MenuItem item : menuList)
+        {
+            if(item.getMenuItemId() == id)
+                System.out.println("Item found!");
+                return item;
+        }
+        System.out.println("Id entered is incorrect!");
+        return null;
+    }
+
+    public MenuItem getItemByIndex(int index){
+        return menuList.get(index);
     }
 
     public static void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {
-            MenuItem menuItem = (MenuItem) al.get(i);
+            
+            //int isAlaCarte = 1;
+
             StringBuilder st = new StringBuilder();
-            st.append(menuItem.getMenuItemId());
-            st.append("|");
-            st.append(menuItem.getName());
-            st.append("|");
-            st.append(menuItem.getDescription()); 
-            st.append("|");
-            st.append(menuItem.getPrice());  
-            st.append("|");
+
+            if (al.get(i) instanceof AlaCarte)
+            {
+                AlaCarte aCarte = (AlaCarte) al.get(i);
+                st.append(1); // To identify that it is an AlaCarte
+                st.append("|");
+                st.append(aCarte.getMenuItemId());
+                st.append("|");
+                st.append(aCarte.getName());
+                st.append("|");
+                st.append(aCarte.getDescription()); 
+                st.append("|");
+                st.append(aCarte.getPrice());  
+                st.append("|");
+                st.append(aCarte.getStringType());
+            }
+            else
+            {
+                Set set = (Set) al.get(i);
+                st.append(0); // To identify that it is a set
+                st.append("|");
+                st.append(set.getMenuItemId());
+                st.append("|");
+                st.append(set.getName());
+                st.append("|");
+                st.append(set.getDescription()); 
+                st.append("|");
+                st.append(set.getPrice());  
+                st.append("|");
+               
+                ArrayList<AlaCarte> itemList = set.getItemList();
+                int size = itemList.size();
+                st.append(size);
+                st.append("|");
+
+                for (int j = 0; j<size; j++)
+                {
+                    st.append(itemList.get(j).getMenuItemId());
+                    if (j < size-1)
+                        st.append("|");
+                }
+            }
+
             alw.add(st.toString());
 
             write(filename, alw);
         }
     }
 
-    public ArrayList load(String filename) throws IOException {
+    public ArrayList<MenuItem> load(String filename) throws IOException {
 
         ArrayList stringArray = (ArrayList) read(filename);
-        ArrayList alr = new ArrayList();  
+        ArrayList<MenuItem> alr = new ArrayList<MenuItem>();  
 
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
             StringTokenizer star = new StringTokenizer(st, "|");
 
-            int menuItemId = Integer.parseInt(star.nextToken().trim());
-            String name = star.nextToken().trim();
-            String description = star.nextToken().trim();
-            int price = Integer.parseInt(star.nextToken().trim());
+            int type = Integer.parseInt(star.nextToken().trim());
+            int menuItemId;
+            String name;
+            String description;
+            double price;
 
-            // create MenuItem object from file data
-            
-            MenuItem reservation = new MenuItem(menuItemId, name, description, price);
+            if (type == 1) // AlaCarte
+            {
+                menuItemId = Integer.parseInt(star.nextToken().trim());
+                name = star.nextToken().trim();
+                description = star.nextToken().trim();
+                price = Double.parseDouble(star.nextToken().trim());
+                String category = star.nextToken().trim();
 
-            //add to Invoice List
-            alr.add(reservation);
+                AlaCarte.Category cat = null;
+                switch (category){
+                    case "maincourse":
+                        cat = Category.MAINCOURSE;
+                        break;
+                    case "drinks":
+                        cat = Category.DRINKS;
+                        break;
+                    case "sides":
+                        cat = Category.SIDES;
+                        break;
+                }
+                AlaCarte aCarte = new AlaCarte(menuItemId, name, description, price, cat);
+                alr.add(aCarte);
+            }
+            else //Set
+            {
+                menuItemId = Integer.parseInt(star.nextToken().trim());
+                name = star.nextToken().trim();
+                description = star.nextToken().trim();
+                price = Double.parseDouble(star.nextToken().trim());
+                Set set = new Set(menuItemId, name, description, 0);
+
+                int size = Integer.parseInt(star.nextToken().trim());
+                for (int j = 0; j < size; j++)
+                {
+                    int aCarteId = Integer.parseInt(star.nextToken().trim());
+
+                    int index = 0;
+                    for (MenuItem item: alr){
+                        if (item.getMenuItemId() == aCarteId)
+                        {
+                            set.addAlaCarte((AlaCarte) alr.get(index));
+                        }
+                        index++;
+                    }
+                    // MenuItem item = this.getItemById(aCarteId);
+                    // set.addAlaCarte((AlaCarte) item);
+                    //alr.stream().filter(alr -> aCarteId == alr.getItemById(aCarteId)).findAny().orElse(null);
+                }
+                alr.add(set);
+            }
         }
         return alr;
     }

@@ -38,6 +38,9 @@ public class MenuUI {
                 case 2:
                     this.addAlaCarte();
                     break;
+                case 3:
+                    this.addSet();
+                    break;
                 default:
                     System.out.println("Invalid input");
                     break;
@@ -107,30 +110,34 @@ public class MenuUI {
 
     private void addSet(){
         System.out.println("Enter set name");
-        String name = sc.next();
+        String name = sc.nextLine();
         System.out.println("Enter description");
         String description = sc.nextLine();
 
-        menuController.addSet(name,description);
-        Set setItem = null;
+        Set setItem = menuController.addSet(name, description);
         int choice;
         do{
-            System.out.println("Manage this set: 1.add item 2.remove item 3. display the item in it 4. finish");
+            System.out.println("============== Manage this set ==============\n1. Add item \n2. Remove item \n3. Display the items in the set \n4. Finish");
+            System.out.println("Enter option: ");
             choice = sc.nextInt();
             switch(choice){
                 case 1:
-                    menuController.displayAlaCarte();
-                    System.out.println("Enter the id to add:");
-                    int id = sc.nextInt();
-                    //setItem.addAlaCarte(menuController.getItemById(id));
-
+                    //menuController.displayAlaCarte();
+                    menuController.displayMenu();
+                    System.out.println("Which AlaCarte item would you like to add? ");
+                    int idx = sc.nextInt() - 1;
+                    System.out.println("index is: " + idx);
+                    int aCarteId = menuController.getItemByIndex(idx).getMenuItemId();
+                    System.out.println("aCarteId is : " + aCarteId);
+                    setItem.addAlaCarte( (AlaCarte) menuController.getItemById(aCarteId));
                     break;
                 case 2:
                     System.out.println("Enter id to remove:");
-
+                    int index = sc.nextInt();
+                    setItem.deleteFromSet(index);
                     break;
                 case 3:
-
+                    setItem.displayItemsInSet();
                     break;
                 case 4:
                     // display this set item
@@ -138,7 +145,7 @@ public class MenuUI {
                     System.out.println("invalid input");
                     break;
             }
-        }while(choice<0 || choice>4);
+        }while(choice != 4);
     }
 
 }
