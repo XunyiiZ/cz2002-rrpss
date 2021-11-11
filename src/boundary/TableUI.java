@@ -1,5 +1,6 @@
 package boundary;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import controller.*;
 public class TableUI {
@@ -47,8 +48,20 @@ public class TableUI {
                 "\n1. Display all tables"+
                 "\n2. Display unoccupied tables"+
                 "\n3. Display occupied tables");
-        int choice = in.nextInt();
-        in.nextLine();
+        int choice;        
+        while (true) {
+            try {      
+                System.out.println("Your choice: ");                      
+                choice = in.nextInt(); 
+                in.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                in.nextLine();
+                System.out.println("Invalid input");
+                return displayOptions();
+            }
+            break;
+        }
         return choice;
     }
 }

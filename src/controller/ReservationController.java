@@ -55,7 +55,7 @@ public class ReservationController extends AbstractController {
                 reservationList.removeAll(toRemove);
                 save(dir, reservationList);
             } catch (IOException e) {
-                System.out.println("shen me error? ");
+                System.out.println("What error?");
                 e.printStackTrace();
             }
         }
@@ -112,17 +112,17 @@ public class ReservationController extends AbstractController {
                 }
 
                 // display available table id and ask user to choose the id
-                System.out.println("Unreserved table: " + tableList.toString());
-                System.out.println("Enter the table id to reserve the table");
+                System.out.println("Unreserved table(s): " + tableList.toString());
+                System.out.println("Enter the table id to reserve the table:");
                 int tableId = in.nextInt();
                 do {
                     try {
                         if (!tableList.contains(tableId)) {
-                            throw new Exception("Invalid table number!");
+                            throw new Exception("Invalid table number");
                         }
                     } 	catch (Exception e) {
                         System.out.println(e.getMessage());
-                        System.out.println("Enter the table id to reserve the table");
+                        System.out.println("Enter the table id to reserve the table:");
                         tableId = in.nextInt();
                         continue;
                     }
@@ -150,7 +150,7 @@ public class ReservationController extends AbstractController {
             ArrayList<Reservation> foundList = new ArrayList<>();
             try {
                 if (contact.length() != 8)
-                    throw new Exception("Invalid contact number!");
+                    throw new Exception("Invalid contact number");
                 for (Reservation r : reservationList) {
                     if (r.getContact().contains(contact)){
                         foundList.add(r);
@@ -171,26 +171,38 @@ public class ReservationController extends AbstractController {
         clearReservation();
         try {
             if (contact.length() != 8)
-                throw new Exception("Invalid contact number!");
+                throw new Exception("Invalid contact number");
 
             //boolean found = checkReservation(contact);
             ArrayList<Reservation> foundList = getReservationByContact(contact);
-            if (foundList != null) {
+            if (foundList.size() != 0) {
                 for(Reservation res: foundList){
                     System.out.println(res.toString());
                 }
 
                 System.out.println("Enter reservation no. to delete: ");
-                int Id = in.nextInt();
+                int Id;
+                while (true) {
+                    try {                            
+                        Id = in.nextInt(); 
+                        in.nextLine();   
+                                
+                    } catch (InputMismatchException e) {
+                        in.nextLine();
+                        System.out.println("Invalid input");
+                        System.out.println("Enter reservation no. to delete: ");
+                        continue;
+                    }
+                    break;
+                }
                 Reservation res = getReservationById(Id);
                 if(foundList.contains(res)){
                     System.out.println("Do you wish to remove this reservation? Y/N");
                     if (in.nextLine().charAt(0) == 'Y')  removeReservationById(Id);
                 }
-                else System.out.println("the reservation is not found");
             }
-            else System.out.println("there are no reservation found for this contact");
-
+            else System.out.println("There are no reservations found for this contact");
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -201,15 +213,15 @@ public class ReservationController extends AbstractController {
         try{
             Reservation res = getReservationById(id);
             if(res == null){
-                System.out.println("remove unsuccessfully");
+                System.out.println("Reservation not found");
                 return false;
             }
             reservationList.remove(res);
             save(dir,reservationList);
-            System.out.println("Reservation removed!");
+            System.out.println("Reservation removed");
             return true;
         } catch (IOException e) {
-            System.out.println("save reservation unsuccessfull");
+            System.out.println("Error: Reservation not saved");
             e.printStackTrace();
             return true;
         }
