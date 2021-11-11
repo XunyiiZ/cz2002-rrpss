@@ -9,6 +9,7 @@ import controller.*;
 import Entity.AlaCarte.Category;
 import Entity.*;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MenuUI {
@@ -54,8 +55,20 @@ public class MenuUI {
         System.out.println("3. Add Set to Menu");
         System.out.println("4. Update a menu item");
         System.out.println("5. Remove a menu item");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        int choice;        
+        while (true) {
+            try {      
+                System.out.println("Your choice: ");                      
+                choice = sc.nextInt(); 
+                sc.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("Invalid input");
+                return displayOptions();
+            }
+            break;
+        }
         return choice;
     }
 

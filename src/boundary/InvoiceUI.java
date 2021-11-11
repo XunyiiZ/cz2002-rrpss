@@ -4,6 +4,7 @@ import controller.*;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.LocalDate;
 
@@ -24,14 +25,15 @@ public class InvoiceUI {
     public void run(){
 
 
-        System.out.println("--------Invoice and Report Panel--------");
+        /* System.out.println("--------Invoice and Report Panel--------");
         System.out.println("0. Go back to MainUI" +
                 "\n1. printInvoice"+
                 "\n2. print daily revenue report"+
                 "\n3. print monthly revenue report"+
                 "\n4. back to main panel");
 
-        int choice = in.nextInt();
+        int choice = in.nextInt(); */
+        int choice = displayOptions();
         while(choice != 0) {
             switch (choice) {
                 case 1:
@@ -49,18 +51,53 @@ public class InvoiceUI {
                 default:
                     System.out.println("Invalid input");
             }
-            System.out.println("Enter option:");
-            choice = in.nextInt();
+            choice = displayOptions();
         }
+    }
+
+    private int displayOptions() {
+        System.out.println("--------Invoice and Report Panel--------");
+        System.out.println("0. Go back to MainUI" +
+                "\n1. Print Invoice"+
+                "\n2. Print daily revenue report"+
+                "\n3. Print monthly revenue report");
+        int choice;        
+        while (true) {
+            try {      
+                System.out.println("Your choice: ");                      
+                choice = in.nextInt(); 
+                in.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                in.nextLine();
+                System.out.println("Invalid input");
+                return displayOptions();
+            }
+            break;
+        }
+        return choice;
     }
 
     private void createInvoice(){
         int orderId;
-        System.out.print("enter order ID:");                                // handle invalid input  1. in the orderList
+        /* System.out.print("Enter order ID:");                                // handle invalid input  1. in the orderList
         //                                                                                            2. not been checked out
-        orderId = in.nextInt();
+        orderId = in.nextInt();  */      
+        while (true) {
+            try {      
+                System.out.print("Enter order ID:");                      
+                orderId = in.nextInt(); 
+                in.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                in.nextLine();
+                System.out.println("Invalid input");
+                continue;
+            }
+            break;
+        }
 
-        System.out.println("enter phoneNumber to check membership");
+        System.out.println("Enter phoneNumber to check membership");
 
         String number = in.next();
         invoiceController.printInvoice(orderId, number);

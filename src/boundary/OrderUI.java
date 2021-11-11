@@ -89,18 +89,18 @@ public class OrderUI {
 
     private static int choose(){
         System.out.println("--------Order System--------");
+        System.out.println("0. Go back to MainUI");
         System.out.println("1. Create Order");
         System.out.println("2. View Order Items");
         System.out.println("3. Add Order Item to Order");
         System.out.println("4. Remove Order Item from Order");
         System.out.println("5. Display all orders");
-        System.out.println("6. Exit");
 
         try{
-            System.out.println("Enter the option: ");
+            System.out.println("Your choice: ");
             return sc.nextInt();
         } catch(InputMismatchException e) {
-            System.out.println("Input mismatch.");
+            System.out.println("Invalid input");
             sc.nextLine();
             return choose();
         }

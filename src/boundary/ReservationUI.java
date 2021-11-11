@@ -10,6 +10,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import java.time.LocalDateTime;
@@ -67,11 +68,28 @@ public class ReservationUI {
                     }while(!validDateFormat);
 
                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime appointmentTime = LocalTime.parse(timeStr,timeFormatter);
-
-                    System.out.println("Please enter the number of person(s): ");
-                    numberOfPax = in.nextInt();
-                    in.nextLine();
+                    LocalTime appointmentTime = LocalTime.parse(timeStr,timeFormatter);                    
+                
+                    while (true) {
+                        try {         
+                            System.out.println("Please enter the number of person(s): ");                   
+                            numberOfPax = in.nextInt();  
+                            in.nextLine();    
+                            if (numberOfPax > 10) {
+                                throw new Exception("Maximum pax is 10!");
+                            }                 
+                        } catch (java.util.InputMismatchException e) {
+                            in.nextLine();
+                            System.out.println("Invalid input!");
+                            continue;
+                        } catch(Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;                                                 
+                     
+                    }                          
+                                       
 
                     System.out.println("Please enter your name: ");
                     name = in.nextLine();
@@ -97,8 +115,21 @@ public class ReservationUI {
                 case 2:
                     System.out.println("Please enter your contact: ");
                     contact = in.nextLine();
+                    while (true)
+                    {
+                        try {
+                            if (contact.length() != 8)
+                                throw new Exception("Invalid contact number!");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            System.out.println("Please enter your contact: ");
+                            contact = in.nextLine();
+                            continue;
+                        }
+                        break;
+                    }
                     ArrayList<Reservation> resList = reservationController.getReservationByContact(contact);
-                    if(resList == null) System.out.println("no reservation found");
+                    if(resList.size() == 0) System.out.println("No reservation found");
                     else{
                         for(Reservation res : resList){
                             System.out.println(res.toString());
@@ -108,6 +139,19 @@ public class ReservationUI {
                 case 3:
                     System.out.println("Please enter your contact: ");
                     contact = in.nextLine();
+                    while (true)
+                    {
+                        try {
+                            if (contact.length() != 8)
+                                throw new Exception("Invalid contact number!");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            System.out.println("Please enter your contact: ");
+                            contact = in.nextLine();
+                            continue;
+                        }
+                        break;
+                    }
                     reservationController.removeReservationByContact(contact);
 
                     break;
@@ -133,13 +177,14 @@ public class ReservationUI {
 
             return true;
         } catch (ParseException ex) {
+            System.out.println("Incorrect date format!");
             return false;
         }
     }
     /** assume that can only make reservation at least one day in advance */
     private boolean isValidDate(LocalDate appointmentDate){
         if(appointmentDate.isAfter(LocalDate.now())) return true;
-        System.out.println("Reservations must be made 1 day in advanced");
+        System.out.println("Reservations must be made at least 1 day in advance");
         return false;
     }
 
@@ -153,9 +198,20 @@ public class ReservationUI {
         System.out.println("2. Check reservation");
         System.out.println("3. Remove reservation");
         System.out.println("4. Display all reservations");
-        System.out.println("Your choice: ");
-        int choice = in.nextInt();
-        in.nextLine();
+        int choice;        
+        while (true) {
+            try {      
+                System.out.println("Your choice: ");                      
+                choice = in.nextInt(); 
+                in.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                in.nextLine();
+                System.out.println("Invalid input");
+                return displayOptions();
+            }
+            break;
+        }
         return choice;
     }
 }

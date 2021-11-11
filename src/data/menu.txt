@@ -1,0 +1,12 @@
+1|Steak|juicy, tender, loaded with flavor|24.9|
+2|Fries|crunchy exterior with a light, fluffy interior|4.9|
+3|Coca-cola|carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings|1.5|
+4|London-Famous Ribeye|A scrumptious ribeye steak, served along with a side of fries and a bottle of coke|29.734999999999996|
+5|Aglio Olio|traditional pasta recipe made by sautéing sliced garlic in olive oil|14.9|
+6|Onion Rings| deep fried onion dipped in batter and bread crumbs|4.9|
+7|Lemonade|homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.|3.0|
+8|Chef's Recommended Italian Aglio Olio|A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade|21.66|
+9|Chicken-chop|piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried|19.9|
+10|Mash potato|Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency|5.9|
+11|Green Tea|fresh, lively and nourishing homed-brewed tea|3.5|
+12|Chicken Supremo|A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea|27.834999999999997|

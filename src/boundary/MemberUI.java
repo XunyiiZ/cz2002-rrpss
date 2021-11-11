@@ -2,6 +2,7 @@ package boundary;
 import controller.*;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MemberUI {
@@ -19,22 +20,47 @@ public class MemberUI {
     }
 
     public void run() {
+        String name;
+        String contact;
+
         int choice = displayOptions();
         while (choice != 0) {
             switch (choice) {
                 case 1:
                     System.out.println("Enter member name: ");
-                    String n = sc.nextLine();
-                    System.out.println("Enter member contact no.: ");
-                    String c = sc.nextLine();
-                    memberController.createMember(n, c);
+                    name = sc.nextLine();
+                    while (true)
+                    {
+                        try {
+                            System.out.println("Enter member contact no.: ");
+                            contact = sc.nextLine();
+                            if (contact.length() != 8)
+                                throw new Exception("Invalid contact number!");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    }
+                    memberController.createMember(name, contact);
 
                     break;
 
                 case 2:
-                    System.out.println("Enter member's contact no.: ");
-                    String n2 = sc.nextLine();
-                    if (memberController.checkIsMember(n2)) {
+                    while (true)
+                    {
+                        try {
+                            System.out.println("Enter member contact no.: ");
+                            contact = sc.nextLine();
+                            if (contact.length() != 8)
+                                throw new Exception("Invalid contact number!");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    }
+                    if (memberController.checkIsMember(contact)) {
                         System.out.println("Customer is a member");
                     }
                     else {
@@ -44,9 +70,20 @@ public class MemberUI {
                     break;
 
                 case 3:
-                    System.out.println("Enter member's contact no.: ");
-                    String n3 = sc.nextLine();
-                    memberController.removeMember(n3);
+                    while (true)
+                    {
+                        try {
+                            System.out.println("Enter member contact no.: ");
+                            contact = sc.nextLine();
+                            if (contact.length() != 8)
+                                throw new Exception("Invalid contact number!");
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    }
+                    memberController.removeMember(contact);
 
                     break;
 
@@ -73,8 +110,20 @@ public class MemberUI {
         System.out.println("2. Check for membership");
         System.out.println("3. Remove member");
         System.out.println("4. Get member list");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        int choice;        
+        while (true) {
+            try {      
+                System.out.println("Your choice: ");                      
+                choice = sc.nextInt(); 
+                sc.nextLine();   
+                        
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("Invalid input");
+                return displayOptions();
+            }
+            break;
+        }
         return choice;
     }
 
