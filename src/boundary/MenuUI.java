@@ -27,7 +27,7 @@ public class MenuUI {
         return menuUI;
     }
 
-    public void run(){
+    public void run() {
         
         int choice = displayOptions();
         while(choice!=0) {
@@ -124,7 +124,7 @@ public class MenuUI {
         menuController.manageSet(setItem);        
     }    
 
-    private void updateMenuItem() {
+    private void updateMenuItem(){
         menuController.displayMenu();        
         int idx;        
         while (true) {

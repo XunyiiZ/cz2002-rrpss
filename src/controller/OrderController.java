@@ -61,16 +61,25 @@ public class OrderController extends AbstractController {
         //1. Reservation
         System.out.println("Enter Staff ID: ");
         staffID = sc.nextInt();
-        sc.next();
+        sc.nextLine();
         System.out.println("check in for a reservation? Y/N");
-        sc.next();
         char response = sc.nextLine().charAt(0);
+        response = Character.toUpperCase(response);
+
+        while(response != 'Y' && response !='N'){
+            System.out.println("invalid input. please enter Y or N:");
+            response = sc.nextLine().charAt(0);
+            response = Character.toUpperCase(response);
+        }
+ //       System.out.println("having input " + response);
 
         if (response == 'Y') {
+            System.out.println("check reservation");
             int count = 2; //check for correct reservation id, check 2x if invalid then break
             while (count < 0) {
                 System.out.println("Enter reservation ID: ");
                 resID = sc.nextInt();
+                sc.nextLine();
                 Reservation reservation = resController.getReservationById(resID); //Reservation reservation = getReservationById(resID); --> if null, then ask again for reservation id, if null 2x then break out loop
                 if (reservation == null) {
                     System.out.println("Reservation not found. Please try again.");
@@ -81,13 +90,18 @@ public class OrderController extends AbstractController {
                 }
                 count--;
             }
-            if (count < 0) response = 'N';
+            if (count < 0){
+                System.out.println("Creating an order without a reservation");
+                response = 'N';
+            }
         }
 
         if (response == 'N') {
+ //           System.out.println("no reservation ");
             //call tablecontroller and show unoccupied unreserved tables
             System.out.println("Enter no. of pax: ");
             numOfPax = sc.nextInt();
+            sc.nextLine();
             int tablePax = tableController.getTablePax(numOfPax);
             ArrayList<Integer> availableTables = getAvailableTable(tablePax);
             if (availableTables.size() == 0) {
@@ -95,24 +109,24 @@ public class OrderController extends AbstractController {
             } else {
                 System.out.println("Available table:" + availableTables.toString());
             }
+
             System.out.println("Assign the Table id:");
-            int tableId = sc.nextInt();
+            tabID = sc.nextInt();
+            sc.nextLine();
             do {
                 try {
-                    if (!availableTables.contains(tableId)) {
+                    if (!availableTables.contains(tabID)) {
                         throw new Exception("Invalid table number!");
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     System.out.println("Enter the table id to reserve the table");
-                    tableId = sc.nextInt();
+                    tabID = sc.nextInt();
                     continue;
                 }
                 break;
             } while (true);
 
-        } else {
-            System.out.println("Invalid input!");
         }
 
 
@@ -121,19 +135,20 @@ public class OrderController extends AbstractController {
 
         Order order = new Order(staffID, orderID, tabID, numOfPax);
         orders.add(order);
+        System.out.println("the table id is " + tabID);
         tableController.setOccupied(tabID);
 
         //while loop
         System.out.println("1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
-        int choice = sc.nextInt();
+        int choice = sc.nextInt(); sc.nextLine();
         while (true) {
             if (choice > 4 || choice < 1)
-                System.out.println("invalid input! \n1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
+            {System.out.println("invalid input! \n1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
+                choice = sc.nextInt(); sc.nextLine();}
             else {
                 switch (choice) {
                     case 1:
                         addItemToOrder(order);
-                        System.out.println("Added successfully");
                         break;
                     case 2:
                         removeItemFromOrder(order);
@@ -143,10 +158,13 @@ public class OrderController extends AbstractController {
                         order.displayAllItems();
                         break;
                     case 4:
+                        save(dir,orders);
                         break;
                 }
             }
             if (choice == 4) break;
+            System.out.println("1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
+            choice = sc.nextInt(); sc.nextLine();
         }
 
         //no option to remove order item while creating order
@@ -181,17 +199,16 @@ public class OrderController extends AbstractController {
     public void addItemToOrder(Order order) throws IOException {
         menuController.displayMenu();  // need to display the index
         System.out.println("Which menu item would you like to add?");
-        int itemIdx = sc.nextInt();
-        if (itemIdx < 0 || itemIdx >= menuController.getSizeOfMenu()) {
+        int itemId = sc.nextInt();
+        sc.nextLine();
+        if (menuController.isValidMenuItemId(itemId)) {
             System.out.println("Invalid input, add item unsuccessfully");
             return;
         } else {
-            MenuItem item = menuController.getItemById(itemIdx);
-            int itemId = item.getMenuItemId();
+            MenuItem item = menuController.getItemById(itemId);
             System.out.println("Enter quantity:");
             int quantity = sc.nextInt();
             order.addOrderItem(itemId, quantity, item.getName());
-            save(dir,orders);
             System.out.println("Item added successfully");
         }
     }

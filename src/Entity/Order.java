@@ -11,7 +11,7 @@ public class Order {
     private static int staffID;
     private static int tableId;
     private static int pax;
-    private static ArrayList <OrderItem> orderItems;
+    private static ArrayList <OrderItem> orderItems = new ArrayList<>();
 //    private static int orderSize;
 
     static Scanner sc = new Scanner(System.in);
@@ -66,7 +66,7 @@ public class Order {
 //    }
 
     public static void addOrderItem(int menuItemId, int quantity, String name){ //quantity
-        if (orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
+        if (orderItems != null && orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
         else{
             OrderItem item = new OrderItem(menuItemId,quantity,name); //which to input?
             orderItems.add(item);

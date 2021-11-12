@@ -13,7 +13,7 @@ import java.util.*;
  * @Xunyi
  * @09-11-2021
  * MenuController manages the menu implementing the fileIO handling
- *
+
  * */
 
 public class MenuController extends AbstractController {
@@ -31,6 +31,8 @@ public class MenuController extends AbstractController {
         }
         return menuController;
     }
+
+
 
     public MenuController() throws IOException {
         /** using text method */
@@ -310,7 +312,7 @@ public class MenuController extends AbstractController {
         return;
     }
 
-    public void updateAlaCarte(MenuItem aCarte) {
+    public void updateAlaCarte(MenuItem aCarte){
         int choice;
         do{
             System.out.println("============== Update this ala carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
@@ -538,6 +540,13 @@ public class MenuController extends AbstractController {
 
     public ArrayList<MenuItem> getMenuList() {
         return menuList;
+    }
+
+    public boolean isValidMenuItemId(int id){
+        for(MenuItem item : menuList){
+            if(item.getMenuItemId() == id) return true;
+        }
+        return false;
     }
 
 }

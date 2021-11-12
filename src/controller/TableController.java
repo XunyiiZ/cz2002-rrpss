@@ -17,30 +17,30 @@ public class TableController {
 
         listOfTables = new Table[SIZE];
         int i = 0;
-        listOfTables[i++] = new Table(i, 2);
-        listOfTables[i++] = new Table(i, 2);
-        listOfTables[i++] = new Table(i, 2);
-        listOfTables[i++] = new Table(i, 2);
+        listOfTables[i] = new Table(++i, 2);
+        listOfTables[i] = new Table(++i, 2);
+        listOfTables[i] = new Table(++i, 2);
+        listOfTables[i] = new Table(++i, 2);
 
-        listOfTables[i++] = new Table(i, 4);
-        listOfTables[i++] = new Table(i, 4);
-        listOfTables[i++] = new Table(i, 4);
-        listOfTables[i++] = new Table(i, 4);
+        listOfTables[i] = new Table(++i, 4);
+        listOfTables[i] = new Table(++i, 4);
+        listOfTables[i] = new Table(++i, 4);
+        listOfTables[i] = new Table(++i, 4);
 
-        listOfTables[i++] = new Table(i, 6);
-        listOfTables[i++] = new Table(i, 6);
-        listOfTables[i++] = new Table(i, 6);
-        listOfTables[i++] = new Table(i, 6);
+        listOfTables[i] = new Table(++i, 6);
+        listOfTables[i] = new Table(++i, 6);
+        listOfTables[i] = new Table(++i, 6);
+        listOfTables[i] = new Table(++i, 6);
 
-        listOfTables[i++] = new Table(i, 8);
-        listOfTables[i++] = new Table(i, 8);
-        listOfTables[i++] = new Table(i, 8);
-        listOfTables[i++] = new Table(i, 8);
+        listOfTables[i] = new Table(++i, 8);
+        listOfTables[i] = new Table(++i, 8);
+        listOfTables[i] = new Table(++i, 8);
+        listOfTables[i] = new Table(++i, 8);
 
-        listOfTables[i++] = new Table(i, 10);
-        listOfTables[i++] = new Table(i, 10);
-        listOfTables[i++] = new Table(i, 10);
-        listOfTables[i++] = new Table(i, 10);
+        listOfTables[i] = new Table(++i, 10);
+        listOfTables[i] = new Table(++i, 10);
+        listOfTables[i] = new Table(++i, 10);
+        listOfTables[i] = new Table(++i, 10);
 
     }
 
