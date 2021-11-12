@@ -33,7 +33,7 @@ public class Set extends MenuItem{
     //     itemList.remove(item);
     // }
 
-    private double setSetPrice(){
+    public double setSetPrice(){
         double total = 0.0;
         for(AlaCarte alaCarte :itemList){
             total += alaCarte.getPrice();
@@ -53,6 +53,7 @@ public class Set extends MenuItem{
             while(true){
                 try{
                     itemList.remove(itemIndex);
+                    super.setPrice(setSetPrice());
                     return;
                 }catch(IndexOutOfBoundsException e){
                     System.out.println("Invalid ID please input again!");

@@ -359,6 +359,11 @@ public class MenuController extends AbstractController {
                     } 
                     System.out.println("Updated ala carte: ");
                     System.out.println(aCarte.toString());
+                    for (MenuItem m: menuList) {
+                        if (m instanceof Set) {
+                            m.setPrice(((Set) m).setSetPrice());                           
+                        }
+                    }
                     break;
                 case 4:
                     System.out.println(aCarte.toString());
