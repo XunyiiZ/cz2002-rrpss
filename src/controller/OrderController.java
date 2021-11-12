@@ -65,6 +65,7 @@ public class OrderController extends AbstractController {
         staffID = sc.nextInt();
 
         System.out.println("check in for a reservation? Y/N");
+        sc.next();
         char response = sc.nextLine().charAt(0);
 
         if (response == 'Y') {

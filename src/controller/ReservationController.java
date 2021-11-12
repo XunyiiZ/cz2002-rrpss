@@ -48,7 +48,7 @@ public class ReservationController extends AbstractController {
 
                 for (Reservation reservation : reservationList) {
                     LocalTime expireTime = reservation.getAppointmentTime().plusMinutes(EXPIRE_PERIOD);
-                    if (reservation.getAppointmentDate().equals(today) && curTime.isAfter(expireTime)) {
+                    if (reservation.getAppointmentDate().isBefore(today) ||( reservation.getAppointmentDate().equals(today) && curTime.isAfter(expireTime))) {
                         toRemove.add(reservation);
                     }
                 }
