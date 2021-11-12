@@ -28,10 +28,9 @@ public class ReservationController extends AbstractController {
     public ReservationController() throws IOException {
         File file = new File(dir);
         if (file.exists()) {
-            System.out.println("file exist");
             reservationList = load(dir);
         } else {
-            System.out.println("not exist");
+
             file.getParentFile().mkdir();
             file.createNewFile();
             reservationList = new ArrayList<Reservation>();
@@ -39,8 +38,8 @@ public class ReservationController extends AbstractController {
         }
     }
 
-        private void clearReservation() {
-            try {
+        private void clearReservation() throws IOException {
+        //try {
                 LocalDate today = LocalDate.now();
                 LocalTime curTime = LocalTime.now();
 
@@ -54,23 +53,22 @@ public class ReservationController extends AbstractController {
                 }
                 reservationList.removeAll(toRemove);
                 save(dir, reservationList);
-            } catch (IOException e) {
-                System.out.println("What error?");
-                e.printStackTrace();
-            }
+//            } catch (IOException e) {
+//                System.out.println("What error?");
+//                e.printStackTrace();
+//            }
         }
 
 
         // display all the attributes of reservation class corresponding to its reservation id
-        public void displayAllReservations()
-        {
+        public void displayAllReservations() throws IOException {
             clearReservation();
             for (Reservation r: reservationList) {
                 System.out.println(r.toString());
             }
         }
 
-        public Reservation getReservationById(int reservationId) {
+        public Reservation getReservationById(int reservationId) throws IOException {
         clearReservation();
         for (Reservation res : reservationList){
             if( res.getReservationId() == reservationId)
@@ -144,7 +142,7 @@ public class ReservationController extends AbstractController {
 
         // check reservation method: clearReservation method + search by contact no.
         // return the reservation by contact
-        public ArrayList<Reservation> getReservationByContact(String contact) {
+        public ArrayList<Reservation> getReservationByContact(String contact) throws IOException {
             clearReservation();
  //         boolean found = false;
             ArrayList<Reservation> foundList = new ArrayList<>();
@@ -167,7 +165,7 @@ public class ReservationController extends AbstractController {
 
     // method to remove expired Reservations: clearReservation method + loop through all reservations and return index of reservation(s)
 
-    public void removeReservationByContact(String contact) {
+    public void removeReservationByContact(String contact) throws IOException {
         clearReservation();
         try {
             if (contact.length() != 8)
@@ -263,7 +261,7 @@ public class ReservationController extends AbstractController {
          * save method will be different with different controller
          */
 
-        public static void save(String filename, List al) throws IOException {
+        public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {

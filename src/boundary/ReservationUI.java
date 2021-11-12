@@ -34,8 +34,7 @@ public class ReservationUI {
         return reservationUI;
     }
 
-    public void run()
-    {
+    public void run() throws IOException {
         String dateStr;
         String timeStr;
         String name;
@@ -75,7 +74,7 @@ public class ReservationUI {
                             System.out.println("Please enter the number of person(s): ");                   
                             numberOfPax = in.nextInt();  
                             in.nextLine();    
-                            if (numberOfPax > 10) {
+                            if (numberOfPax > 10 || numberOfPax <=0) {
                                 throw new Exception("Maximum pax is 10!");
                             }                 
                         } catch (java.util.InputMismatchException e) {
@@ -174,7 +173,6 @@ public class ReservationUI {
             DateFormat dateFormat = new SimpleDateFormat(FORMAT);
             dateFormat.setLenient(false);
             dateFormat.parse(dateTime);
-
             return true;
         } catch (ParseException ex) {
             System.out.println("Incorrect date format!");
@@ -183,10 +181,12 @@ public class ReservationUI {
     }
     /** assume that can only make reservation at least one day in advance */
     private boolean isValidDate(LocalDate appointmentDate){
-        if(appointmentDate.isAfter(LocalDate.now())) return true;
-        System.out.println("Reservations must be made at least 1 day in advance");
-        return false;
+        if(appointmentDate.isAfter(LocalDate.now())) {
+            return true;}
+            System.out.println("Reservations must be made at least 1 day in advance");
+            return false;
     }
+
 
 
 

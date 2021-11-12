@@ -39,6 +39,5 @@ public abstract class AbstractController{
 
     public abstract ArrayList load(String filename) throws IOException;
 
-    public static void save(String filename, List al) throws IOException {
-    }
+    public abstract void save(String filename, List al) throws IOException ;
 }

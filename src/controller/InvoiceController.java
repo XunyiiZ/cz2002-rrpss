@@ -56,10 +56,8 @@ public class InvoiceController extends AbstractController{
         /** using text method */
         File file = new File(dir);
         if (file.exists()) {
-            System.out.println("file exist");
             invoiceList = load(dir);
         } else {
-            System.out.println("not exist");
             file.getParentFile().mkdir();
             file.createNewFile();
             invoiceList = new ArrayList<Invoice>();
@@ -70,48 +68,18 @@ public class InvoiceController extends AbstractController{
 //      memberController = MemberController.getInstance();
     }
 
-    public void printDailyReport(String date) {
-        try {
+    public void printDailyReport(LocalDate reportDate) {
 
-            ZoneId defaultZoneId = ZoneId.systemDefault();
-
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf.applyPattern("dd/MM/yyyy");
-            sdf.setLenient(false);
-            Date reportDate = sdf.parse(date);
-            LocalDate currentDate = LocalDate.now();
-
-            Instant curDate = ZonedDateTime.now().toInstant();
-            Instant reportInstant = reportDate.toInstant();
-
-            if (reportInstant.isAfter(curDate)) {
-                System.out.println("Invalid date!");
-                System.out.println("Failed to check, please try again...");
-                return;
-            }
-
-            double overallRevenue = 0.0;
-
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        double overallRevenue = 0.0;
             for (Invoice i : invoiceList) {
-
                 Date invoiceDate = Date.from(i.getDate().atStartOfDay(defaultZoneId).toInstant());
                 if (invoiceDate.equals(reportDate)) {
                     System.out.println(i);
                     overallRevenue += i.getTotal();
                 }
             }
-
-            System.out.println(currentDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue));
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            System.out.print("\nInvalid date input! ");
-            System.out.println("NOTE: Date entered should"
-                    + " be in dd/mm/yyyy, e.g. 01/12/2021");
-            return;
-
-        }
+            System.out.println(reportDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue));
     }
 
     public void printMonthlyReport(String dateStr) {
@@ -147,7 +115,7 @@ public class InvoiceController extends AbstractController{
 
         // need to implement with max and min revenue of the month
 
-        int minDay = -1, maxDay = -1;
+        int minDay = 1, maxDay = 1;
         double minRev = 999999;
         double maxRev = 0;
 
@@ -191,25 +159,20 @@ public class InvoiceController extends AbstractController{
 //            String name = memberController.getMember(number).getName();
 
             if (memberController.checkIsMember(number)) {
-//                System.out.println(name + " (" + number + ") is a member");
-                afterDiscount = subtotal * memberController.getDiscountRate(); //discount rate should belong to?
+                System.out.println(" (" + number + ") is a member");
+                System.out.println("member discount rate is "+memberController.getDiscountRate());
+                afterDiscount = subtotal * memberController.getDiscountRate();
             } else; //System.out.println(name + " (" + number + ") is not a member");
 
             GST = subtotal * GST_RATE;
             serviceCharge = subtotal * SERVICE_RATE;
             total = subtotal + GST + serviceCharge;
 
-            /** test code */
-//        double subtotal = 10.0;
-//        double GST = subtotal * GST_RATE;
-//        double serviceCharge = subtotal * SERVICE_RATE;
-//        total = subtotal + GST + serviceCharge;
             Invoice invoice = new Invoice(invoiceId, id, date, time, order, subtotal, afterDiscount, serviceCharge, GST, total);
             invoiceList.add(invoice);
             save(dir, invoiceList);
 
-            /** set table unoccupied */
-
+            tableController.setUnoccupied(order.getTableId());
             return invoice;
 
         } catch (IOException e) {
@@ -220,11 +183,6 @@ public class InvoiceController extends AbstractController{
 
     }
 
-    private void unAssignTable(int orderId){
-        Order order = orderController.getOrderByID(orderId);
-        int tableId = order.getTableId();
-        tableController.setUnoccupied(tableId);   // print unAssign message
-    }
 
     public void printAll() {
         for (Invoice i : invoiceList) {
@@ -271,7 +229,7 @@ public class InvoiceController extends AbstractController{
      * save method will be different with different controlelr
      */
 
-    public static void save(String filename, List al) throws IOException {
+    public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {

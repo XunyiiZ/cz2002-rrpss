@@ -35,10 +35,8 @@ public class MenuController extends AbstractController {
         /** using text method */
         File file = new File(dir);
         if (file.exists()) {
-            System.out.println("file exist");
             menuList = load(dir);
         } else {
-            System.out.println("not exist");
             file.getParentFile().mkdir();
             file.createNewFile();
             menuList = new ArrayList<MenuItem>();
@@ -152,7 +150,7 @@ public class MenuController extends AbstractController {
         return menuList.get(index);
     }
 
-    public static void save(String filename, List al) throws IOException {
+    public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {

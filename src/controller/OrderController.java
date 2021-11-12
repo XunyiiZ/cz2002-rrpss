@@ -29,10 +29,8 @@ public class OrderController extends AbstractController {
         /** using text method */
         File file = new File(dir);
         if (file.exists()) {
-            System.out.println("file exist");
             orders = load(dir);
         } else {
-            System.out.println("creating a new file");
             file.getParentFile().mkdir();
             file.createNewFile();
             orders = new ArrayList<Order>();
@@ -63,7 +61,7 @@ public class OrderController extends AbstractController {
         //1. Reservation
         System.out.println("Enter Staff ID: ");
         staffID = sc.nextInt();
-
+        sc.next();
         System.out.println("check in for a reservation? Y/N");
         sc.next();
         char response = sc.nextLine().charAt(0);
@@ -249,7 +247,7 @@ public class OrderController extends AbstractController {
     // text file for orders:
     //  orderId|staffId|tableId|numOfPax|orderSize|menuItemId|name|quantity|menuItemId|name|quantity|....
 
-    public static void save(String filename, List al) throws IOException {
+    public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {

@@ -25,7 +25,6 @@ public class MemberController extends AbstractController{
         if (file.exists()) {
             members = load(dir);
         } else {
-            System.out.println("not exist");
             file.getParentFile().mkdir();
             file.createNewFile();
             members = new ArrayList<Member>();
@@ -41,7 +40,10 @@ public class MemberController extends AbstractController{
         try {
             if (contact.length() != 8)
                 throw new Exception("Invalid contact number!");
-
+            if(checkIsMember(contact)){
+                System.out.println("the memmber already existed");
+                return;
+            }
             Member m = new Member(name, contact);
             members.add(m);
             save(dir,members);
@@ -127,7 +129,7 @@ public class MemberController extends AbstractController{
      * save method will be different with different controlelr
      */
 
-    public static void save(String filename, List al) throws IOException {
+    public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {
