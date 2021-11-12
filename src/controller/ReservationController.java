@@ -103,7 +103,7 @@ public class ReservationController extends AbstractController {
                 // check time to remove the reserved table from table list
                 for(Reservation reservation : getConflictReservation(date,time,tablePax)){
                     if(tableList.contains(reservation.getTableId())) {
-     //                   System.out.println(reservation.getTableId());
+                        //System.out.println(reservation.getTableId());
                         int idx = tableList.indexOf(reservation.getTableId());
                         tableList.remove(idx);
                     }
@@ -111,7 +111,7 @@ public class ReservationController extends AbstractController {
 
                 // display available table id and ask user to choose the id
                 if(tableList.size()==0){
-                    System.out.println("the reservation is full");
+                    System.out.println("The reservation list is full. Unable to reserve any tables for this slot");
                     return;
                 }
 
@@ -137,8 +137,8 @@ public class ReservationController extends AbstractController {
                 // create the reservation
                 Reservation reservation = new Reservation(reservationId, name, contact, numberOfPax, tableId, date, time);
                 reservationList.add(reservation);
-                System.out.println("the reservation is create!");
-                System.out.println("here is the details for the reservation:");
+                System.out.println("The reservation is created!");
+                System.out.println("Here is the details for the reservation:");
                 System.out.println(reservation.toString());
                 save(dir,reservationList);
             }catch (IOException e) {
@@ -204,7 +204,7 @@ public class ReservationController extends AbstractController {
                 Reservation res = getReservationById(Id);
                 if(foundList.contains(res)){
                     System.out.println("Do you wish to remove this reservation? Y/N");
-                    if (in.nextLine().charAt(0) == 'Y')  removeReservationById(Id);
+                    if (in.nextLine().toUpperCase().charAt(0) == 'Y')  removeReservationById(Id);
                 }
             }
             else System.out.println("There are no reservations found for this contact");
