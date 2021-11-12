@@ -63,10 +63,10 @@ public class Set extends MenuItem{
     }
 
     public void displayItemsInSet(){
-        int count = 0;
+        int count = 1;
         for (MenuItem item: itemList){
             System.out.println("============== AlaCarte Item " + count++ + " ==============");
-            item.toString();
+            System.out.println(item.toString());
         }
     }
 
