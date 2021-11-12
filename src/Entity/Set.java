@@ -33,7 +33,7 @@ public class Set extends MenuItem{
     //     itemList.remove(item);
     // }
 
-    private double setSetPrice(){
+    public double setSetPrice(){
         double total = 0.0;
         for(AlaCarte alaCarte :itemList){
             total += alaCarte.getPrice();
@@ -53,6 +53,7 @@ public class Set extends MenuItem{
             while(true){
                 try{
                     itemList.remove(itemIndex);
+                    super.setPrice(setSetPrice());
                     return;
                 }catch(IndexOutOfBoundsException e){
                     System.out.println("Invalid ID please input again!");
@@ -63,10 +64,10 @@ public class Set extends MenuItem{
     }
 
     public void displayItemsInSet(){
-        int count = 0;
+        int count = 1;
         for (MenuItem item: itemList){
             System.out.println("============== AlaCarte Item " + count++ + " ==============");
-            item.toString();
+            System.out.println(item.toString());
         }
     }
 

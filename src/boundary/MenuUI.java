@@ -41,6 +41,12 @@ public class MenuUI {
                 case 3:
                     this.addSet();
                     break;
+                case 4:
+                    updateMenuItem();
+                    break;
+                case 5:
+                    removeMenuItem();
+                    break;
                 default:
                     System.out.println("Invalid input");
                     break;
@@ -115,37 +121,119 @@ public class MenuUI {
         String description = sc.nextLine();
 
         Set setItem = menuController.addSet(name, description);
+        menuController.manageSet(setItem);        
+    }    
+
+    private void updateMenuItem() {
+        menuController.displayMenu();        
+        int idx;        
+        while (true) {
+            try {      
+                System.out.println("Enter Menu Item number to update:");                    
+                idx = sc.nextInt(); 
+                sc.nextLine();    
+                if (idx > menuController.getSizeOfMenu()) {
+                    throw new Exception("Invalid Menu Item number");
+                }                      
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("Invalid input");
+                continue;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+            break;
+        }
+        MenuItem mItem = menuController.getItemByIndex(idx-1);
+        if (mItem instanceof Set) {
+            menuController.updateSet(mItem);
+        }
+        else {
+            menuController.updateAlaCarte(mItem);
+        }
+    }
+
+    /* private void updateAlaCarte(MenuItem aCarte) {
         int choice;
         do{
-            System.out.println("============== Manage this set ==============\n1. Add item \n2. Remove item \n3. Display the items in the set \n4. Finish");
-            System.out.println("Enter option: ");
-            choice = sc.nextInt();
+            System.out.println("============== Update this ala carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
+            while (true) {
+                try {      
+                    System.out.println("Enter choice: ");                      
+                    choice = sc.nextInt(); 
+                    sc.nextLine();   
+                            
+                } catch (InputMismatchException e) {
+                    sc.nextLine();
+                    System.out.println("Invalid input");
+                    continue;
+                }
+                break;
+            }
             switch(choice){
                 case 1:
-                    //menuController.displayAlaCarte();
-                    menuController.displayMenu();
-                    System.out.println("Which AlaCarte item would you like to add? ");
-                    int idx = sc.nextInt() - 1;
-                    System.out.println("index is: " + idx);
-                    int aCarteId = menuController.getItemByIndex(idx).getMenuItemId();
-                    System.out.println("aCarteId is : " + aCarteId);
-                    setItem.addAlaCarte( (AlaCarte) menuController.getItemById(aCarteId));
+                    System.out.println("Enter new name: ");
+                    aCarte.setName(sc.nextLine());
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
                     break;
-                case 2:
-                    System.out.println("Enter id to remove:");
-                    int index = sc.nextInt();
-                    setItem.deleteFromSet(index);
+                case 2:          
+                    System.out.println("Enter new description: ");
+                    aCarte.setDescription(sc.nextLine());
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
                     break;
                 case 3:
-                    setItem.displayItemsInSet();
+                    while (true) {
+                        try {      
+                            System.out.println("Enter new price:");                    
+                            aCarte.setPrice(sc.nextDouble());
+                        } catch (InputMismatchException e) {
+                            sc.nextLine();
+                            System.out.println("Invalid input");
+                            continue;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    } 
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
                     break;
                 case 4:
-                    // display this set item
+                    System.out.println(aCarte.toString());
+                    break;
                 default:
-                    System.out.println("invalid input");
+                    System.out.println("Invalid input");
                     break;
             }
-        }while(choice != 4);
+        }while(choice != 5);        
+    } */
+
+    private void removeMenuItem() {
+        menuController.displayMenu();        
+        int idx;        
+        while (true) {
+            try {      
+                System.out.println("Enter Menu Item number to remove:");                    
+                idx = sc.nextInt(); 
+                sc.nextLine();    
+                if (idx > menuController.getSizeOfMenu()) {
+                    throw new Exception("Invalid Menu Item number");
+                }                      
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("Invalid input");
+                continue;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
+            break;
+        }
+        menuController.removeMenuItem(idx-1);
     }
 
 }
