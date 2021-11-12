@@ -111,7 +111,7 @@ public class ReservationController extends AbstractController {
 
                 // display available table id and ask user to choose the id
                 if(tableList.size()==0){
-                    System.out.println("the reservation is full");
+                    System.out.println("The reservation list is full. Unable to reserve any tables for this slot");
                     return;
                 }
 
@@ -204,7 +204,7 @@ public class ReservationController extends AbstractController {
                 Reservation res = getReservationById(Id);
                 if(foundList.contains(res)){
                     System.out.println("Do you wish to remove this reservation? Y/N");
-                    if (in.nextLine().charAt(0) == 'Y')  removeReservationById(Id);
+                    if (in.nextLine().toUpperCase().charAt(0) == 'Y')  removeReservationById(Id);
                 }
             }
             else System.out.println("There are no reservations found for this contact");
