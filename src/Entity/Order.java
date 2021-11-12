@@ -65,10 +65,10 @@ public class Order {
 //        return;
 //    }
 
-    public static void addOrderItem(int menuItemId, int quantity, String name){ //quantity
+    public static void addOrderItem(int menuItemId, int quantity, String name, double price){ //quantity
         if (orderItems != null && orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
         else{
-            OrderItem item = new OrderItem(menuItemId,quantity,name); //which to input?
+            OrderItem item = new OrderItem(menuItemId,quantity,name,price); //which to input?
             orderItems.add(item);
         }
         return;
@@ -89,7 +89,7 @@ public class Order {
     }
 
     public void displayAllItems(){
-        System.out.println("Item           Quantity            Price\n");
+        System.out.println("   Item           Quantity            Price\n");
         for(int i=0;i<orderItems.size();i++){
             System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ orderItems.get(i).getQuantity()*orderItems.get(i).getPrice()+ "\n");
         }

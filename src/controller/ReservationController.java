@@ -103,7 +103,7 @@ public class ReservationController extends AbstractController {
                 // check time to remove the reserved table from table list
                 for(Reservation reservation : getConflictReservation(date,time,tablePax)){
                     if(tableList.contains(reservation.getTableId())) {
-                        System.out.println(reservation.getTableId());
+     //                   System.out.println(reservation.getTableId());
                         int idx = tableList.indexOf(reservation.getTableId());
                         tableList.remove(idx);
                     }

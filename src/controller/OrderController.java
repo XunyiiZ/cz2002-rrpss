@@ -131,7 +131,9 @@ public class OrderController extends AbstractController {
 
 
         //orderID
-        orderID = orders.size() + 1;
+        ArrayList<Order> orders = orderController.getAllOrders();
+        if(orders.size()==0) orderID =1;
+        else{ orderID = orders.get(orders.size()-1).getOrderID()+1;}
 
         Order order = new Order(staffID, orderID, tabID, numOfPax);
         orders.add(order);
@@ -143,8 +145,10 @@ public class OrderController extends AbstractController {
         int choice = sc.nextInt(); sc.nextLine();
         while (true) {
             if (choice > 4 || choice < 1)
-            {System.out.println("invalid input! \n1. Add item \n2.Remove Item \n3. Dispaly all items \n4. Finish");
-                choice = sc.nextInt(); sc.nextLine();}
+            {
+                System.out.println("invalid input! \n1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+                choice = sc.nextInt(); sc.nextLine();
+            }
             else {
                 switch (choice) {
                     case 1:
@@ -198,33 +202,46 @@ public class OrderController extends AbstractController {
 
     public void addItemToOrder(Order order) throws IOException {
         menuController.displayMenu();  // need to display the index
-        System.out.println("Which menu item would you like to add?");
-        int itemId = sc.nextInt();
+        System.out.println("Enter the menu item number that you like to add?");
+        int itemNum = sc.nextInt();
         sc.nextLine();
-        if (menuController.isValidMenuItemId(itemId)) {
-            System.out.println("Invalid input, add item unsuccessfully");
+//        if (!menuController.isValidMenuItemId(itemId)) {
+//            System.out.println("Invalid input, add item unsuccessfully");
+//            return;
+//        }
+
+        if(itemNum<1 || itemNum > menuController.getMenuList().size()){
+            System.out.println("invalid index!");
             return;
-        } else {
-            MenuItem item = menuController.getItemById(itemId);
+        }
+        else {
+            MenuItem item = menuController.getItemByIndex(itemNum-1);
+            int itemId = item.getMenuItemId();
+            System.out.println(item.toString());
             System.out.println("Enter quantity:");
             int quantity = sc.nextInt();
-            order.addOrderItem(itemId, quantity, item.getName());
+            order.addOrderItem(itemId, quantity, item.getName(), item.getPrice()*quantity);
+
             System.out.println("Item added successfully");
         }
     }
 
+    public ArrayList<Order> getAllOrders(){
+        return orders;
+    }
+
     public void removeItemFromOrder(Order order) throws IOException {
         order.displayAllItems();
-        System.out.println("Enter the index of menu item");
-        int itemIdx = sc.nextInt();
+        System.out.println("Enter the number of menu item");
+        int itemNum = sc.nextInt();
         if (order.getOrderItems().size() == 0) {
             System.out.println("Empty order, nothing to delete!");
             return;
-        } else if (itemIdx < 0 || itemIdx >= order.getOrderItems().size()) {
+        } else if (itemNum < 1 || itemNum > order.getOrderItems().size()) {
             System.out.println("Invalid input, remove item unsuccessfully");
             return;
         } else {
-            order.removeOrderItemByIdx(itemIdx);
+            order.removeOrderItemByIdx(itemNum-1);
             save(dir,orders);
             System.out.println("Remove Successfully");
         }
@@ -251,6 +268,10 @@ public class OrderController extends AbstractController {
     }
 
     public void displayAllOrders() {
+        if(orders.size() == 0){
+            System.out.println("no orders found");
+            return;
+        }
         for (Order order : orders) {
             order.displayOrder();
         }
@@ -289,6 +310,8 @@ public class OrderController extends AbstractController {
                 st.append(item.getName());        //need name?
                 st.append("|");
                 st.append(item.getQuantity());
+                st.append("|");
+                st.append(item.getPrice());
             }
 
             alw.add(st.toString());
@@ -318,7 +341,8 @@ public class OrderController extends AbstractController {
                 int itemId = Integer.parseInt(star.nextToken().trim());
                 String name = star.nextToken().trim();
                 int quantity = Integer.parseInt(star.nextToken().trim());
-                order.addOrderItem(itemId,quantity,name);
+                double price = Double.parseDouble(star.nextToken().trim());
+                order.addOrderItem(itemId,quantity,name,price);
             }
             //add order to order list
             alr.add(orders);
