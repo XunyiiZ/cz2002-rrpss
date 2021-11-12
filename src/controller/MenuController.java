@@ -123,7 +123,6 @@ public class MenuController extends AbstractController {
         try {
             save(dir, menuList);
         } catch (Exception e) {
-            //TODO: handle exception
             e.printStackTrace();
         }
         return set;
@@ -131,9 +130,9 @@ public class MenuController extends AbstractController {
     }
 
     public void manageSet(Set setItem){
-        int choice;
+        int choice=0;
         int idx;
-        do{
+        while (choice != 4) {
             System.out.println("============== Manage this set ==============\n1. Add item \n2. Remove item \n3. Display the items in the set \n4. Finish");
             while (true) {
                 try {
@@ -151,9 +150,6 @@ public class MenuController extends AbstractController {
             switch(choice){
                 case 1:
                     menuController.displayAlaCarte();
-                    //menuController.displayMenu();
-                    //System.out.println("Which AlaCarte item would you like to add? ");
-
                     while (true) {
                         try {
                             System.out.println("Which AlaCarte item would you like to add? ");
@@ -182,13 +178,6 @@ public class MenuController extends AbstractController {
                         }
                         break;
                     }
-                    /* int idx = sc.nextInt() - 1;
-                    System.out.println("Index is: " + idx);
-                    int aCarteId = menuController.getItemByIndex(idx).getMenuItemId();
-                    System.out.println("aCarteId is : " + aCarteId);
-                    MenuItem aCarte = menuController.getItemById(aCarteId);
-                    setItem.addAlaCarte( (AlaCarte) aCarte); */
-
                     break;
                 case 2:
                     setItem.displayItemsInSet();
@@ -215,25 +204,21 @@ public class MenuController extends AbstractController {
                 case 3:
                     setItem.displayItemsInSet();
                     break;
-                case 4:
-                    // display this set item
-                    break;
                 default:
                     System.out.println("Invalid input");
                     break;
             }
-        }while(choice != 4);
+        }
         try {
             save(dir, menuList);
         } catch (Exception e) {
-            //TODO: handle exception
             e.printStackTrace();
         }
     }
 
     public void updateSet(MenuItem mItem) {
-        int choice;
-        do{
+        int choice = 0;
+        while (choice != 6) {
             System.out.println("============== Update this set ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display set \n5. Manage set \n6. Finish");
             while (true) {
                 try {
@@ -289,11 +274,10 @@ public class MenuController extends AbstractController {
                     System.out.println("Invalid input");
                     break;
             }
-        }while(choice != 6);
+        }
         try {
             save(dir, menuList);
         } catch (Exception e) {
-            //TODO: handle exception
             e.printStackTrace();
         }
     }
@@ -313,8 +297,8 @@ public class MenuController extends AbstractController {
     }
 
     public void updateAlaCarte(MenuItem aCarte){
-        int choice;
-        do{
+        int choice = 0;
+        while (choice != 5) {
             System.out.println("============== Update this ala carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
             while (true) {
                 try {
@@ -372,11 +356,10 @@ public class MenuController extends AbstractController {
                     System.out.println("Invalid input");
                     break;
             }
-        }while(choice != 5);
+        }
         try {
             save(dir, menuList);
         } catch (Exception e) {
-            //TODO: handle exception
             e.printStackTrace();
         }
     }

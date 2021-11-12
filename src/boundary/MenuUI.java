@@ -93,7 +93,7 @@ public class MenuUI {
         Category cat = null;
         int choice;
         do{
-            System.out.println("Choose the type of the dish: 1.maincourse 2. drinks 3. sides");
+            System.out.println("Choose the type of the dish: 1.Main Course 2. Drink 3. Side");
             choice=sc.nextInt();
                 switch(choice){
                     case 1:
@@ -106,10 +106,10 @@ public class MenuUI {
                         cat = Category.SIDES;
                         break;
                     default:
-                        System.out.println("invalid input");
+                        System.out.println("Invalid input");
                         break;
                 }
-            } while(choice<0 || choice>3);
+            } while(choice<1 || choice>3);
 
         menuController.addAlaCarte(name,price,description,cat);
     }
@@ -152,65 +152,7 @@ public class MenuUI {
         else {
             menuController.updateAlaCarte(mItem);
         }
-    }
-
-    /* private void updateAlaCarte(MenuItem aCarte) {
-        int choice;
-        do{
-            System.out.println("============== Update this ala carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
-            while (true) {
-                try {      
-                    System.out.println("Enter choice: ");                      
-                    choice = sc.nextInt(); 
-                    sc.nextLine();   
-                            
-                } catch (InputMismatchException e) {
-                    sc.nextLine();
-                    System.out.println("Invalid input");
-                    continue;
-                }
-                break;
-            }
-            switch(choice){
-                case 1:
-                    System.out.println("Enter new name: ");
-                    aCarte.setName(sc.nextLine());
-                    System.out.println("Updated ala carte: ");
-                    System.out.println(aCarte.toString());
-                    break;
-                case 2:          
-                    System.out.println("Enter new description: ");
-                    aCarte.setDescription(sc.nextLine());
-                    System.out.println("Updated ala carte: ");
-                    System.out.println(aCarte.toString());
-                    break;
-                case 3:
-                    while (true) {
-                        try {      
-                            System.out.println("Enter new price:");                    
-                            aCarte.setPrice(sc.nextDouble());
-                        } catch (InputMismatchException e) {
-                            sc.nextLine();
-                            System.out.println("Invalid input");
-                            continue;
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                            continue;
-                        }
-                        break;
-                    } 
-                    System.out.println("Updated ala carte: ");
-                    System.out.println(aCarte.toString());
-                    break;
-                case 4:
-                    System.out.println(aCarte.toString());
-                    break;
-                default:
-                    System.out.println("Invalid input");
-                    break;
-            }
-        }while(choice != 5);        
-    } */
+    }    
 
     private void removeMenuItem() {
         menuController.displayMenu();        

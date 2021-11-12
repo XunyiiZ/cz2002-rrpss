@@ -13,4 +13,4 @@
 1|13|Apple pie|a pie in which the principal filling ingredient is apple, originated in England|4.5|sides
 1|14|tomato|big juicy tomato|9.0|sides
 1|15|Lollipop|Who would buy a lollipop|10.0|drinks
-0|16|Set 16|This issa new set|12.825|2|15|11
+0|16|Set 16|Creating new set|12.825|2|15|11
