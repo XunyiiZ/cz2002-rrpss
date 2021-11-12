@@ -23,6 +23,7 @@ public class ReservationUI {
     private final String TIME_FORMAT = "HH:mm";
     private static ReservationUI reservationUI = null;
     private static Scanner in = new Scanner(System.in);
+    private TableController tableController =TableController.getInstance();
 
     public ReservationUI() throws IOException {
 
@@ -87,8 +88,7 @@ public class ReservationUI {
                         }
                         break;                                                 
                      
-                    }                          
-                                       
+                    }
 
                     System.out.println("Please enter your name: ");
                     name = in.nextLine();

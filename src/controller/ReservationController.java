@@ -114,6 +114,7 @@ public class ReservationController extends AbstractController {
                     System.out.println("the reservation is full");
                     return;
                 }
+
                 System.out.println("Unreserved table(s): " + tableList.toString());
                 System.out.println("Enter the table id to reserve the table:");
                 int tableId = in.nextInt();
@@ -138,7 +139,7 @@ public class ReservationController extends AbstractController {
                 reservationList.add(reservation);
                 System.out.println("the reservation is create!");
                 System.out.println("here is the details for the reservation:");
-                reservation.toString();
+                System.out.println(reservation.toString());
                 save(dir,reservationList);
             }catch (IOException e) {
                 System.out.println("shen me error? ");
