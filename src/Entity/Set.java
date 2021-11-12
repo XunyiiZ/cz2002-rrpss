@@ -38,7 +38,11 @@ public class Set extends MenuItem{
         for(AlaCarte alaCarte :itemList){
             total += alaCarte.getPrice();
         }
-        return total*SET_DISCOUNT;
+        
+        if (itemList.size() > 1)
+            return total*SET_DISCOUNT;
+        else 
+            return total;
     }
 
     public ArrayList<AlaCarte> getItemList(){

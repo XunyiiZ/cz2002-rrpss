@@ -103,7 +103,7 @@ public class ReservationController extends AbstractController {
                 // check time to remove the reserved table from table list
                 for(Reservation reservation : getConflictReservation(date,time,tablePax)){
                     if(tableList.contains(reservation.getTableId())) {
-                        System.out.println(reservation.getTableId());
+                        //System.out.println(reservation.getTableId());
                         int idx = tableList.indexOf(reservation.getTableId());
                         tableList.remove(idx);
                     }
@@ -137,8 +137,8 @@ public class ReservationController extends AbstractController {
                 // create the reservation
                 Reservation reservation = new Reservation(reservationId, name, contact, numberOfPax, tableId, date, time);
                 reservationList.add(reservation);
-                System.out.println("the reservation is create!");
-                System.out.println("here is the details for the reservation:");
+                System.out.println("The reservation is created!");
+                System.out.println("Here is the details for the reservation:");
                 System.out.println(reservation.toString());
                 save(dir,reservationList);
             }catch (IOException e) {

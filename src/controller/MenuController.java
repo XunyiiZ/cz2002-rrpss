@@ -169,6 +169,7 @@ public class MenuController extends AbstractController {
                             setItem.addAlaCarte( (AlaCarte) aCarte);
                             System.out.println("AlaCarte item added: ");
                             System.out.println(aCarte.toString());
+                            System.out.println("AlaCarte item successfully added");
                         } catch (InputMismatchException e) {
                             sc.nextLine();
                             System.out.println("Invalid input");
@@ -211,12 +212,10 @@ public class MenuController extends AbstractController {
                         break;
                     }
                     setItem.deleteFromSet(idx-1);
+                    System.out.println("AlaCarte Item successfully removed!");
                     break;
                 case 3:
                     setItem.displayItemsInSet();
-                    break;
-                case 4:
-                    // display this set item
                     break;
                 default:
                     System.out.println("Invalid input");
@@ -234,7 +233,7 @@ public class MenuController extends AbstractController {
     public void updateSet(MenuItem mItem) {
         int choice;
         do{
-            System.out.println("============== Update this set ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display set \n5. Manage set \n6. Finish");
+            System.out.println("============== Update this set ==============\n1. Update name \n2. Update description \n3. Display set \n4. Manage set \n5. Finish");
             while (true) {
                 try {
                     System.out.println("Enter choice: ");
@@ -262,34 +261,16 @@ public class MenuController extends AbstractController {
                     System.out.println(mItem.toString());
                     break;
                 case 3:
-                    while (true) {
-                        try {
-                            System.out.println("Enter new price:");
-                            mItem.setPrice(sc.nextDouble());
-                        } catch (InputMismatchException e) {
-                            sc.nextLine();
-                            System.out.println("Invalid input");
-                            continue;
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                            continue;
-                        }
-                        break;
-                    }
-                    System.out.println("Updated set: ");
                     System.out.println(mItem.toString());
                     break;
                 case 4:
-                    System.out.println(mItem.toString());
-                    break;
-                case 5:
                     manageSet((Set) mItem);
                     break;
                 default:
                     System.out.println("Invalid input");
                     break;
             }
-        }while(choice != 6);
+        }while(choice != 5);
         try {
             save(dir, menuList);
         } catch (Exception e) {
