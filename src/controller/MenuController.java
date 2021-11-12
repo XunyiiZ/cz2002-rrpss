@@ -19,6 +19,7 @@ import java.util.*;
 public class MenuController extends AbstractController {
 
     private static MenuController menuController = null;
+    private static Scanner sc = new Scanner(System.in);
     private static final String dir = "src/data/menu.txt";
     private ArrayList<MenuItem> menuList;
 
@@ -119,21 +120,260 @@ public class MenuController extends AbstractController {
         menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
         Set set = new Set(menuItemId, name, description, 0.0);
         menuList.add(set);
+        try {
+            save(dir, menuList);
+        } catch (Exception e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }      
         return set;
         //add alaCarte in it
     }
 
+    public void manageSet(Set setItem){
+        int choice;
+        int idx;
+        do{
+            System.out.println("============== Manage this set ==============\n1. Add item \n2. Remove item \n3. Display the items in the set \n4. Finish");      
+            while (true) {
+                try {      
+                    System.out.println("Enter choice: ");                      
+                    choice = sc.nextInt(); 
+                    sc.nextLine();   
+                            
+                } catch (InputMismatchException e) {
+                    sc.nextLine();
+                    System.out.println("Invalid input");
+                    continue;
+                }
+                break;
+            }
+            switch(choice){
+                case 1:
+                    menuController.displayAlaCarte();
+                    //menuController.displayMenu();
+                    //System.out.println("Which AlaCarte item would you like to add? ");
+                            
+                    while (true) {
+                        try {      
+                            System.out.println("Which AlaCarte item would you like to add? ");                   
+                            idx = sc.nextInt(); 
+                            sc.nextLine();  
+                            /* if (idx > menuController.getSizeOfMenu()) {
+                                throw new Exception("Invalid AlaCarte number");
+                            }  */
+                            MenuItem aCarte = menuController.getItemByIndex(idx-1);
+                            if  (!(aCarte instanceof AlaCarte)) {
+                                throw new Exception("Menu Item is not an AlaCarte Item");
+                            }
+                            setItem.addAlaCarte( (AlaCarte) aCarte);    
+                            System.out.println("AlaCarte item added: ");
+                            System.out.println(aCarte.toString());    
+                        } catch (InputMismatchException e) {
+                            sc.nextLine();
+                            System.out.println("Invalid input");
+                            continue;
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Invalid AlaCarte number");
+                            continue;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    }
+                    /* int idx = sc.nextInt() - 1;
+                    System.out.println("Index is: " + idx);
+                    int aCarteId = menuController.getItemByIndex(idx).getMenuItemId();
+                    System.out.println("aCarteId is : " + aCarteId);
+                    MenuItem aCarte = menuController.getItemById(aCarteId);
+                    setItem.addAlaCarte( (AlaCarte) aCarte); */
+
+                    break;
+                case 2:          
+                    setItem.displayItemsInSet();
+                    while (true) {
+                        try {      
+                            System.out.println("Enter AlaCarte Item to remove:");                    
+                            idx = sc.nextInt(); 
+                            sc.nextLine();                             
+                            if (idx > setItem.getItemList().size()) {
+                                throw new Exception("Invalid Menu Item number");
+                            } 
+                        } catch (InputMismatchException e) {
+                            sc.nextLine();
+                            System.out.println("Invalid input");
+                            continue;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    }
+                    setItem.deleteFromSet(idx-1);  
+                    break;
+                case 3:
+                    setItem.displayItemsInSet();
+                    break;
+                case 4:
+                    // display this set item
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    break;
+            }
+        }while(choice != 4);
+        try {
+            save(dir, menuList);
+        } catch (Exception e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }        
+    }
+
+    public void updateSet(MenuItem mItem) {
+        int choice;
+        do{
+            System.out.println("============== Update this set ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display set \n5. Manage set \n6. Finish");
+            while (true) {
+                try {      
+                    System.out.println("Enter choice: ");                      
+                    choice = sc.nextInt(); 
+                    sc.nextLine();   
+                            
+                } catch (InputMismatchException e) {
+                    sc.nextLine();
+                    System.out.println("Invalid input");
+                    continue;
+                }
+                break;
+            }
+            switch(choice){
+                case 1:
+                    System.out.println("Enter new name: ");
+                    mItem.setName(sc.nextLine());
+                    System.out.println("Updated set: ");
+                    System.out.println(mItem.toString());
+                    break;
+                case 2:          
+                    System.out.println("Enter new description: ");
+                    mItem.setDescription(sc.nextLine());
+                    System.out.println("Updated set: ");
+                    System.out.println(mItem.toString());
+                    break;
+                case 3:
+                    while (true) {
+                        try {      
+                            System.out.println("Enter new price:");                    
+                            mItem.setPrice(sc.nextDouble());
+                        } catch (InputMismatchException e) {
+                            sc.nextLine();
+                            System.out.println("Invalid input");
+                            continue;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    } 
+                    System.out.println("Updated set: ");
+                    System.out.println(mItem.toString());
+                    break;
+                case 4:
+                    System.out.println(mItem.toString());
+                    break;
+                case 5:
+                    manageSet((Set) mItem);
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    break;
+            }
+        }while(choice != 6);     
+        try {
+            save(dir, menuList);
+        } catch (Exception e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }         
+    }
+
     public void displayAlaCarte(){
         System.out.println("Displaying all AlaCarte items");
-        int count = 0;
+        int count = 1;
         for(MenuItem item : menuList){
             if (item instanceof AlaCarte)
             {
-                System.out.println("============== AlaCarte Item " + count++ + " ==============");
+                System.out.println("============== AlaCarte Item " + count + " ==============");
                 System.out.println(item.toString());
             }
+            count++;
         }
         return;
+    }
+
+    public void updateAlaCarte(MenuItem aCarte) {
+        int choice;
+        do{
+            System.out.println("============== Update this ala carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
+            while (true) {
+                try {      
+                    System.out.println("Enter choice: ");                      
+                    choice = sc.nextInt(); 
+                    sc.nextLine();   
+                            
+                } catch (InputMismatchException e) {
+                    sc.nextLine();
+                    System.out.println("Invalid input");
+                    continue;
+                }
+                break;
+            }
+            switch(choice){
+                case 1:
+                    System.out.println("Enter new name: ");
+                    aCarte.setName(sc.nextLine());
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
+                    break;
+                case 2:          
+                    System.out.println("Enter new description: ");
+                    aCarte.setDescription(sc.nextLine());
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
+                    break;
+                case 3:
+                    while (true) {
+                        try {      
+                            System.out.println("Enter new price:");                    
+                            aCarte.setPrice(sc.nextDouble());
+                        } catch (InputMismatchException e) {
+                            sc.nextLine();
+                            System.out.println("Invalid input");
+                            continue;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                        break;
+                    } 
+                    System.out.println("Updated ala carte: ");
+                    System.out.println(aCarte.toString());
+                    break;
+                case 4:
+                    System.out.println(aCarte.toString());
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    break;
+            }
+        }while(choice != 5);     
+        try {
+            save(dir, menuList);
+        } catch (Exception e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }         
     }
 
     public MenuItem getItemById(int id){
@@ -150,6 +390,17 @@ public class MenuController extends AbstractController {
 
     public MenuItem getItemByIndex(int index){
         return menuList.get(index);
+    }
+
+    public void removeMenuItem(int index) {
+        try {
+            menuList.remove(index);
+            System.out.println("Menu Item removed");
+            save(dir, menuList);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Menu Item not removed");
+        }        
     }
 
     public static void save(String filename, List al) throws IOException {
@@ -280,6 +531,10 @@ public class MenuController extends AbstractController {
 
     public int getSizeOfMenu(){
         return menuList.size();
+    }
+
+    public ArrayList<MenuItem> getMenuList() {
+        return menuList;
     }
 
 }
