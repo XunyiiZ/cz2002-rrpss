@@ -89,6 +89,7 @@ public class OrderController extends AbstractController {
                 } else {
                     System.out.println("The reservation is found!");
                     tabID = reservation.getTableId();
+                    numOfPax = reservation.getNumberOfPax();
                     resController.removeReservationById(resID);  // remove his reservation
                     break;
                 }
