@@ -65,12 +65,12 @@ public class OrderController extends AbstractController {
         int  staffID = sc.nextInt();
         sc.nextLine();
 
-        System.out.println("check in for a reservation? Y/N");
+        System.out.println("Check in for a reservation? Y/N");
         char response = sc.nextLine().charAt(0);
         response = Character.toUpperCase(response);
 
         while(response != 'Y' && response !='N'){
-            System.out.println("invalid input. please enter Y or N:");
+            System.out.println("Invalid input. please enter Y or N:");
             response = sc.nextLine().charAt(0);
             response = Character.toUpperCase(response);
         }
@@ -89,6 +89,7 @@ public class OrderController extends AbstractController {
                 } else {
                     System.out.println("The reservation is found!");
                     tabID = reservation.getTableId();
+                    numOfPax = reservation.getNumberOfPax();
                     resController.removeReservationById(resID);  // remove his reservation
                     break;
                 }

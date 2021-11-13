@@ -100,9 +100,9 @@ public class Order {
     public void displayOrder(){
         System.out.println("-------------------------------------------");
         System.out.println("Order ID " + orderID+
-                "  Staff OD " + staffID+
+                "  Staff ID " + staffID+
                 "  Table ID "+tableId+
-                "\nNumber of pax " + pax +"\n");
+                "  Number of pax " + pax +"\n");
         displayAllItems();
     }
 

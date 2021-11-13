@@ -10,4 +10,3 @@
 1|10|Mash potato|Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency|5.9|sides
 1|11|Green Tea|fresh, lively and nourishing homed-brewed tea|3.5|drinks
 0|12|Chicken Supremo|A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea|27.8|3|9|10|11
-
