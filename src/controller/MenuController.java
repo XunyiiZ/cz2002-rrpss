@@ -132,8 +132,8 @@ public class MenuController extends AbstractController {
     public void manageSet(Set setItem){
         int choice=0;
         int idx;
-        while (choice != 4) {
-            System.out.println("============== Manage this set ==============\n1. Add item \n2. Remove item \n3. Display set \n4. Finish");
+        while (choice != 4 || setItem.getItemList().size() < 2) {
+            System.out.println("============== Manage this Set ==============\n1. Add item \n2. Remove item \n3. Display set \n4. Finish");
             while (true) {
                 try {
                     System.out.println("Enter choice: ");
@@ -209,6 +209,9 @@ public class MenuController extends AbstractController {
                     setItem.displayItemsInSet();
                     break;
                 case 4:
+                    if (setItem.getItemList().size() < 2) {
+                        System.out.println("Set must have at least 2 AlaCarte Items");
+                    }
                     break;
                 default:
                     System.out.println("Invalid input");
@@ -242,13 +245,15 @@ public class MenuController extends AbstractController {
             switch(choice){
                 case 1:
                     System.out.println("Enter new name: ");
-                    mItem.setName(sc.nextLine());
+                    mItem.setName(sc.nextLine());                    
+                    System.out.println();
                     System.out.println("Updated Set: ");
                     System.out.println(mItem.toString());
                     break;
                 case 2:
                     System.out.println("Enter new description: ");
                     mItem.setDescription(sc.nextLine());
+                    System.out.println();
                     System.out.println("Updated Set: ");
                     System.out.println(mItem.toString());
                     break;
@@ -257,6 +262,8 @@ public class MenuController extends AbstractController {
                     break;
                 case 4:
                     manageSet((Set) mItem);
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Invalid input");
@@ -287,7 +294,7 @@ public class MenuController extends AbstractController {
     public void updateAlaCarte(MenuItem aCarte){
         int choice = 0;
         while (choice != 5) {
-            System.out.println("============== Update this Ala Carte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
+            System.out.println("============== Update this AlaCarte ==============\n1. Update name \n2. Update description \n3. Update price \n4. Display ala carte \n5. Finish");
             while (true) {
                 try {
                     System.out.println("Enter choice: ");
@@ -375,6 +382,19 @@ public class MenuController extends AbstractController {
 
     public void removeMenuItem(int index) {
         try {
+            MenuItem mItem = menuList.get(index);
+            if (mItem instanceof AlaCarte) {                
+                ArrayList<MenuItem> toRemove = new ArrayList<>();
+                for (MenuItem m: menuList) {
+                    if (m instanceof Set) {
+                        for (AlaCarte aCarte: ((Set) m).getItemList()) {
+                            if (mItem.getMenuItemId() == aCarte.getMenuItemId())
+                                toRemove.add(m);
+                        }
+                    }
+                }                
+                menuList.removeAll(toRemove);
+            }
             menuList.remove(index);
             System.out.println("Menu Item removed");
             save(dir, menuList);
