@@ -114,7 +114,7 @@ public class OrderController extends AbstractController {
             if (availableTables.size() == 0) {
                 System.out.println("There is no available table now");
             } else {
-                System.out.println("Available table:" + availableTables.toString());
+                System.out.println("Available table(s):" + availableTables.toString());
             }
 
             System.out.println("Assign the Table id:");
@@ -127,7 +127,7 @@ public class OrderController extends AbstractController {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    System.out.println("Enter the table id to reserve the table");
+                    System.out.println("Enter table ID to reserve:");
                     tabID = sc.nextInt();
                     continue;
                 }
@@ -144,22 +144,23 @@ public class OrderController extends AbstractController {
         //orderID
         if(orders.size()==0) orderID =1;
         else{
-            System.out.println("the orders size is " + orders.size());  // test need to be removed
+            //System.out.println("Order size is " + orders.size());  // test need to be removed
             orderID = orders.get(orders.size()-1).getOrderID()+1;
         }
 
         Order order = new Order(orderID, staffID, tabID, numOfPax);
         orders.add(order);
-        System.out.println("the table id is " + tabID); //for test should be deleted later
+        System.out.println("Table id is " + tabID); //for test should be deleted later
         tableController.setOccupied(tabID);
 
         //while loop
-        System.out.println("1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+        System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
         int choice = sc.nextInt(); sc.nextLine();
         while (true) {
             if (choice > 4 || choice < 1)
             {
-                System.out.println("invalid input! \n1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+                System.out.println("Invalid input");
+                System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
                 choice = sc.nextInt(); sc.nextLine();
             }
             else {
@@ -183,7 +184,7 @@ public class OrderController extends AbstractController {
                 }
             }
             if (choice == 4) break;
-            System.out.println("1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+            System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
             choice = sc.nextInt(); sc.nextLine();
         }
 
@@ -207,7 +208,7 @@ public class OrderController extends AbstractController {
         sc.nextLine();
 
         if(itemNum<1 || itemNum > menuController.getMenuList().size()){
-            System.out.println("invalid index!");
+            System.out.println("Invalid index!");
             return;
         }
         else {
@@ -215,15 +216,24 @@ public class OrderController extends AbstractController {
             int itemId = item.getMenuItemId();
             System.out.println(item.toString());
             System.out.println("Enter quantity:");
-            int quantity = sc.nextInt();
+            Double quantity = sc.nextDouble();
 
-            BigDecimal priceD = new BigDecimal(Double.toString(item.getPrice()));
-            BigDecimal quantityD = new BigDecimal(Double.toString(quantity));
+            //BigDecimal priceD = new BigDecimal(Double.toString(item.getPrice()));
+            //BigDecimal quantityD = new BigDecimal(Double.toString(quantity));
            // double result = priceD.multiply(quantityD).
          //   BigDecimal bd = new BigDecimal(item.getPrice()*  quantity).setScale(2, RoundingMode.HALF_UP);   //zhe ge ye bu xing
-            order.addOrderItem(itemId, quantity, item.getName(), priceD.multiply(quantityD).doubleValue());
+            //order.addOrderItem(itemId, quantity, item.getName(), priceD.multiply(quantityD).doubleValue());
+            /* System.out.println("Quantity: " + quantity);
+            System.out.println("IPrice: " + item.getPrice());
+            System.out.println("Price: " + item.getPrice()*quantity); */
+            order.addOrderItem(itemId, quantity.intValue(), item.getName(), item.getPrice()*quantity);
 
             System.out.println("Item added successfully");
+            try {
+                save(dir, orders);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -240,11 +250,11 @@ public class OrderController extends AbstractController {
             System.out.println("Empty order, nothing to delete!");
             return;
         } else if (itemNum < 1 || itemNum > order.getOrderItems().size()) {
-            System.out.println("Invalid input, remove item unsuccessfully");
+            System.out.println("Invalid input, orderItem not removed");
             return;
         } else {
             order.removeOrderItemByIdx(itemNum-1);
-            System.out.println("Remove Successfully");
+            System.out.println("OrderItem removed");
         }
     }
 
@@ -256,7 +266,7 @@ public class OrderController extends AbstractController {
         for (Order i : orders) {
             if (i.getOrderID() == OrderID) return i;
         }
-        System.out.println("Order not found.");
+        System.out.println("Order not found");
         return null;
     }
 
@@ -269,7 +279,7 @@ public class OrderController extends AbstractController {
 
     public void displayAllOrders() {
         if(orders.size() == 0){
-            System.out.println("no orders found");
+            System.out.println("No orders found");
             return;
         }
         for (Order order : orders) {

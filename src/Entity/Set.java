@@ -40,9 +40,9 @@ public class Set extends MenuItem{
         }
         
         if (itemList.size() > 1)
-            return total*SET_DISCOUNT;
+            return Math.round(total*SET_DISCOUNT*10.0)/10.0;
         else 
-            return total;
+            return Math.round(total*10.0)/10.0;
     }
 
     public ArrayList<AlaCarte> getItemList(){
