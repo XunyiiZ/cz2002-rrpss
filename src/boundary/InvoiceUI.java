@@ -101,9 +101,13 @@ public class InvoiceUI {
                 System.out.print("Enter order ID:");                      
                 orderId = in.nextInt(); 
                 in.nextLine();
-                if(orderController.getOrderByID(orderId) == null){
-                    System.out.println("the order is not found");
+                Order order = orderController.getOrderByID(orderId);
+                if(order == null){
+                    System.out.println("The order is not found");
                     return;
+                }
+                else {
+                    order.setIsActive(false);
                 }
                         
             } catch (InputMismatchException e) {

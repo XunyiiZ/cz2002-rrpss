@@ -71,6 +71,9 @@ public class OrderUI {
     private void addItem(int orderId) throws IOException {
         Order order = oc.getOrderByID(orderId);
         if(order == null) System.out.println("Invalid Order ID");
+        else if(!order.getIsActive()) {
+            System.out.println("Order is not active");
+        }
         else{
             System.out.println("Order found");
             oc.addItemToOrder(orderId);
@@ -80,6 +83,9 @@ public class OrderUI {
     private void removeItem(int orderId) throws IOException {
         Order order = oc.getOrderByID(orderId);
         if(order == null) System.out.println("Invalid Order ID");
+        else if(!order.getIsActive()) {
+            System.out.println("Order is not active");
+        }
         else{
             System.out.println("order found");
             oc.removeItemFromOrder(orderId);
