@@ -80,7 +80,7 @@ public class InvoiceController extends AbstractController{
                     overallRevenue += i.getTotal();
                 }
             }
-            System.out.println(reportDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue));
+            System.out.println("|||"+reportDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue)+"|||");
     }
 
     public void printMonthlyReport(String dateStr) {
@@ -167,7 +167,7 @@ public class InvoiceController extends AbstractController{
 
             GST = subtotal * GST_RATE;
             serviceCharge = subtotal * SERVICE_RATE;
-            total = subtotal + GST + serviceCharge;
+            total = afterDiscount + GST + serviceCharge;
 
             Invoice invoice = new Invoice(invoiceId, id, date, time, order, subtotal, afterDiscount, serviceCharge, GST, total);
             invoiceList.add(invoice);

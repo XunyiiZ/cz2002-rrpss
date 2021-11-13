@@ -111,6 +111,7 @@ public class OrderController extends AbstractController {
             ArrayList<Integer> availableTables = getAvailableTableID(tablePax);
             if (availableTables.size() == 0) {
                 System.out.println("There is no available table now");
+                return;
             } else {
                 System.out.println("Available table(s):" + availableTables.toString());
             }
@@ -150,13 +151,12 @@ public class OrderController extends AbstractController {
         System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
         int choice = sc.nextInt(); sc.nextLine();
         while (true) {
-            if (choice > 4 || choice < 1)
+            while (choice > 4 || choice < 1)
             {
                 System.out.println("Invalid input");
                 System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
                 choice = sc.nextInt(); sc.nextLine();
             }
-            else {
                 switch (choice) {
                     case 1:
                         addItemToOrder(orderID);
@@ -175,7 +175,6 @@ public class OrderController extends AbstractController {
                         }
                         break;
                 }
-            }
             if (choice == 4) break;
             System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
             choice = sc.nextInt(); sc.nextLine();
@@ -262,7 +261,6 @@ public class OrderController extends AbstractController {
         for (Order i : orders) {
             if (i.getOrderID() == OrderID) return i;
         }
-        System.out.println("Order not found");
         return null;
     }
 
