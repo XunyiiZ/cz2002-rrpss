@@ -117,7 +117,7 @@ public class OrderController extends AbstractController {
                 System.out.println("Available table(s):" + availableTables.toString());
             }
 
-            System.out.println("Assign the Table id:");
+            System.out.println("Assign the Table ID:");
             tabID = sc.nextInt();
             sc.nextLine();
             do {
@@ -127,7 +127,7 @@ public class OrderController extends AbstractController {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    System.out.println("Enter table ID to reserve:");
+                    System.out.println("Enter Table ID to reserve:");
                     tabID = sc.nextInt();
                     continue;
                 }
@@ -143,9 +143,9 @@ public class OrderController extends AbstractController {
             orderID = orders.get(orders.size()-1).getOrderID()+1;
         }
 
-        Order order = new Order(orderID, staffID, tabID, numOfPax);
+        Order order = new Order(orderID, staffID, tabID, numOfPax, true);
         orders.add(order);
-        System.out.println("Table id is " + tabID); //for test should be deleted later
+        System.out.println("Table ID is " + tabID); //for test should be deleted later
         tableController.setOccupied(tabID);
 
         //while loop
@@ -306,6 +306,8 @@ public class OrderController extends AbstractController {
             st.append(order.getPax());
             st.append("|");
             st.append(order.getOrderItems().size());
+            st.append("|");
+            st.append(order.getIsActive());
 
             ArrayList<OrderItem> orderItems = order.getOrderItems();
             for (OrderItem item : orderItems) {
@@ -338,9 +340,10 @@ public class OrderController extends AbstractController {
             int tableId = Integer.parseInt(star.nextToken().trim());
             int numberOfPax = Integer.parseInt(star.nextToken().trim());
             int orderSize = Integer.parseInt(star.nextToken().trim());  // write the orderSize in the file in order to read different size of order items
+            boolean isActive = Boolean.parseBoolean(star.nextToken().trim());
 
             //create order with no order item
-            Order order = new Order(orderId,staffId,tableId,numberOfPax);
+            Order order = new Order(orderId,staffId,tableId,numberOfPax,isActive);
             //add order item in order
             for(int j=0; j<orderSize; j++){
                 int itemId = Integer.parseInt(star.nextToken().trim());

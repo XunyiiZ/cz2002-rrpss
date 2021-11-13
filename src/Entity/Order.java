@@ -11,17 +11,19 @@ public class Order {
     private int staffID;
     private int tableId;
     private int pax;
+    private boolean isActive;
     private ArrayList<OrderItem> orderItems;
 //    private static int orderSize;
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int orderID, int staffID, int tableId, int pax){
+    public Order(int orderID, int staffID, int tableId, int pax, boolean isActive){
         this.orderID = orderID;
         this.tableId = tableId;
         orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
         this.pax=pax;
+        this.isActive = isActive;
         //System.out.println("an order has been created!");
     }
 
@@ -36,6 +38,10 @@ public class Order {
     public int getPax(){return pax;}
 
     public int getStaffID(){return staffID;}
+
+    public boolean getIsActive() {return isActive;}
+
+    public void setIsActive(boolean isActive) {this.isActive = isActive;}
 
 //    public void getOrderItems(){
 //        for(OrderItem i: orderItems){
