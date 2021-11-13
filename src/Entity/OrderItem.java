@@ -17,7 +17,9 @@ public class OrderItem {
         this.menuItemId = MenuItemID;
         this.quantity = quantity;
         this.name = name;
-        this.price = price;
+        this.price = Math.round(price*10.0)/10.0;
+        //System.out.println("a OrderItem added in: the details:");
+        //System.out.println("menuItemId: quantity name:"+menuItemId + " " + quantity + " " + name + " price =" +price); // for testing remove later
     }
 
     public int getMenuItemID(){

@@ -22,6 +22,7 @@ public class Order {
         orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
         this.pax=pax;
+        //System.out.println("an order has been created!");
     }
 
     public int getTableId(){
@@ -89,7 +90,7 @@ public class Order {
     }
 
     public void displayAllItems(){
-        System.out.println("   Item           Quantity            Price");
+        System.out.println("   Item\t           Quantity\t            Price\n");
         for(int i=0;i<orderItems.size();i++){
             System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ String.format("%.2f",orderItems.get(i).getPrice()) );
         }
@@ -98,12 +99,11 @@ public class Order {
 
     public void displayOrder(){
         System.out.println("-------------------------------------------");
-        System.out.println("order id " + orderID+
-                "  staff id " + staffID+
-                "  table id "+tableId+
-                "\nnumber of pax " + pax +"\n");
+        System.out.println("Order ID " + orderID+
+                "  Staff OD " + staffID+
+                "  Table ID "+tableId+
+                "\nNumber of pax " + pax +"\n");
         displayAllItems();
-
     }
 
     public String toString(){

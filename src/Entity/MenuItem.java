@@ -10,7 +10,7 @@ public class MenuItem {
         this.menuItemId = menuItemId;
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.price = Math.round(price*10.0)/10.0;
     }
 
     public int getMenuItemId(){
@@ -30,7 +30,7 @@ public class MenuItem {
     }
 
     public void setPrice(double price){
-        this.price = price;
+        this.price = Math.round(price*10.0)/10.0;
     }
 
     public void setName(String name){
