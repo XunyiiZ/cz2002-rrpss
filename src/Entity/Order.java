@@ -90,9 +90,9 @@ public class Order {
     }
 
     public void displayAllItems(){
-        System.out.println("   Item\t           Quantity\t            Price\n");
+        System.out.println("   Item\t                                        Quantity\t  Price\n");
         for(int i=0;i<orderItems.size();i++){
-            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ String.format("%.2f",orderItems.get(i).getPrice()) );
+            System.out.println((i+1) + " " + String.format("%-50s",orderItems.get(i).getName())+  String.format("%-5d",orderItems.get(i).getQuantity())+"   "+ String.format("%.2f",orderItems.get(i).getPrice()) );
         }
         System.out.println("-------------------------------------------");
     }
@@ -109,7 +109,7 @@ public class Order {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(OrderItem item : orderItems){
-            sb.append("\n"+ item.getName() + "     " + item.getQuantity() + "      " + String.format("%.2f", item.getPrice() ));
+            sb.append("\n"+ String.format("%-50s",item.getName())  + String.format("%-50.s",item.getQuantity() )+ "      " + String.format("%.2f", item.getPrice() ));
         }
         return sb.toString();
     }
