@@ -6,6 +6,10 @@ import java.util.*;
 import Entity.*;
 
 public class MemberController extends AbstractController{
+    /**
+     * An ArrayList of members holding the member instances to mimic the behavior of a database
+     * Each query to this list is equivalent to a query to a database
+     */
     private ArrayList<Member> members;
     private static MemberController memberController = null;
     private double discountRate = 0.95;
@@ -35,7 +39,11 @@ public class MemberController extends AbstractController{
 //      memberController = MemberController.getInstance();
     }
 
-
+    /**
+     * Create a new member and add into the member list
+     *  @param name the name of the new member
+     *  @param contact the contact of the new member
+     */
     public void createMember(String name, String contact) {
         try {
             if (contact.length() != 8)
@@ -65,6 +73,11 @@ public class MemberController extends AbstractController{
         return false;
     }
 
+    /**
+     * Delete the member with the given contact
+     *
+     * @param contact the contact of the member to be deleted
+     */
     public void removeMember(String contact) {
         try {
             if (contact.length() != 8)
@@ -96,6 +109,9 @@ public class MemberController extends AbstractController{
         this.discountRate = rate;
     }
 
+    /**
+     * Print a list of Members
+     */
     public void displayAllMembers(){
         for (Member m : memberController.getAllMembers()) {
            System.out.println(m.toString());
