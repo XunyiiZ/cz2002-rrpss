@@ -96,7 +96,7 @@ public class MemberController extends AbstractController{
         }
 
     }
-
+    
     public ArrayList<Member> getAllMembers() {
         return members;
     }
