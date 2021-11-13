@@ -12,6 +12,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import Entity.*;
 
@@ -70,10 +71,10 @@ public class InvoiceController extends AbstractController{
 
     public void printDailyReport(LocalDate reportDate) {
 
-        ZoneId defaultZoneId = ZoneId.systemDefault();
+    //    ZoneId defaultZoneId = ZoneId.systemDefault();
         double overallRevenue = 0.0;
             for (Invoice i : invoiceList) {
-                Date invoiceDate = Date.from(i.getDate().atStartOfDay(defaultZoneId).toInstant());
+                LocalDate invoiceDate = i.getDate();
                 if (invoiceDate.equals(reportDate)) {
                     System.out.println(i);
                     overallRevenue += i.getTotal();
@@ -160,7 +161,7 @@ public class InvoiceController extends AbstractController{
 
             if (memberController.checkIsMember(number)) {
                 System.out.println(" (" + number + ") is a member");
-                System.out.println("member discount rate is "+memberController.getDiscountRate());
+                System.out.println("Member discount rate is "+String.format("%.2f",memberController.getDiscountRate()));
                 afterDiscount = subtotal * memberController.getDiscountRate();
             } else; //System.out.println(name + " (" + number + ") is not a member");
 
@@ -196,7 +197,6 @@ public class InvoiceController extends AbstractController{
     public ArrayList load(String filename) throws IOException {
         ArrayList stringArray = (ArrayList) read(filename);
         ArrayList alr = new ArrayList();  // to store invoices data
-        System.out.println("size = " + stringArray.size());
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
             StringTokenizer star = new StringTokenizer(st, "|");
@@ -226,7 +226,7 @@ public class InvoiceController extends AbstractController{
 
     /**
      * save method
-     * save method will be different with different controlelr
+     * save method will be different with different controller
      */
 
     public void save(String filename, List al) throws IOException {
@@ -241,15 +241,17 @@ public class InvoiceController extends AbstractController{
             st.append("|");
             st.append(invoice.getDate());  // ke yi ma?
             st.append("|");
-            st.append(invoice.getTime());
+            st.append(invoice.getTime().truncatedTo(ChronoUnit.SECONDS));
             st.append("|");
-            st.append(invoice.getSubtotal());
+            st.append(Math.round(invoice.getSubtotal()*100)/100.0);
             st.append("|");
-            st.append(invoice.getServiceCharge());
+            st.append(Math.round(invoice.getAfterDiscount()*100)/100.0);
             st.append("|");
-            st.append(invoice.getGST());
+            st.append(Math.round(invoice.getServiceCharge()*100)/100.0);
             st.append("|");
-            st.append(invoice.getTotal());
+            st.append(Math.round(invoice.getGST()*100)/100.0);
+            st.append("|");
+            st.append(Math.round(invoice.getTotal()*100)/100.0);
             alw.add(st.toString());
         }
             write(filename, alw);

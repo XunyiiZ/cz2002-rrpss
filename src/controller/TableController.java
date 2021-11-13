@@ -185,7 +185,7 @@ public class TableController {
         ArrayList<Integer> tables = new ArrayList<>();
 
         for(int i =0; i<SIZE; ++i){
-            if(listOfTables[i].getNumOfSeats() == pax){
+            if(listOfTables[i].getNumOfSeats() == pax && listOfTables[i].getOccupied()==false){
                 tables.add(listOfTables[i].getTableId());
             }
         }

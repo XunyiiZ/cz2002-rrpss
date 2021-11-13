@@ -180,9 +180,9 @@ public class InvoiceUI {
     }
 
     private boolean isValidDate(LocalDate appointmentDate){
-        if(appointmentDate.isBefore(LocalDate.now())) {
+        if(!appointmentDate.isAfter(LocalDate.now())) {
             return true;}
-        System.out.println("invalid month!");
+        System.out.println("invalid date!");
         return false;
     }
 

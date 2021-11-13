@@ -18,8 +18,6 @@ public class OrderItem {
         this.quantity = quantity;
         this.name = name;
         this.price = price;
-        System.out.println("a OrderItem added in: the details:");
-        System.out.println("menuItemId: quantity name:"+menuItemId + " " + quantity + " " + name + " price =" +price); // for testing remove later
     }
 
     public int getMenuItemID(){

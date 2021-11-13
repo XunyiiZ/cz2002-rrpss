@@ -45,7 +45,7 @@ public class OrderUI {
                     addItem(orderId);
                     break;
                case 4: //remove order, KIV
-                    System.out.println("Enter the ID of item to remove.");
+                    System.out.println("Enter order ID");
                     int id = sc.nextInt();
                     removeItem(id);
                     //code for removing here

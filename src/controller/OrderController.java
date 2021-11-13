@@ -23,7 +23,6 @@ public class OrderController extends AbstractController {
     private MenuController menuController = MenuController.getInstance();
     private ReservationController resController = ReservationController.getInstance();
     private static Scanner sc = new Scanner(System.in);
-    private static int orderID = 0;
     private static final String dir = "src/data/order.txt";
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -58,13 +57,12 @@ public class OrderController extends AbstractController {
     }
 
     public void createOrder() throws IOException {
-        int resID = -1;
-        int staffID = -1;
         int tabID = -1;
         int numOfPax=-1;
+        int orderID;
         //1. Reservation
         System.out.println("Enter Staff ID: ");
-        staffID = sc.nextInt();
+        int  staffID = sc.nextInt();
         sc.nextLine();
 
         System.out.println("check in for a reservation? Y/N");
@@ -79,7 +77,7 @@ public class OrderController extends AbstractController {
  //       System.out.println("having input " + response);
 
         if (response == 'Y') {
-            System.out.println("check reservation");  //for testing, need to delete later
+            int resID;
             int count = 2; //check for correct reservation id, check 2x if invalid then break
             while (count >0) {
                 System.out.println("Enter reservation ID: ");
@@ -136,30 +134,24 @@ public class OrderController extends AbstractController {
 
         }
 
-//        System.out.println("orders size =" + orders.size());
-//        Order order1 = orders.get(orders.size()-1);
-//        if(order1 == null) System.out.println("orders.get(orders.size()-1) return a null");
-//        System.out.println("getting a ");
-//        sc.nextLine();
         //orderID
         if(orders.size()==0) orderID =1;
         else{
-            System.out.println("the orders size is " + orders.size());  // test need to be removed
             orderID = orders.get(orders.size()-1).getOrderID()+1;
+            System.out.println("order id is : " +  orderID);
         }
 
         Order order = new Order(orderID, staffID, tabID, numOfPax);
         orders.add(order);
-        System.out.println("the table id is " + tabID); //for test should be deleted later
         tableController.setOccupied(tabID);
 
         //while loop
-        System.out.println("1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+        System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
         int choice = sc.nextInt(); sc.nextLine();
         while (true) {
             if (choice > 4 || choice < 1)
             {
-                System.out.println("invalid input! \n1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+                System.out.println("invalid input! \n1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
                 choice = sc.nextInt(); sc.nextLine();
             }
             else {
@@ -183,14 +175,14 @@ public class OrderController extends AbstractController {
                 }
             }
             if (choice == 4) break;
-            System.out.println("1. Add item \n2. Remove Item \n3. Dispaly all items \n4. Finish");
+            System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
             choice = sc.nextInt(); sc.nextLine();
         }
 
         //no option to remove order item while creating order
         System.out.println("Your order has been created.");
         order.displayOrder();
-        orders.add(order);
+
     }
 
 
@@ -224,6 +216,7 @@ public class OrderController extends AbstractController {
             order.addOrderItem(itemId, quantity, item.getName(), priceD.multiply(quantityD).doubleValue());
 
             System.out.println("Item added successfully");
+            order.displayOrder();
         }
     }
 
@@ -231,7 +224,7 @@ public class OrderController extends AbstractController {
         return orders;
     }
 
-    public void removeItemFromOrder(int OrderID) {
+    public void removeItemFromOrder(int orderID) {
         Order order = getOrderByID(orderID);
         order.displayAllItems();
         System.out.println("Enter the number of menu item");
@@ -245,6 +238,7 @@ public class OrderController extends AbstractController {
         } else {
             order.removeOrderItemByIdx(itemNum-1);
             System.out.println("Remove Successfully");
+            order.displayOrder();
         }
     }
 
@@ -335,7 +329,7 @@ public class OrderController extends AbstractController {
             int orderSize = Integer.parseInt(star.nextToken().trim());  // write the orderSize in the file in order to read different size of order items
 
             //create order with no order item
-            Order order = new Order(staffId,orderId,tableId,numberOfPax);
+            Order order = new Order(orderId,staffId,tableId,numberOfPax);
             //add order item in order
             for(int j=0; j<orderSize; j++){
                 int itemId = Integer.parseInt(star.nextToken().trim());
