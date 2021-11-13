@@ -1,9 +1,5 @@
 package boundary;
-/**
- * @Xunyi
- * @09-11-2021
- * menuUI
- */
+
 
 import controller.*;
 import Entity.AlaCarte.Category;
@@ -11,6 +7,13 @@ import Entity.*;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+/**
+* Boundary class for the Menu User Interface that allows staff to access menu information, methods to update menu items and generate the menu
+* @author Timothy
+* @version 1.0
+* @since 2021-11-13
+*/
 
 public class MenuUI {
     private static MenuUI menuUI = null;
@@ -20,6 +23,11 @@ public class MenuUI {
     public MenuUI() throws IOException {
     }
 
+    /**
+    * Get instance
+    * @return MenuUI instance and creates a new instance if there was none previously
+    * @throws IOException
+    */
     public static MenuUI getInstance() throws IOException {
         if (menuUI == null) {
             menuUI = new MenuUI();
