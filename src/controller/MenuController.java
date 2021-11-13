@@ -104,6 +104,13 @@ public class MenuController extends AbstractController {
         return;
     }
 
+    /**
+	   * Create a new Ala Carte and add it into the menu
+	   * @param name the name of new Ala Carte
+       * @param price the price of the new Ala Carte
+	   * @param description the words used to describe the new Ala Carte
+	   * @param category the category of the new Ala Carte
+	   */
     public void addAlaCarte(String name, double price, String description, AlaCarte.Category cat ){
         
         try {
@@ -116,6 +123,12 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+	 * Create a new set and add it to the menu
+	 * @param name the name of the new Set
+	 * @param description the words used to describe the new set.
+	 * @return the the new set itself.
+	 */
     public Set addSet(String name, String description){
         menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
         Set set = new Set(menuItemId, name, description, 0.0);
@@ -380,6 +393,10 @@ public class MenuController extends AbstractController {
         return menuList.get(index);
     }
 
+    /**
+	 * Delete the MenuItem from the menuItem list by its index
+	 * @param index the index of the menuItem to delete
+	 */
     public void removeMenuItem(int index) {
         try {
             menuList.remove(index);
@@ -391,6 +408,7 @@ public class MenuController extends AbstractController {
         }
     }
 
+    
     public  void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
