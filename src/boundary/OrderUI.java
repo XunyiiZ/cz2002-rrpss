@@ -58,6 +58,7 @@ public class OrderUI {
                     System.out.println("Invalid input");
                     break;
             }
+            option = choose();
         }
     }
 
@@ -74,7 +75,7 @@ public class OrderUI {
         if(order == null) System.out.println("invalid order id");
         else{
             System.out.println("order found");
-            oc.addItemToOrder(order);
+            oc.addItemToOrder(orderId);
         }
     }
 
@@ -83,7 +84,7 @@ public class OrderUI {
         if(order == null) System.out.println("invalid order id");
         else{
             System.out.println("order found");
-            oc.removeItemFromOrder(order);
+            oc.removeItemFromOrder(orderId);
         }
     }
 

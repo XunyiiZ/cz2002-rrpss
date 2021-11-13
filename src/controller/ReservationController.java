@@ -74,7 +74,7 @@ public class ReservationController extends AbstractController {
             if( res.getReservationId() == reservationId)
                 return res;
         }
-        System.out.println("Reservation not found");
+ //      System.out.println("Reservation not found");
         return null;
     }
 
@@ -82,10 +82,14 @@ public class ReservationController extends AbstractController {
 
         public ArrayList<Reservation> getConflictReservation(LocalDate date, LocalTime time, int tablePax){
             ArrayList<Reservation> conflictReservation = new ArrayList<>();
+            LocalTime startTime = time.minusMinutes(119);
+            LocalTime endTime = time.plusMinutes(119);
             for(Reservation reservation : reservationList){
-                LocalTime otherTime = reservation.getAppointmentTime().plusMinutes(119);
+                LocalTime otherEndTime = reservation.getAppointmentTime().plusMinutes(119);
+                LocalTime otherStartTime = reservation.getAppointmentTime().minusMinutes(119);
                 int curTablePax = tableController.getTablePax(reservation.getNumberOfPax());
-                if(curTablePax == tablePax && reservation.getAppointmentDate().equals(date) && otherTime.isAfter(time)){
+                if(curTablePax == tablePax && reservation.getAppointmentDate().equals(date) && ( (otherEndTime.isAfter(startTime) && otherEndTime.isBefore(endTime))
+                || (otherStartTime.isAfter(startTime) && otherStartTime.isBefore(endTime)))){
                     conflictReservation.add(reservation);
                     }
                 }
@@ -219,7 +223,7 @@ public class ReservationController extends AbstractController {
         try{
             Reservation res = getReservationById(id);
             if(res == null){
-                System.out.println("Reservation not found");
+  //              System.out.println("Reservation not found");
                 return false;
             }
             reservationList.remove(res);

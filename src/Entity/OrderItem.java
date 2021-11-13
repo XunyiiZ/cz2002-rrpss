@@ -19,7 +19,7 @@ public class OrderItem {
         this.name = name;
         this.price = price;
         System.out.println("a OrderItem added in: the details:");
-        System.out.println("menuItemId: quantity name:"+menuItemId + " " + quantity + " " + name + " price =" +price);
+        System.out.println("menuItemId: quantity name:"+menuItemId + " " + quantity + " " + name + " price =" +price); // for testing remove later
     }
 
     public int getMenuItemID(){
@@ -38,7 +38,7 @@ public class OrderItem {
     }
 
     public String toString(){
-        return  menuItemId + " name: " + name + " price: " + price*quantity;
+        return  menuItemId + " name: " + name + " price: " + String.format(".2f",price);
     }
 
 }

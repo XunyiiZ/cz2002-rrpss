@@ -16,12 +16,13 @@ public class Order {
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int staffID, int orderID, int tableId, int pax){
+    public Order(int orderID, int staffID, int tableId, int pax){
         this.orderID = orderID;
         this.tableId = tableId;
         ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
         this.pax=pax;
+        System.out.println("an order has been created!");
     }
 
     public int getTableId(){
@@ -91,7 +92,7 @@ public class Order {
     public void displayAllItems(){
         System.out.println("   Item           Quantity            Price\n");
         for(int i=0;i<orderItems.size();i++){
-            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ orderItems.get(i).getQuantity()*orderItems.get(i).getPrice()+ "\n");
+            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ String.format("%.2f",orderItems.get(i).getPrice()) );
         }
     }
 

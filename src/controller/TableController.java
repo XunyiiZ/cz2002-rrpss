@@ -192,7 +192,7 @@ public class TableController {
         return tables;
     }
 
-    public ArrayList<Integer> getCurrentReservedTable(int tablePax) throws IOException {
+    public ArrayList<Integer> getCurrentReservedTableID(int tablePax) throws IOException {
         ArrayList<Integer> tableList = new ArrayList<>();
         LocalTime time = LocalTime.now();
         LocalDate date = LocalDate.now();
