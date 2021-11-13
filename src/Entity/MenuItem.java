@@ -12,7 +12,7 @@ public class MenuItem {
     private double price;
 
     /**
-     * Constructor of Menu Item which initialises a menu items with the details of parameters entered 
+     * Constructor of Menu Item which initialises a menu items with the details of the parameters entered 
      * @param menuItemId menu item unique id
      * @param name name of the menu item
      * @param description short description of what the menu item is 

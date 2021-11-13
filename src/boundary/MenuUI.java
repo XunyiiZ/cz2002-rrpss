@@ -1,5 +1,9 @@
 package boundary;
-
+/**
+ * @Xunyi
+ * @09-11-2021
+ * menuUI
+ */
 
 import controller.*;
 import Entity.AlaCarte.Category;
@@ -35,6 +39,9 @@ public class MenuUI {
         return menuUI;
     }
 
+    /**
+    *Display options for users to access control of menu related methods
+    */
     public void run() {
         
         int choice = displayOptions();
@@ -64,6 +71,10 @@ public class MenuUI {
         }
     }
 
+    /**
+    * Method to display options available for interface
+    * @return the integer choice of method to call
+    */
     private int displayOptions() {
         System.out.println("--------Menu System--------");
         System.out.println("0. Go back to MainUI");
@@ -89,6 +100,9 @@ public class MenuUI {
         return choice;
     }
 
+    /**
+    * Method that allows the staff to enter the parameters and details needed to add an AlaCarte item 
+    */
     private void addAlaCarte(){
         System.out.println("Enter name of dish");
         String name = sc.nextLine();
@@ -135,6 +149,9 @@ public class MenuUI {
         System.out.println("AlaCarte added to menu");
     }
 
+    /**
+     * Method that allows the staff to enter the parameters and details needed to add a Set item
+     */
     private void addSet(){
         System.out.println("Enter set name");
         String name = sc.nextLine();
@@ -145,6 +162,9 @@ public class MenuUI {
         menuController.manageSet(setItem);        
     }    
 
+    /**
+     * Method to allow the staff to choose which menu item he would like to update 
+    */
     private void updateMenuItem(){
         menuController.displayMenu();        
         int idx;        
@@ -175,6 +195,9 @@ public class MenuUI {
         }
     }    
 
+    /**
+     * Method that allows the staff to input the menu item number to be removed. After which, the control logic will be passed onto menuController's method to remove the menu item.
+     */
     private void removeMenuItem() {
         menuController.displayMenu();        
         int idx;        
