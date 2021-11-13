@@ -93,25 +93,38 @@ public class MenuUI {
         Category cat = null;
         int choice;
         do{
-            System.out.println("Choose the type of the dish: 1.Main Course 2. Drink 3. Side");
-            choice=sc.nextInt();
-                switch(choice){
-                    case 1:
-                        cat = Category.MAINCOURSE;
-                        break;
-                    case 2:
-                        cat = Category.DRINKS;
-                        break;
-                    case 3:
-                        cat = Category.SIDES;
-                        break;
-                    default:
-                        System.out.println("Invalid input");
-                        break;
+            while (true) {
+                try {      
+                    System.out.println();
+                    System.out.println("Choose the type of the dish: \n1. Main Course \n2. Drink \n3. Side");                    
+                    choice = sc.nextInt(); 
+                    sc.nextLine();   
+                            
+                } catch (InputMismatchException e) {
+                    sc.nextLine();
+                    System.out.println("Invalid input");
+                    continue;
                 }
-            } while(choice<1 || choice>3);
+                break;
+            }
+            switch(choice){
+                case 1:
+                    cat = Category.MAINCOURSE;
+                    break;
+                case 2:
+                    cat = Category.DRINKS;
+                    break;
+                case 3:
+                    cat = Category.SIDES;
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    break;
+            }
+        } while(choice<1 || choice>3);
 
         menuController.addAlaCarte(name,price,description,cat);
+        System.out.println("AlaCarte added to menu");
     }
 
     private void addSet(){

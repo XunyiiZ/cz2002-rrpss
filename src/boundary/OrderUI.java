@@ -30,7 +30,6 @@ public class OrderUI {
             switch(option){
                 case 1: //create order
                     oc.createOrder();
-                    System.out.println("Order has been created.");
                     break;
                 case 2: //display
                     //check order
@@ -39,13 +38,12 @@ public class OrderUI {
                     displayOrder(orderID);
                     break;
                 case 3: //add order item, KIV
-
-                    System.out.println("Enter OrderID.");
+                    System.out.println("Enter OrderID: ");
                     int orderId = sc.nextInt();
                     addItem(orderId);
                     break;
                case 4: //remove order, KIV
-                    System.out.println("Enter the ID of item to remove.");
+                    System.out.println("Enter order ID");
                     int id = sc.nextInt();
                     removeItem(id);
                     //code for removing here
@@ -58,12 +56,13 @@ public class OrderUI {
                     System.out.println("Invalid input");
                     break;
             }
+            option = choose();
         }
     }
 
     private void displayOrder(int id){
         Order order = oc.getOrderByID(id);
-        if(order == null) System.out.println("invalid order id");
+        if(order == null) System.out.println("Invalid Order ID");
         else{
             order.displayOrder();
         }
@@ -71,19 +70,19 @@ public class OrderUI {
 
     private void addItem(int orderId) throws IOException {
         Order order = oc.getOrderByID(orderId);
-        if(order == null) System.out.println("invalid order id");
+        if(order == null) System.out.println("Invalid Order ID");
         else{
-            System.out.println("order found");
-            oc.addItemToOrder(order);
+            System.out.println("Order found");
+            oc.addItemToOrder(orderId);
         }
     }
 
     private void removeItem(int orderId) throws IOException {
         Order order = oc.getOrderByID(orderId);
-        if(order == null) System.out.println("invalid order id");
+        if(order == null) System.out.println("Invalid Order ID");
         else{
             System.out.println("order found");
-            oc.removeItemFromOrder(order);
+            oc.removeItemFromOrder(orderId);
         }
     }
 

@@ -18,7 +18,6 @@ public class Invoice{
     private double serviceCharge;
     private double GST;
     private double total;
-    private boolean isMember;
     private double afterDiscount;
 
 //    public Invoice(int id, int OrderId, Order order, double subtotal, double afterDiscount, double serviceCharge, double GST, double total){
@@ -82,6 +81,7 @@ public class Invoice{
     public double getTotal(){
         return total;
     }
+    public double getAfterDiscount(){return afterDiscount;}
 
     public String toString(){
 
@@ -93,19 +93,19 @@ public class Invoice{
                         "\nDate Time: " + date+"    "+time.truncatedTo(ChronoUnit.SECONDS)+
                         "\nClient: " + order.getPax()+
                         "\n--------------------------------------------------------------" +
-                        "\norder.toString()"+
+                        "\n   Item           Quantity            Price"+
+                         order.toString() +
                         "\n--------------------------------------------------------------" +
-                        "\n\t\t\t\t\t\t\t\t\t\tSubTotal:  " + subtotal+
-                        "\n\t\t\t\t\t\t\t\t\t\tafter discount :   " + afterDiscount+
+                        "\n\t\t\t\t\t\t\t\t\t\tSubTotal:  " + String.format("%.2f",subtotal)+
+                        "\n\t\t\t\t\t\t\t\t\t\tafter discount :   " + String.format("%.2f",afterDiscount)+
                         "\n\t\t\t\t\t\t\t\t\t\tGST:        " +  String.format("%.2f",GST)+
-                        "\n\t\t\t\t\t\t\t\t\t\t10% SERVICE CHARGE " + serviceCharge+
+                        "\n\t\t\t\t\t\t\t\t\t\t10% SERVICE CHARGE " + String.format("%.2f",serviceCharge)+
                         "\n--------------------------------------------------------------" +
-                        "\n\t\t\t\t\t\t\t\t\t\tTOTAL: " + total +
+                        "\n\t\t\t\t\t\t\t\t\t\tTOTAL: " + String.format("%.2f",total) +
                         "\n\n===========================END===============================\n\n"
 
         );
     }
-
 
 
 }

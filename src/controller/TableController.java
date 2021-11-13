@@ -185,14 +185,14 @@ public class TableController {
         ArrayList<Integer> tables = new ArrayList<>();
 
         for(int i =0; i<SIZE; ++i){
-            if(listOfTables[i].getNumOfSeats() == pax){
+            if(listOfTables[i].getNumOfSeats() == pax && listOfTables[i].getOccupied()==false){
                 tables.add(listOfTables[i].getTableId());
             }
         }
         return tables;
     }
 
-    public ArrayList<Integer> getCurrentReservedTable(int tablePax) throws IOException {
+    public ArrayList<Integer> getCurrentReservedTableID(int tablePax) throws IOException {
         ArrayList<Integer> tableList = new ArrayList<>();
         LocalTime time = LocalTime.now();
         LocalDate date = LocalDate.now();
