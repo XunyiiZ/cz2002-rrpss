@@ -1,14 +1,12 @@
 1|1|Steak|juicy, tender, loaded with flavor|24.9|maincourse
 1|2|Fries|crunchy exterior with a light, fluffy interior|4.9|sides
 1|3|Coca-cola|carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings|1.5|drinks
-0|4|London-Famous Ribeye|A scrumptious ribeye steak, served along with a side of fries and a bottle of coke|29.734999999999996|3|1|2|3
-1|6|Onion Rings|deep fried onion dipped in batter and bread crumbs|4.9|sides
+0|4|London-Famous Ribeye|A scrumptious ribeye steak, served along with a side of fries and a bottle of coke|29.7|3|1|2|3
+1|5|Aglio Olio|traditional pasta recipe made by sautéing sliced garlic in olive oil|14.9|maincourse
+1|6|Onion Rings| deep fried onion dipped in batter and bread crumbs|4.9|sides
 1|7|Lemonade|homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.|3.0|drinks
-0|8|Chef's Recommended Italian Aglio Olio|A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade|7.505|2|6|7
+0|8|Chef's Recommended Italian Aglio Olio|A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade|21.7|3|5|6|7
 1|9|Chicken-chop|piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried|19.9|maincourse
 1|10|Mash potato|Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency|5.9|sides
 1|11|Green Tea|fresh, lively and nourishing homed-brewed tea|3.5|drinks
-0|12|Chicken Supremo|A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea|27.834999999999997|3|9|10|11
-1|13|Apple pie|a pie in which the principal filling ingredient is apple, originated in England|4.5|sides
-1|14|Ice Cream|Chocolate Flavoured|4.5|sides
-1|16|Litmus paper|Test for pH|3.0|drinks
+0|12|Chicken Supremo|A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea|27.8|3|9|10|11
