@@ -149,7 +149,7 @@ public class InvoiceController extends AbstractController{
     private Invoice addInvoice(int id, String number) {
         try {
             /** +1 make id start from 1 */
-            int invoiceId = invoiceList.size() + 1;       // USE arrayList size to get the invoice ID  /
+            int invoiceId = invoiceList.get(invoiceList.size()-1).getInvoiceID() + 1;       // USE arrayList size to get the invoice ID  /
             Order order = orderController.getOrderByID(id);
             double subtotal = order.getOrderPrice();
             double afterDiscount = subtotal;
