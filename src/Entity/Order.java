@@ -7,21 +7,22 @@ import java.util.Scanner;
 
 public class Order {
 
-    private static int orderID;
-    private static int staffID;
-    private static int tableId;
-    private static int pax;
-    private static ArrayList <OrderItem> orderItems = new ArrayList<>();
+    private int orderID;
+    private int staffID;
+    private int tableId;
+    private int pax;
+    private ArrayList<OrderItem> orderItems;
 //    private static int orderSize;
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int staffID, int orderID, int tableId, int pax){
+    public Order(int orderID, int staffID, int tableId, int pax){
         this.orderID = orderID;
         this.tableId = tableId;
-        ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
+        orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
         this.pax=pax;
+        //System.out.println("an order has been created!");
     }
 
     public int getTableId(){
@@ -65,10 +66,10 @@ public class Order {
 //        return;
 //    }
 
-    public static void addOrderItem(int menuItemId, int quantity, String name){ //quantity
+    public void addOrderItem(int menuItemId, int quantity, String name, double price){ //quantity
         if (orderItems != null && orderItems.size()>=10) System.out.println("Maximum Order Size reached. Unable to add more Order Items");
         else{
-            OrderItem item = new OrderItem(menuItemId,quantity,name); //which to input?
+            OrderItem item = new OrderItem(menuItemId,quantity,name,price); //which to input?
             orderItems.add(item);
         }
         return;
@@ -89,19 +90,28 @@ public class Order {
     }
 
     public void displayAllItems(){
-        System.out.println("Item           Quantity            Price\n");
+        System.out.println("   Item\t           Quantity\t            Price\n");
         for(int i=0;i<orderItems.size();i++){
-            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ orderItems.get(i).getQuantity()*orderItems.get(i).getPrice()+ "\n");
+            System.out.println((i+1) + " " + orderItems.get(i).getName()+"          "+ orderItems.get(i).getQuantity()+"          "+ String.format("%.2f",orderItems.get(i).getPrice()) );
         }
+        System.out.println("-------------------------------------------");
     }
 
     public void displayOrder(){
-        System.out.println("order id " + orderID+
-                "\nstaff id " + staffID+
-                "\ntable id "+tableId+
-                "\nnumber of pax " + pax +"\n");
+        System.out.println("-------------------------------------------");
+        System.out.println("Order ID " + orderID+
+                "  Staff OD " + staffID+
+                "  Table ID "+tableId+
+                "\nNumber of pax " + pax +"\n");
         displayAllItems();
+    }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(OrderItem item : orderItems){
+            sb.append("\n"+ item.getName() + "     " + item.getQuantity() + "      " + String.format("%.2f", item.getPrice() ));
+        }
+        return sb.toString();
     }
 
 }

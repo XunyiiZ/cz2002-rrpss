@@ -13,10 +13,13 @@ public class OrderItem {
 
     private int quantity;
     //String name, String description, double price
-    public OrderItem(int MenuItemID , int quantity, String name){
+    public OrderItem(int MenuItemID , int quantity, String name, double price){   // the price should be after multiplied with quantity
         this.menuItemId = MenuItemID;
         this.quantity = quantity;
         this.name = name;
+        this.price = Math.round(price*10.0)/10.0;
+        //System.out.println("a OrderItem added in: the details:");
+        //System.out.println("menuItemId: quantity name:"+menuItemId + " " + quantity + " " + name + " price =" +price); // for testing remove later
     }
 
     public int getMenuItemID(){
@@ -35,7 +38,7 @@ public class OrderItem {
     }
 
     public String toString(){
-        return  menuItemId + " name: " + name + " price: " + price;
+        return  menuItemId + " name: " + name + " price: " + String.format(".2f",price);
     }
 
 }
