@@ -10,10 +10,9 @@ import java.security.DrbgParameters.Capability;
 import java.util.*;
 
 /**
- * @Xunyi
- * @09-11-2021
- * MenuController manages the menu implementing the fileIO handling
-
+ * @YiXuan
+ * @14-11-2021
+ * MenuController allows the staff to manage the menu and it's various functions such as updating a menu item or removing an item. The MenuController also implements the fileIO handling methods
  * */
 
 public class MenuController extends AbstractController {
@@ -25,6 +24,11 @@ public class MenuController extends AbstractController {
 
     private static int menuItemId = 0;
 
+    /**
+     * Method that creates an menuController object if it doesn't exist. If it exists, it returns the object reference of the current menuController
+     * @return an instance of menuController 
+     * @throws IOException
+     */
     public static MenuController getInstance() throws IOException {
         if (menuController == null) {
             menuController = new MenuController();
@@ -32,8 +36,10 @@ public class MenuController extends AbstractController {
         return menuController;
     }
 
-
-
+    /**
+     * Constructor of MenuController aims to load all the exisiting menu items from the menu.txt file if it exists. If the text file does not exist. It creates a new text file, as well as menu item objects, saving it into the text file created 
+     * @throws IOException
+     */
     public MenuController() throws IOException {
         /** using text method */
         File file = new File(dir);
@@ -90,6 +96,9 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method to display all the items on the Menu
+     */
     public void displayMenu(){
         int count = 1;
         System.out.println("Displaying all menu items");
@@ -105,7 +114,7 @@ public class MenuController extends AbstractController {
     }
 
     /**
-	   * Create a new Ala Carte and add it into the menu
+	   * Creates a new Ala Carte and add it into the menu
 	   * @param name the name of new Ala Carte
        * @param price the price of the new Ala Carte
 	   * @param description the words used to describe the new Ala Carte
@@ -118,16 +127,16 @@ public class MenuController extends AbstractController {
             menuList.add(new AlaCarte(menuItemId,name,description,price,cat));
             save(dir, menuList);
         } catch (IOException e) {
-            System.out.println("shen me error? ");
+            System.out.println("Error!");
             e.printStackTrace();
         }
     }
 
     /**
-	 * Create a new set and add it to the menu
+	 * Creates a new set and add it to the menu
 	 * @param name the name of the new Set
-	 * @param description the words used to describe the new set.
-	 * @return the the new set itself.
+	 * @param description the words used to describe the new set
+	 * @return the the new object reference of the set created
 	 */
     public Set addSet(String name, String description){
         menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
@@ -142,6 +151,10 @@ public class MenuController extends AbstractController {
         //add alaCarte in it
     }
 
+    /**
+     * Method that allows the staff the manage the internal functions related to a set. For example, this method allows the staff to add item into a set or to remove an item from a set.
+     * @param setItem the set to be managed
+     */
     public void manageSet(Set setItem){
         int choice=0;
         int idx;
@@ -238,6 +251,10 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows the staff to make changes to to a set, for example, the name and the description. This method allows allows the staff to also manage the internal functionalities of the set like adding and removing items from a set
+     * @param mItem the menuItem object which should be set 
+     */
     public void updateSet(MenuItem mItem) {
         int choice = 0;
         while (choice != 5) {
@@ -290,6 +307,9 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows the staff to display all AlaCarte items - useful when staff wants to add AlaCarte items into a set 
+     */
     public void displayAlaCarte(){
         System.out.println("Displaying all AlaCarte items");
         int count = 1;
@@ -304,6 +324,10 @@ public class MenuController extends AbstractController {
         return;
     }
 
+
+    /**
+     * Method that allows the staff to update an AlaCarte item, for example, the name, description or price 
+     */
     public void updateAlaCarte(MenuItem aCarte){
         int choice = 0;
         while (choice != 5) {
@@ -377,6 +401,11 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows us to get a menuItem from its ID attribute 
+     * @param id menuItem attribute id
+     * @return the object reference of the menu item 
+     */
     public MenuItem getItemById(int id){
 
         for (MenuItem item : menuList)
@@ -389,13 +418,18 @@ public class MenuController extends AbstractController {
         return null;
     }
 
+    /**
+     * Method that allows us to get a menuItem from its printed index 
+     * @param index index(Menu Item displayed when menu is printed) of the menuItem shown
+     * @return the object reference of the menu item
+     */
     public MenuItem getItemByIndex(int index){
         return menuList.get(index);
     }
 
     /**
-	 * Delete the MenuItem from the menuItem list by its index
-	 * @param index the index of the menuItem to delete
+	 * Deletes the menuItem from the menuList by its index
+	 * @param index the index of the menuItem to be deleted
 	 */
     public void removeMenuItem(int index) {
         try {
@@ -421,7 +455,9 @@ public class MenuController extends AbstractController {
         }
     }
 
-    
+    /**
+     * Method that saves the attributes and details of all the menu items (both AlaCarte and Set) into a txt file 
+     */
     public  void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 
@@ -479,6 +515,9 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that creates the menu item objects from the its details stored in menu.txt file.
+     */
     public ArrayList<MenuItem> load(String filename) throws IOException {
 
         ArrayList stringArray = (ArrayList) read(filename);
@@ -548,14 +587,27 @@ public class MenuController extends AbstractController {
         return alr;
     }
 
+    /**
+     * Method that returns the size of the menu 
+     * @return size of the Menu 
+     */
     public int getSizeOfMenu(){
         return menuList.size();
     }
 
+    /**
+     * Method that returns the object reference of the menuList.
+     * @return
+     */
     public ArrayList<MenuItem> getMenuList() {
         return menuList;
     }
 
+    /**
+     * Method that checks whether a item id is an actual menu item in the list
+     * @param id id of the menu item that needs to be check
+     * @return returns true if id corresponding to a valid menu item, else return false
+     */
     public boolean isValidMenuItemId(int id){
         for(MenuItem item : menuList){
             if(item.getMenuItemId() == id) return true;
