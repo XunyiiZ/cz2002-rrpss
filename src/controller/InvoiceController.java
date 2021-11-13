@@ -82,7 +82,7 @@ public class InvoiceController extends AbstractController{
             }
             System.out.println("|||"+reportDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue)+"|||");
     }
-
+    
     public void printMonthlyReport(String dateStr) {
 
         double totalRev = 0.0;
@@ -138,7 +138,9 @@ public class InvoiceController extends AbstractController{
 
     }
 
-
+    /**
+    * prints invoice by passing in int id and String contact
+    */
     public void printInvoice(int id, String contact) {
         Invoice invoice = addInvoice(id, contact);
         System.out.println(invoice.toString());
