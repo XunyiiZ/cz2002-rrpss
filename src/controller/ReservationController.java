@@ -8,11 +8,27 @@ import Entity.*;
 
 import javax.sound.sampled.SourceDataLine;
 
+/**
+ * ReservationController is control class that support operations related to
+ * reservation.
+ */
+ 
 public class ReservationController extends AbstractController {
+    /**
+	 * The field holds all reservations
+	 */
     private ArrayList<Reservation> reservationList;
     private static ReservationController reservationController = null;
+    /**
+	 * This constant defines the threshold to determine whether a reservation is
+	 * expired. If the current time exceeds the reserved time by that much, a
+	 * reservation is expired.
+	 */
     private final int EXPIRE_PERIOD = 30;
     private static final String dir = "src/data/reservation.txt";
+    /**
+	 * This field provide access to control over Table objects
+	 */
     private TableController tableController = TableController.getInstance();
     private static Scanner in = new Scanner(System.in);
 
