@@ -11,17 +11,19 @@ public class Order {
     private int staffID;
     private int tableId;
     private int pax;
+    private boolean isActive;
     private ArrayList<OrderItem> orderItems;
 //    private static int orderSize;
 
     static Scanner sc = new Scanner(System.in);
 
-    public Order(int orderID, int staffID, int tableId, int pax){
+    public Order(int orderID, int staffID, int tableId, int pax, boolean isActive){
         this.orderID = orderID;
         this.tableId = tableId;
         orderItems = new ArrayList<OrderItem>();
         this.staffID = staffID;
         this.pax=pax;
+        this.isActive = isActive;
         //System.out.println("an order has been created!");
     }
 
@@ -36,6 +38,10 @@ public class Order {
     public int getPax(){return pax;}
 
     public int getStaffID(){return staffID;}
+
+    public boolean getIsActive() {return isActive;}
+
+    public void setIsActive(boolean isActive) {this.isActive = isActive;}
 
 //    public void getOrderItems(){
 //        for(OrderItem i: orderItems){
@@ -90,7 +96,7 @@ public class Order {
     }
 
     public void displayAllItems(){
-        System.out.println("   Item\t                                        Quantity\t  Price\n");
+        System.out.println("   Item\t                                        Quantity    Price\n");
         for(int i=0;i<orderItems.size();i++){
             System.out.println((i+1) + " " + String.format("%-50s",orderItems.get(i).getName())+  String.format("%-5d",orderItems.get(i).getQuantity())+"   "+ String.format("%.2f",orderItems.get(i).getPrice()) );
         }
@@ -100,16 +106,16 @@ public class Order {
     public void displayOrder(){
         System.out.println("-------------------------------------------");
         System.out.println("Order ID " + orderID+
-                "  Staff OD " + staffID+
+                "  Staff ID " + staffID+
                 "  Table ID "+tableId+
-                "\nNumber of pax " + pax +"\n");
+                "  Number of pax " + pax +"\n");
         displayAllItems();
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(OrderItem item : orderItems){
-            sb.append("\n"+ String.format("%-50s",item.getName())  + String.format("%-50.s",item.getQuantity() )+ "      " + String.format("%.2f", item.getPrice() ));
+            sb.append("\n"+ String.format("%-50s",item.getName())  + String.format("%-5d",item.getQuantity() )+ "      " + String.format("%.2f", item.getPrice() ));
         }
         return sb.toString();
     }

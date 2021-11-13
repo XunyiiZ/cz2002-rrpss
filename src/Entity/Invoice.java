@@ -87,22 +87,22 @@ public class Invoice{
 
         return(
 
-                "=========================RESTAURANT=========================="+
+                "=========================RESTAURANT=============================="+
                         "\nINVOICE #: "  + invoiceID + " \t\t\t"+
                         "\nServer: " + order.getStaffID() + "\t\tTable: " + order.getTableId() +
                         "\nDate Time: " + date+"    "+time.truncatedTo(ChronoUnit.SECONDS)+
                         "\nClient: " + order.getPax()+
-                        "\n--------------------------------------------------------------" +
-                        "\n   Item           Quantity            Price"+
+                        "\n------------------------------------------------------------------" +
+                        "\n   Item\t                                        Quantity    Price"+
                          order.toString() +
-                        "\n--------------------------------------------------------------" +
-                        "\n\t\t\t\t\t\t\t\t\t\tSubTotal:  " + String.format("%.2f",subtotal)+
-                        "\n\t\t\t\t\t\t\t\t\t\tafter discount :   " + String.format("%.2f",afterDiscount)+
-                        "\n\t\t\t\t\t\t\t\t\t\tGST:        " +  String.format("%.2f",GST)+
-                        "\n\t\t\t\t\t\t\t\t\t\t10% SERVICE CHARGE " + String.format("%.2f",serviceCharge)+
-                        "\n--------------------------------------------------------------" +
-                        "\n\t\t\t\t\t\t\t\t\t\tTOTAL: " + String.format("%.2f",total) +
-                        "\n\n===========================END===============================\n\n"
+                        "\n------------------------------------------------------------------" +
+                        "\n" + String.format("%58s: ","SubTotal") + String.format("%.2f",subtotal)+
+                        "\n" + String.format("%58s: ","After Discount") + String.format("%.2f",afterDiscount)+
+                        "\n" + String.format("%58s: ","GST") +  String.format("%.2f",GST)+
+                        "\n" + String.format("%58s: ","10% SERVICE CHARGE") + String.format("%.2f",serviceCharge)+
+                        "\n------------------------------------------------------------------" +
+                        "\n" + String.format("%58s: ","Total") + String.format("%.2f",total) +
+                        "\n\n===========================END===================================\n\n"
 
         );
     }

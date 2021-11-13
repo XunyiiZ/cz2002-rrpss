@@ -132,7 +132,7 @@ public class InvoiceController extends AbstractController{
             }
         }
 
-        System.out.println("total revenue for the month is " + String.format("%.2f", totalRev));
+        System.out.println("Total revenue for the month is " + String.format("%.2f", totalRev));
         System.out.println("Highest revenue is $" + String.format("%.2f", maxRev) + " on " + maxDay + "-" + month + "-" + year);        //没有算重复的
         System.out.println("Lowest revenue is $" + String.format("%.2f", minRev) + " on " + minDay + "-" + month + "-" + year);
 
