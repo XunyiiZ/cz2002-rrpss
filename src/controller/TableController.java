@@ -8,7 +8,12 @@ import Entity.*;
 
 
 /**
- * The tableController is for table related logic / use cases
+ * TableController is control class that supports operations related to
+ * Table.
+ *
+ * @author Sydney
+ * @version 1.0
+ * @Since 2021-11-13
  */
 public class TableController {
 
@@ -19,6 +24,10 @@ public class TableController {
     final int SIZE=20;
     private static TableController tableController = null;
 
+    /**
+     * This is the constructor of this class. It will load tables from
+     * external files.
+     */
     public TableController()
     {
 
@@ -51,6 +60,10 @@ public class TableController {
 
     }
 
+    /**
+     * This methods returns an instance of TableController
+     * @return TableController
+     */
     public static TableController getInstance()
     {
         if(tableController == null) {
@@ -59,16 +72,25 @@ public class TableController {
         return tableController;
     }
 
+    /**
+     * This set method is to set table to occupied
+     */
     public void setOccupied(int tableId)
     {
         listOfTables[tableId-1].setOccupied();
     }
 
+    /**
+     * This set method is to set table to unoccupied
+     */
     public void setUnoccupied(int tableId)
     {
         listOfTables[tableId-1].setUnoccupied();
     }
 
+    /**
+     * This method prints and display all tables
+     */
     public void displayAllTables()
     {
         for (Table i: listOfTables )
@@ -80,7 +102,9 @@ public class TableController {
         }
     }
 
-    // Showing in general all unoccupied tables
+    /**
+    * This methods shows in general all unoccupied tables
+    */ 
     public void displayUnoccupiedTables()
     {
         int count = 0;
@@ -109,8 +133,10 @@ public class TableController {
         }
     }
 
-
-    // Showing all unoccupied tables corresponding to the number of people
+    /**
+    * This methods shows all unoccupied tables corresponding to the number of people
+    */ 
+    
     public void displayUnoccupiedTables(int numberOfPax)
     {
         int tablePax = getTablePax(numberOfPax);
@@ -133,6 +159,9 @@ public class TableController {
         }
     }
 
+    /**
+    * This methods displays all unoccupied tables
+    */ 
     public void displayOccupiedTables()
     {
         int count = 0;
@@ -190,7 +219,7 @@ public class TableController {
         }
         return tablePax;
     }
-    /**get table by pax*/
+    /**Get table by pax*/
     public ArrayList<Integer> getTableByTablePax(int pax){
 
         ArrayList<Integer> tables = new ArrayList<>();
