@@ -6,77 +6,118 @@ import java.time.*;
 import java.util.*;
 import Entity.*;
 
-import javax.sound.sampled.SourceDataLine;
+/**
+ * ReservationController is control class that supports operations related to
+ * reservation.
+ *
+ * @author Zeng Xunyi
+ * @version 1.0
+ * @Date 11-2014
+ */
 
 public class ReservationController extends AbstractController {
-    private ArrayList<Reservation> reservationList;
-    private static ReservationController reservationController = null;
+    /**
+     * This constant defines the threshold to determine whether a reservation is
+     * expired. If the current time exceeds the reserved time by that much, a
+     * reservation is expired.
+     */
     private final int EXPIRE_PERIOD = 30;
+    /**
+     * This constant defines the file path that store all data of reservation lsit
+     */
     private static final String dir = "src/data/reservation.txt";
+    /**
+     * The field holds all reservations
+     */
+    private ArrayList<Reservation> reservationList;
+    /**
+     * This field provides an instance of reservation Controller
+     */
+     private static ReservationController reservationController = null;
+    /**
+     * This field provides access to control over Table objects
+     */
     private TableController tableController = TableController.getInstance();
+    /**
+     * This field provides access to control over Table objects                               -- how to write this ?
+     */
     private static Scanner in = new Scanner(System.in);
 
-    private static int reservationId = 0;
+    /**
+     * This is the constructor of this class. It will load reservations from
+     * external files.
+     */
+    public ReservationController() {
+        try {
+            File file = new File(dir);
+            if (file.exists()) {
+                reservationList = load(dir);
+            } else {
 
-    public static ReservationController getInstance() throws IOException {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                reservationList = new ArrayList<Reservation>();
+                save(dir, reservationList);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This methods returns an instance of ReservationController
+     * @return ReservationController
+     */
+    public static ReservationController getInstance() {
         if (reservationController == null) {
             reservationController = new ReservationController();
         }
         return reservationController;
     }
 
-    public ReservationController() throws IOException {
-        File file = new File(dir);
-        if (file.exists()) {
-            reservationList = load(dir);
-        } else {
+    /**
+     * This method is to remove all expired but yet checked in reservations
+     */
+    private void clearReservation() {
+        LocalDate today = LocalDate.now();
+        LocalTime curTime = LocalTime.now();
 
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            reservationList = new ArrayList<Reservation>();
-            save(dir, reservationList);
-        }
-    }
+        ArrayList<Reservation> toRemove = new ArrayList<>();
 
-        private void clearReservation() throws IOException {
-        //try {
-                LocalDate today = LocalDate.now();
-                LocalTime curTime = LocalTime.now();
-
-                ArrayList<Reservation> toRemove = new ArrayList<>();
-
-                for (Reservation reservation : reservationList) {
-                    LocalTime expireTime = reservation.getAppointmentTime().plusMinutes(EXPIRE_PERIOD);
-                    if (reservation.getAppointmentDate().isBefore(today) ||( reservation.getAppointmentDate().equals(today) && curTime.isAfter(expireTime))) {
-                        toRemove.add(reservation);
-                    }
-                }
-                reservationList.removeAll(toRemove);
-                save(dir, reservationList);
-//            } catch (IOException e) {
-//                System.out.println("What error?");
-//                e.printStackTrace();
-//            }
-        }
-
-
-        // display all the attributes of reservation class corresponding to its reservation id
-        public void displayAllReservations() throws IOException {
-            clearReservation();
-            for (Reservation r: reservationList) {
-                System.out.println(r.toString());
+        for (Reservation reservation : reservationList) {
+            LocalTime expireTime = reservation.getAppointmentTime().plusMinutes(EXPIRE_PERIOD);
+            if (reservation.getAppointmentDate().isBefore(today) ||( reservation.getAppointmentDate().equals(today) && curTime.isAfter(expireTime))) {
+                toRemove.add(reservation);
             }
         }
-
-        public Reservation getReservationById(int reservationId) throws IOException {
-        clearReservation();
-        for (Reservation res : reservationList){
-            if( res.getReservationId() == reservationId)
-                return res;
+        reservationList.removeAll(toRemove);
+        try{
+            save(dir, reservationList);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
- //      System.out.println("Reservation not found");
-        return null;
     }
+
+
+    /**
+     * This method is to display all reservations with details
+     */
+    public void displayAllReservations(){
+        clearReservation();
+        for (Reservation r: reservationList) {
+            System.out.println(r.toString());
+        }
+    }
+
+    public Reservation getReservationById(int reservationId) throws IOException {
+    clearReservation();
+    for (Reservation res : reservationList){
+        if( res.getReservationId() == reservationId)
+            return res;
+    }
+//      System.out.println("Reservation not found");
+    return null;
+}
 
         //clearReservation() is to remove the expired Reservations from reservation list
 
@@ -136,7 +177,7 @@ public class ReservationController extends AbstractController {
                     break;
                 } while (true);
 
-                reservationId = reservationList.get(reservationList.size()-1).getReservationId()+1;
+                int reservationId = reservationList.get(reservationList.size()-1).getReservationId()+1;
 
                 // create the reservation
                 Reservation reservation = new Reservation(reservationId, name, contact, numberOfPax, tableId, date, time);
