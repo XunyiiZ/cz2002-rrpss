@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Xunyi
  * @version 1.0
- * @Date 11-2021
+ * @Date 2021-11
  */
 public class ReservationUI {
     /**
@@ -59,7 +59,6 @@ public class ReservationUI {
     /**
      * This method is to get instance of ReservationUI
      */
-
     public static ReservationUI getInstance(){
         if (reservationUI == null)
             reservationUI = new ReservationUI();

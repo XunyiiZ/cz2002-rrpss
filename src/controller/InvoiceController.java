@@ -172,6 +172,7 @@ public class InvoiceController extends AbstractController{
             total = afterDiscount + GST + serviceCharge;
 
             Invoice invoice = new Invoice(invoiceId, id, date, time, order, subtotal, afterDiscount, serviceCharge, GST, total);
+            order.setIsActive(false);
             invoiceList.add(invoice);
             save(dir, invoiceList);
 

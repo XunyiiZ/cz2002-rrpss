@@ -26,10 +26,9 @@ public class MenuController extends AbstractController {
 
     /**
      * Method that creates an menuController object if it doesn't exist. If it exists, it returns the object reference of the current menuController
-     * @return an instance of menuController 
-     * @throws IOException
+     * @return an instance of menuController
      */
-    public static MenuController getInstance() throws IOException {
+    public static MenuController getInstance() {
         if (menuController == null) {
             menuController = new MenuController();
         }
@@ -40,59 +39,63 @@ public class MenuController extends AbstractController {
      * Constructor of MenuController aims to load all the exisiting menu items from the menu.txt file if it exists. If the text file does not exist. It creates a new text file, as well as menu item objects, saving it into the text file created 
      * @throws IOException
      */
-    public MenuController() throws IOException {
-        /** using text method */
-        File file = new File(dir);
-        if (file.exists()) {
-            menuList = load(dir);
-        } else {
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            menuList = new ArrayList<MenuItem>();
+    public MenuController() {
+        try {
+            File file = new File(dir);
+            if (file.exists()) {
+                menuList = load(dir);
+            } else {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                menuList = new ArrayList<MenuItem>();
 
-            // AlaCarte 1-3 and Set 1
-            AlaCarte aCarte1 = new AlaCarte(1,"Steak", "juicy, tender, loaded with flavor", 24.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte1);
-            AlaCarte aCarte2 = new AlaCarte(2, "Fries", "crunchy exterior with a light, fluffy interior", 4.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte2);
-            AlaCarte aCarte3 = new AlaCarte(3, "Coca-cola", "carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings", 1.50, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte3);
+                // AlaCarte 1-3 and Set 1
+                AlaCarte aCarte1 = new AlaCarte(1, "Steak", "juicy, tender, loaded with flavor", 24.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte1);
+                AlaCarte aCarte2 = new AlaCarte(2, "Fries", "crunchy exterior with a light, fluffy interior", 4.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte2);
+                AlaCarte aCarte3 = new AlaCarte(3, "Coca-cola", "carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings", 1.50, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte3);
 
-            Set set1 = new Set(4, "London-Famous Ribeye", "A scrumptious ribeye steak, served along with a side of fries and a bottle of coke", 0);
-            set1.addAlaCarte(aCarte1);
-            set1.addAlaCarte(aCarte2);
-            set1.addAlaCarte(aCarte3);
-            menuList.add(set1);
+                Set set1 = new Set(4, "London-Famous Ribeye", "A scrumptious ribeye steak, served along with a side of fries and a bottle of coke", 0);
+                set1.addAlaCarte(aCarte1);
+                set1.addAlaCarte(aCarte2);
+                set1.addAlaCarte(aCarte3);
+                menuList.add(set1);
 
-            // AlaCarte 4-6 and Set 2
-            AlaCarte aCarte4 = new AlaCarte(5, "Aglio Olio", "traditional pasta recipe made by sautéing sliced garlic in olive oil", 14.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte4);
-            AlaCarte aCarte5 = new AlaCarte(6, "Onion Rings", " deep fried onion dipped in batter and bread crumbs", 4.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte5);
-            AlaCarte aCarte6 = new AlaCarte(7, "Lemonade", "homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.", 3, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte6);
+                // AlaCarte 4-6 and Set 2
+                AlaCarte aCarte4 = new AlaCarte(5, "Aglio Olio", "traditional pasta recipe made by sautéing sliced garlic in olive oil", 14.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte4);
+                AlaCarte aCarte5 = new AlaCarte(6, "Onion Rings", " deep fried onion dipped in batter and bread crumbs", 4.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte5);
+                AlaCarte aCarte6 = new AlaCarte(7, "Lemonade", "homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.", 3, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte6);
 
-            Set set2 = new Set(8, "Chef's Recommended Italian Aglio Olio", "A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade", 0);
-            set2.addAlaCarte(aCarte4);
-            set2.addAlaCarte(aCarte5);
-            set2.addAlaCarte(aCarte6);
-            menuList.add(set2);
+                Set set2 = new Set(8, "Chef's Recommended Italian Aglio Olio", "A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade", 0);
+                set2.addAlaCarte(aCarte4);
+                set2.addAlaCarte(aCarte5);
+                set2.addAlaCarte(aCarte6);
+                menuList.add(set2);
 
-            // AlaCarte 7-9 and Set 3
-            AlaCarte aCarte7 = new AlaCarte(9, "Chicken-chop", "piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried", 19.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte7);
-            AlaCarte aCarte8 = new AlaCarte(10, "Mash potato", "Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency", 5.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte8);
-            AlaCarte aCarte9 = new AlaCarte(11, "Green Tea", "fresh, lively and nourishing homed-brewed tea", 3.50, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte9);
+                // AlaCarte 7-9 and Set 3
+                AlaCarte aCarte7 = new AlaCarte(9, "Chicken-chop", "piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried", 19.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte7);
+                AlaCarte aCarte8 = new AlaCarte(10, "Mash potato", "Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency", 5.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte8);
+                AlaCarte aCarte9 = new AlaCarte(11, "Green Tea", "fresh, lively and nourishing homed-brewed tea", 3.50, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte9);
 
-            Set set3 = new Set(12, "Chicken Supremo", "A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea", 0);
-            set3.addAlaCarte(aCarte7);
-            set3.addAlaCarte(aCarte8);
-            set3.addAlaCarte(aCarte9);
-            menuList.add(set3);
+                Set set3 = new Set(12, "Chicken Supremo", "A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea", 0);
+                set3.addAlaCarte(aCarte7);
+                set3.addAlaCarte(aCarte8);
+                set3.addAlaCarte(aCarte9);
+                menuList.add(set3);
 
-            save(dir, menuList);
+                save(dir, menuList);
+            }
+        } catch (IOException e) {
+            System.out.println("getting menu list unsuccessful");
+            e.printStackTrace();
         }
     }
 
@@ -118,7 +121,7 @@ public class MenuController extends AbstractController {
 	   * @param name the name of new Ala Carte
        * @param price the price of the new Ala Carte
 	   * @param description the words used to describe the new Ala Carte
-	   * @param category the category of the new Ala Carte
+	   * @param cat the category of the new Ala Carte
 	   */
     public void addAlaCarte(String name, double price, String description, AlaCarte.Category cat ){
         

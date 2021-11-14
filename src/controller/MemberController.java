@@ -21,9 +21,8 @@ public class MemberController extends AbstractController{
     /**
      * Method that creates an memberController object if it doesn't exist. If it exists, it returns the object reference of the current memberController
      * @return an instance of memberController
-     * @throws IOException
      */
-    public static MemberController getInstance() throws IOException {
+    public static MemberController getInstance(){
         if (memberController == null) {
             memberController = new MemberController();
         }
@@ -33,16 +32,21 @@ public class MemberController extends AbstractController{
     /**
      * Constructor of MemberController aims to load all the members from the member.txt file if it exists. If the text file does not exist. It creates a new text file, to store the details of the new members 
      */
-    public MemberController() throws IOException {
-        /** using text method */
-        File file = new File(dir);
-        if (file.exists()) {
-            members = load(dir);
-        } else {
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            members = new ArrayList<Member>();
-            save(dir, members);
+    public MemberController() {
+        try {
+            File file = new File(dir);
+            if (file.exists()) {
+                members = load(dir);
+            } else {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                members = new ArrayList<Member>();
+                save(dir, members);
+            }
+
+        } catch (IOException e) {
+            System.out.println("load member list unsuccessful");
+            e.printStackTrace();
         }
     }
 
