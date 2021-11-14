@@ -10,10 +10,9 @@ import java.security.DrbgParameters.Capability;
 import java.util.*;
 
 /**
- * @Xunyi
- * @09-11-2021
- * MenuController manages the menu implementing the fileIO handling
-
+ * @YiXuan
+ * @14-11-2021
+ * MenuController allows the staff to manage the menu and it's various functions such as updating a menu item or removing an item. The MenuController also implements the fileIO handling methods
  * */
 
 public class MenuController extends AbstractController {
@@ -25,71 +24,85 @@ public class MenuController extends AbstractController {
 
     private static int menuItemId = 0;
 
-    public static MenuController getInstance() throws IOException {
+    /**
+     * Method that creates an menuController object if it doesn't exist.
+     * If it exists, it returns the object reference of the current menuController
+     * @return an instance of menuController
+     */
+    public static MenuController getInstance() {
         if (menuController == null) {
             menuController = new MenuController();
         }
         return menuController;
     }
 
+    /**
+     * Constructor of MenuController aims to load all the exisiting menu items from the menu.txt file if it exists.
+     * If the text file does not exist. It creates a new text file, as well as menu item objects, saving it into the text file created
+     */
+    public MenuController() {
+        try {
+            File file = new File(dir);
+            if (file.exists()) {
+                menuList = load(dir);
+            } else {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                menuList = new ArrayList<MenuItem>();
 
+                // AlaCarte 1-3 and Set 1
+                AlaCarte aCarte1 = new AlaCarte(1, "Steak", "juicy, tender, loaded with flavor", 24.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte1);
+                AlaCarte aCarte2 = new AlaCarte(2, "Fries", "crunchy exterior with a light, fluffy interior", 4.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte2);
+                AlaCarte aCarte3 = new AlaCarte(3, "Coca-cola", "carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings", 1.50, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte3);
 
-    public MenuController() throws IOException {
-        /** using text method */
-        File file = new File(dir);
-        if (file.exists()) {
-            menuList = load(dir);
-        } else {
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            menuList = new ArrayList<MenuItem>();
+                Set set1 = new Set(4, "London-Famous Ribeye", "A scrumptious ribeye steak, served along with a side of fries and a bottle of coke", 0);
+                set1.addAlaCarte(aCarte1);
+                set1.addAlaCarte(aCarte2);
+                set1.addAlaCarte(aCarte3);
+                menuList.add(set1);
 
-            // AlaCarte 1-3 and Set 1
-            AlaCarte aCarte1 = new AlaCarte(1,"Steak", "juicy, tender, loaded with flavor", 24.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte1);
-            AlaCarte aCarte2 = new AlaCarte(2, "Fries", "crunchy exterior with a light, fluffy interior", 4.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte2);
-            AlaCarte aCarte3 = new AlaCarte(3, "Coca-cola", "carbonated soft drink flavored with vanilla, cinnamon, citrus oils and other flavorings", 1.50, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte3);
+                // AlaCarte 4-6 and Set 2
+                AlaCarte aCarte4 = new AlaCarte(5, "Aglio Olio", "traditional pasta recipe made by sautéing sliced garlic in olive oil", 14.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte4);
+                AlaCarte aCarte5 = new AlaCarte(6, "Onion Rings", " deep fried onion dipped in batter and bread crumbs", 4.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte5);
+                AlaCarte aCarte6 = new AlaCarte(7, "Lemonade", "homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.", 3, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte6);
 
-            Set set1 = new Set(4, "London-Famous Ribeye", "A scrumptious ribeye steak, served along with a side of fries and a bottle of coke", 0);
-            set1.addAlaCarte(aCarte1);
-            set1.addAlaCarte(aCarte2);
-            set1.addAlaCarte(aCarte3);
-            menuList.add(set1);
+                Set set2 = new Set(8, "Chef's Recommended Italian Aglio Olio", "A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade", 0);
+                set2.addAlaCarte(aCarte4);
+                set2.addAlaCarte(aCarte5);
+                set2.addAlaCarte(aCarte6);
+                menuList.add(set2);
 
-            // AlaCarte 4-6 and Set 2
-            AlaCarte aCarte4 = new AlaCarte(5, "Aglio Olio", "traditional pasta recipe made by sautéing sliced garlic in olive oil", 14.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte4);
-            AlaCarte aCarte5 = new AlaCarte(6, "Onion Rings", " deep fried onion dipped in batter and bread crumbs", 4.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte5);
-            AlaCarte aCarte6 = new AlaCarte(7, "Lemonade", "homemade drink using lemon juice, water, and a sweetener such as cane sugar, simple syrup or honey.", 3, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte6);
+                // AlaCarte 7-9 and Set 3
+                AlaCarte aCarte7 = new AlaCarte(9, "Chicken-chop", "piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried", 19.90, AlaCarte.Category.MAINCOURSE);
+                menuList.add(aCarte7);
+                AlaCarte aCarte8 = new AlaCarte(10, "Mash potato", "Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency", 5.90, AlaCarte.Category.SIDES);
+                menuList.add(aCarte8);
+                AlaCarte aCarte9 = new AlaCarte(11, "Green Tea", "fresh, lively and nourishing homed-brewed tea", 3.50, AlaCarte.Category.DRINKS);
+                menuList.add(aCarte9);
 
-            Set set2 = new Set(8, "Chef's Recommended Italian Aglio Olio", "A delicious bowl of pasta, served along with a side of onion rings and a special homemade lemonade", 0);
-            set2.addAlaCarte(aCarte4);
-            set2.addAlaCarte(aCarte5);
-            set2.addAlaCarte(aCarte6);
-            menuList.add(set2);
+                Set set3 = new Set(12, "Chicken Supremo", "A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea", 0);
+                set3.addAlaCarte(aCarte7);
+                set3.addAlaCarte(aCarte8);
+                set3.addAlaCarte(aCarte9);
+                menuList.add(set3);
 
-            // AlaCarte 7-9 and Set 3
-            AlaCarte aCarte7 = new AlaCarte(9, "Chicken-chop", "piece of de-boned chicken thigh, breaded and deep-fried or just plain grilled or pan-fried", 19.90, AlaCarte.Category.MAINCOURSE);
-            menuList.add(aCarte7);
-            AlaCarte aCarte8 = new AlaCarte(10, "Mash potato", "Cooked potatoes, with a small amount of milk added, that have been mashed to a smooth fluffy consistency", 5.90, AlaCarte.Category.SIDES);
-            menuList.add(aCarte8);
-            AlaCarte aCarte9 = new AlaCarte(11, "Green Tea", "fresh, lively and nourishing homed-brewed tea", 3.50, AlaCarte.Category.DRINKS);
-            menuList.add(aCarte9);
-
-            Set set3 = new Set(12, "Chicken Supremo", "A hearty cut of chicken, served with smooth fluffy mash potato and a cup of homed-brewed tea", 0);
-            set3.addAlaCarte(aCarte7);
-            set3.addAlaCarte(aCarte8);
-            set3.addAlaCarte(aCarte9);
-            menuList.add(set3);
-
-            save(dir, menuList);
+                save(dir, menuList);
+            }
+        } catch (IOException e) {
+            System.out.println("getting menu list unsuccessful");
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Method to display all the items on the Menu
+     */
     public void displayMenu(){
         int count = 1;
         System.out.println("Displaying all menu items");
@@ -105,29 +118,24 @@ public class MenuController extends AbstractController {
     }
 
     /**
-	   * Create a new Ala Carte and add it into the menu
+	   * Creates a new Ala Carte and add it into the menu
 	   * @param name the name of new Ala Carte
        * @param price the price of the new Ala Carte
 	   * @param description the words used to describe the new Ala Carte
-	   * @param category the category of the new Ala Carte
+	   * @param cat the category of the new Ala Carte
 	   */
     public void addAlaCarte(String name, double price, String description, AlaCarte.Category cat ){
-        
-        try {
-            menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
-            menuList.add(new AlaCarte(menuItemId,name,description,price,cat));
-            save(dir, menuList);
-        } catch (IOException e) {
-            System.out.println("shen me error? ");
-            e.printStackTrace();
-        }
+
+        menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
+        menuList.add(new AlaCarte(menuItemId,name,description,price,cat));
+        save(dir, menuList);
     }
 
     /**
-	 * Create a new set and add it to the menu
+	 * Creates a new set and add it to the menu
 	 * @param name the name of the new Set
-	 * @param description the words used to describe the new set.
-	 * @return the the new set itself.
+	 * @param description the words used to describe the new set
+	 * @return the the new object reference of the set created
 	 */
     public Set addSet(String name, String description){
         menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
@@ -142,6 +150,11 @@ public class MenuController extends AbstractController {
         //add alaCarte in it
     }
 
+    /**
+     * Method that allows the staff the manage the internal functions related to a set.
+     * For example, this method allows the staff to add item into a set or to remove an item from a set.
+     * @param setItem the set to be managed
+     */
     public void manageSet(Set setItem){
         int choice=0;
         int idx;
@@ -238,6 +251,11 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows the staff to make changes to a set, for example, the name and the description.
+     * This method allows the staff to also manage the internal functionalities of the set like adding and removing items from a set
+     * @param mItem the menuItem object which should be set 
+     */
     public void updateSet(MenuItem mItem) {
         int choice = 0;
         while (choice != 5) {
@@ -290,6 +308,9 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows the staff to display all AlaCarte items - useful when staff wants to add AlaCarte items into a set 
+     */
     public void displayAlaCarte(){
         System.out.println("Displaying all AlaCarte items");
         int count = 1;
@@ -304,6 +325,10 @@ public class MenuController extends AbstractController {
         return;
     }
 
+
+    /**
+     * Method that allows the staff to update an AlaCarte item, for example, the name, description or price 
+     */
     public void updateAlaCarte(MenuItem aCarte){
         int choice = 0;
         while (choice != 5) {
@@ -377,6 +402,11 @@ public class MenuController extends AbstractController {
         }
     }
 
+    /**
+     * Method that allows us to get a menuItem from its ID attribute 
+     * @param id menuItem attribute id
+     * @return the object reference of the menu item 
+     */
     public MenuItem getItemById(int id){
 
         for (MenuItem item : menuList)
@@ -389,13 +419,18 @@ public class MenuController extends AbstractController {
         return null;
     }
 
+    /**
+     * Method that allows us to get a menuItem from its printed index 
+     * @param index index(Menu Item displayed when menu is printed) of the menuItem shown
+     * @return the object reference of the menu item
+     */
     public MenuItem getItemByIndex(int index){
         return menuList.get(index);
     }
 
     /**
-	 * Delete the MenuItem from the menuItem list by its index
-	 * @param index the index of the menuItem to delete
+	 * Deletes the menuItem from the menuList by its index
+	 * @param index the index of the menuItem to be deleted
 	 */
     public void removeMenuItem(int index) {
         try {
@@ -421,16 +456,18 @@ public class MenuController extends AbstractController {
         }
     }
 
-    
-    public  void save(String filename, List al) throws IOException {
+    /**
+     * This method is to save current menu items to external files.
+     * @param filename
+     *          specifies where the data to be stored
+     * @param al
+     *          specifies the list to be saved to the file
+     */
+    @Override
+    public  void save(String filename, List al)  {
         List alw = new ArrayList();  //to store data
-
         for (int i = 0; i < al.size(); i++) {
-            
-            //int isAlaCarte = 1;
-
             StringBuilder st = new StringBuilder();
-
             if (al.get(i) instanceof AlaCarte)
             {
                 AlaCarte aCarte = (AlaCarte) al.get(i);
@@ -479,10 +516,16 @@ public class MenuController extends AbstractController {
         }
     }
 
-    public ArrayList<MenuItem> load(String filename) throws IOException {
-
+    /**
+     * This method is to load menu items from external files
+     * @param filename
+     *            specifies where the external files stored
+     * @return all reservations read from the file
+     */
+    @Override
+    public ArrayList<MenuItem> load(String filename) {
         ArrayList stringArray = (ArrayList) read(filename);
-        ArrayList<MenuItem> alr = new ArrayList<MenuItem>();  
+        ArrayList<MenuItem> alr = new ArrayList<MenuItem>();
 
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
@@ -502,7 +545,7 @@ public class MenuController extends AbstractController {
                 price = Double.parseDouble(star.nextToken().trim());
                 String category = star.nextToken().trim();
 
-                AlaCarte.Category cat = null;
+                Category cat = null;
                 switch (category){
                     case "maincourse":
                         cat = Category.MAINCOURSE;
@@ -538,9 +581,6 @@ public class MenuController extends AbstractController {
                         }
                         index++;
                     }
-                    // MenuItem item = this.getItemById(aCarteId);
-                    // set.addAlaCarte((AlaCarte) item);
-                    //alr.stream().filter(alr -> aCarteId == alr.getItemById(aCarteId)).findAny().orElse(null);
                 }
                 alr.add(set);
             }
@@ -548,14 +588,27 @@ public class MenuController extends AbstractController {
         return alr;
     }
 
+    /**
+     * Method that returns the size of the menu 
+     * @return size of the Menu 
+     */
     public int getSizeOfMenu(){
         return menuList.size();
     }
 
+    /**
+     * Method that returns the object reference of the menuList.
+     * @return
+     */
     public ArrayList<MenuItem> getMenuList() {
         return menuList;
     }
 
+    /**
+     * Method that checks whether a item id is an actual menu item in the list
+     * @param id id of the menu item that needs to be check
+     * @return returns true if id corresponding to a valid menu item, else return false
+     */
     public boolean isValidMenuItemId(int id){
         for(MenuItem item : menuList){
             if(item.getMenuItemId() == id) return true;

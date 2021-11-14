@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.channels.ScatteringByteChannel;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,109 +15,135 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDateTime;
-
+/**
+ * OrderController is control class that supports operations related to
+ * order.
+ *
+ * @author Zeng Xunyi
+ * @version 1.0
+ * @Date 2021-11
+ */
 public class OrderController extends AbstractController {
-
-    private static ArrayList<Order> orders;
-    private static OrderController orderController = null;
-    private TableController tableController = TableController.getInstance();
-    private MenuController menuController = MenuController.getInstance();
-    private ReservationController resController = ReservationController.getInstance();
-    private static Scanner sc = new Scanner(System.in);
+    /**
+     * This constant defines the file path that store all data of order list
+     */
     private static final String dir = "src/data/order.txt";
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+    /**
+     * The field holds all orders
+     */
+    private static ArrayList<Order> orders;
+    /**
+     * This field provides an instance of order Controller
+     */
+    private static OrderController orderController = null;
+    /**
+     * This field provides access to control over Table objects
+     */
+    private TableController tableController = TableController.getInstance();
+    /**
+     * This field provides access to control over menu objects
+     */
+    private MenuController menuController = MenuController.getInstance();
+    /**
+     * This field provides access to control over reservation objects
+     */
+    private ReservationController resController = ReservationController.getInstance();
+    /**
+     * This is the constructor of this class. It will load orders from
+     * external file.
+     */
+    private Scanner sc = new Scanner(System.in);
 
-
-    public OrderController() throws IOException {
-        /** using text method */
-        File file = new File(dir);
-        if (file.exists()) {
-            orders = load(dir);
-        } else {
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            orders = new ArrayList<Order>();
-            save(dir, orders);
+    public OrderController() {
+        try {
+            File file = new File(dir);
+            if (file.exists()) {
+                orders = load(dir);
+            } else {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                orders = new ArrayList<Order>();
+                save(dir, orders);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static OrderController getInstance() throws IOException {
+    /**
+     * This methods returns an instance of OrderController
+     *
+     * @return OrderController
+     */
+    public static OrderController getInstance() {
         if (orderController == null) {
             orderController = new OrderController();
         }
         return orderController;
     }
 
-    public void showOrderItems(int id) {
-        for (Order i : orders) {
-            if (i.getOrderID() == id) {
-                i.getOrderItems();
-            }
-            break;
-        }
-    }
-
-    public void createOrder() throws IOException {
+    /**
+     * This method is to create a new order
+     */
+    public void createOrder() {
         int tabID = -1;
-        int numOfPax=-1;
+        int numOfPax = -1;
         int orderID;
         //1. Reservation
         System.out.println("Enter Staff ID: ");
-        int  staffID = sc.nextInt();
+        int staffID = sc.nextInt();
         sc.nextLine();
 
-        System.out.println("check in for a reservation? Y/N");
+        System.out.println("Check in for a reservation? Y/N");
         char response = sc.nextLine().charAt(0);
         response = Character.toUpperCase(response);
 
-        while(response != 'Y' && response !='N'){
-            System.out.println("invalid input. please enter Y or N:");
+        while (response != 'Y' && response != 'N') {
+            System.out.println("Invalid input. please enter Y or N:");
             response = sc.nextLine().charAt(0);
             response = Character.toUpperCase(response);
         }
- //       System.out.println("having input " + response);
 
         if (response == 'Y') {
             int resID;
-            int count = 2; //check for correct reservation id, check 2x if invalid then break
-            while (count >0) {
+            int count = 2;
+            while (count > 0) {
                 System.out.println("Enter reservation ID: ");
                 resID = sc.nextInt();
                 sc.nextLine();
-                Reservation reservation = resController.getReservationById(resID); //Reservation reservation = getReservationById(resID); --> if null, then ask again for reservation id, if null 2x then break out loop
+                Reservation reservation = resController.getReservationById(resID);
                 if (reservation == null) {
                     System.out.println("Reservation not found. Please try again.");
                 } else {
                     System.out.println("The reservation is found!");
                     tabID = reservation.getTableId();
+                    numOfPax = reservation.getNumberOfPax();
                     resController.removeReservationById(resID);  // remove his reservation
                     break;
                 }
                 count--;
             }
-            if (count <= 0){
+            if (count <= 0) {
                 System.out.println("Creating an order without a reservation");
                 response = 'N';
             }
         }
 
         if (response == 'N') {
- //           System.out.println("no reservation ");
-            //call tablecontroller and show unoccupied unreserved tables
             System.out.println("Enter no. of pax: ");
             numOfPax = sc.nextInt();
             sc.nextLine();
 
             int tablePax = tableController.getTablePax(numOfPax);
-            ArrayList<Integer> availableTables = getAvailableTableID(tablePax);
+            ArrayList<Integer> availableTables = tableController.getAvailableTableID(tablePax);
             if (availableTables.size() == 0) {
                 System.out.println("There is no available table now");
                 return;
             } else {
-                System.out.println("Available table(s):" + availableTables.toString());
+                System.out.println("Available table(s):" + availableTables);
             }
 
-            System.out.println("Assign the Table id:");
+            System.out.println("Assign the Table ID:");
             tabID = sc.nextInt();
             sc.nextLine();
             do {
@@ -126,7 +153,7 @@ public class OrderController extends AbstractController {
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    System.out.println("Enter table ID to reserve:");
+                    System.out.println("Enter Table ID to reserve:");
                     tabID = sc.nextInt();
                     continue;
                 }
@@ -135,92 +162,76 @@ public class OrderController extends AbstractController {
 
         }
 
-        //orderID
-        if(orders.size()==0) orderID =1;
-        else{
-            //System.out.println("Order size is " + orders.size());  // test need to be removed
-            orderID = orders.get(orders.size()-1).getOrderID()+1;
+
+        if (orders.size() == 0) orderID = 1;
+        else {
+            orderID = orders.get(orders.size() - 1).getOrderID() + 1;
         }
 
-        Order order = new Order(orderID, staffID, tabID, numOfPax);
+        Order order = new Order(orderID, staffID, tabID, numOfPax, true);
         orders.add(order);
-        System.out.println("Table id is " + tabID); //for test should be deleted later
+        System.out.println("Table ID is " + tabID);
         tableController.setOccupied(tabID);
 
-        //while loop
         System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
-        int choice = sc.nextInt(); sc.nextLine();
+        int choice = sc.nextInt();
+        sc.nextLine();
         while (true) {
-            while (choice > 4 || choice < 1)
-            {
+            while (choice > 4 || choice < 1) {
                 System.out.println("Invalid input");
                 System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
-                choice = sc.nextInt(); sc.nextLine();
+                choice = sc.nextInt();
+                sc.nextLine();
             }
-                switch (choice) {
-                    case 1:
-                        addItemToOrder(orderID);
-                        break;
-                    case 2:
-                        removeItemFromOrder(orderID);
-                        break;
-                    case 3:
-                        order.displayAllItems();
-                        break;
-                    case 4:
-                        try {
-                            save(dir, orders);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                }
+            switch (choice) {
+                case 1:
+                    addItemToOrder(orderID);
+                    break;
+                case 2:
+                    removeItemFromOrder(orderID);
+                    break;
+                case 3:
+                    order.displayAllItems();
+                    break;
+                case 4:
+                    try {
+                        save(dir, orders);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
             if (choice == 4) break;
             System.out.println("1. Add item \n2. Remove Item \n3. Display all items \n4. Finish");
-            choice = sc.nextInt(); sc.nextLine();
+            choice = sc.nextInt();
+            sc.nextLine();
         }
-
-        //no option to remove order item while creating order
         System.out.println("Your order has been created.");
         order.displayOrder();
-
     }
 
-
-
-    //menu item id should be unique and not neccessarily in sequence
-    //menu item id is only used in text file to trace the menu item
-    //when display menu item can use index
-
-    public void addItemToOrder(int orderID) throws IOException {
+    /**
+     * This method is to add an order item to this order
+     *
+     * @param orderID specifies the ID of target order
+     */
+    public void addItemToOrder(int orderID) {
         Order order = getOrderByID(orderID);
         menuController.displayMenu();  // need to display the index
         System.out.println("Enter the menu item number that you like to add?");
         int itemNum = sc.nextInt();
         sc.nextLine();
 
-        if(itemNum<1 || itemNum > menuController.getMenuList().size()){
+        if (itemNum < 1 || itemNum > menuController.getMenuList().size()) {
             System.out.println("Invalid index!");
             return;
-        }
-        else {
-            MenuItem item = menuController.getItemByIndex(itemNum-1);
+        } else {
+            MenuItem item = menuController.getItemByIndex(itemNum - 1);
             int itemId = item.getMenuItemId();
             System.out.println(item.toString());
             System.out.println("Enter quantity:");
             int quantity = sc.nextInt();
-            //Double quantity = sc.nextDouble();
-
-            //BigDecimal priceD = new BigDecimal(Double.toString(item.getPrice()));
-            //BigDecimal quantityD = new BigDecimal(Double.toString(quantity));
-           // double result = priceD.multiply(quantityD).
-         //   BigDecimal bd = new BigDecimal(item.getPrice()*  quantity).setScale(2, RoundingMode.HALF_UP);   //zhe ge ye bu xing
-            //order.addOrderItem(itemId, quantity, item.getName(), priceD.multiply(quantityD).doubleValue());
-            /* System.out.println("Quantity: " + quantity);
-            System.out.println("IPrice: " + item.getPrice());
-            System.out.println("Price: " + item.getPrice()*quantity); */
-            order.addOrderItem(itemId, quantity, item.getName(), item.getPrice()*quantity);
-
+            order.addOrderItem(itemId, quantity, item.getName(), item.getPrice() * quantity);
             System.out.println("Item added successfully");
             try {
                 save(dir, orders);
@@ -231,10 +242,11 @@ public class OrderController extends AbstractController {
         }
     }
 
-    public ArrayList<Order> getAllOrders(){
-        return orders;
-    }
-
+    /**
+     * This method is to remove an order item from this order
+     *
+     * @param orderID specifies the ID of target order
+     */
     public void removeItemFromOrder(int orderID) {
         Order order = getOrderByID(orderID);
         order.displayAllItems();
@@ -247,32 +259,29 @@ public class OrderController extends AbstractController {
             System.out.println("Invalid input, orderItem not removed");
             return;
         } else {
-            order.removeOrderItemByIdx(itemNum-1);
+            order.removeOrderItemByIdx(itemNum - 1);
             System.out.println("Remove Successfully");
             order.displayOrder();
         }
     }
 
-    public void removeOrderByID(int OrderID) {
-        orders.removeIf(order -> order.getOrderID() == OrderID);
-    }
-
-    public Order getOrderByID(int OrderID) {
+    /**
+     * This method is to return the order of given orderID
+     *
+     * @param orderID specifies the ID of target order
+     */
+    public Order getOrderByID(int orderID) {
         for (Order i : orders) {
-            if (i.getOrderID() == OrderID) return i;
+            if (i.getOrderID() == orderID) return i;
         }
         return null;
     }
 
-
-    private ArrayList<Integer> getAvailableTableID(int tablePax) throws IOException {
-        ArrayList<Integer> tableList = tableController.getTableByTablePax(tablePax);
-        tableList.removeAll(tableController.getCurrentReservedTableID(tablePax));
-        return tableList;
-    }
-
+    /**
+     * This method is to display all orders in the order list
+     */
     public void displayAllOrders() {
-        if(orders.size() == 0){
+        if (orders.size() == 0) {
             System.out.println("No orders found");
             return;
         }
@@ -280,16 +289,27 @@ public class OrderController extends AbstractController {
             order.displayOrder();
         }
     }
+    /**
+     * This method is to inactivate the given order
+     * When an order is inactivated, it no longer can be added in or removed the order item
+     * @param order the order need to be inactivated
+     */
+    public void inactivateOrder(Order order){
+        order.setIsActive(false);
+        save(dir,orders);
+    }
 
     /**
-     * save method
-     * save method will be different with different controlelr
+     * This method is to save current orders to external files.
+     * @param filename
+     *          specifies where the data to be stored
+     * @param al
+     *          specifies the list to be saved to the file
      */
-
+    @Override
     // text file for orders:
     //  orderId|staffId|tableId|numOfPax|orderSize|menuItemId|name|quantity|menuItemId|name|quantity|....
-
-    public void save(String filename, List al) throws IOException {
+    public void save(String filename, List al) {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {
@@ -305,6 +325,8 @@ public class OrderController extends AbstractController {
             st.append(order.getPax());
             st.append("|");
             st.append(order.getOrderItems().size());
+            st.append("|");
+            st.append(order.getIsActive());
 
             ArrayList<OrderItem> orderItems = order.getOrderItems();
             for (OrderItem item : orderItems) {
@@ -323,10 +345,16 @@ public class OrderController extends AbstractController {
         write(filename, alw);
     }
 
-
-    public ArrayList load(String filename) throws IOException {
+    /**
+     * This method is to load orders from external files
+     * @param filename
+     *            specifies where the external files stored
+     * @return all reservations read from the file
+     */
+    @Override
+    public ArrayList load(String filename) {
         ArrayList stringArray = (ArrayList) read(filename);
-        ArrayList alr = new ArrayList();  // to store invoices data
+        ArrayList alr = new ArrayList();
 
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
@@ -337,20 +365,22 @@ public class OrderController extends AbstractController {
             int tableId = Integer.parseInt(star.nextToken().trim());
             int numberOfPax = Integer.parseInt(star.nextToken().trim());
             int orderSize = Integer.parseInt(star.nextToken().trim());  // write the orderSize in the file in order to read different size of order items
+            boolean isActive = Boolean.parseBoolean(star.nextToken().trim());
 
             //create order with no order item
-            Order order = new Order(orderId,staffId,tableId,numberOfPax);
+            Order order = new Order(orderId, staffId, tableId, numberOfPax, isActive);
             //add order item in order
-            for(int j=0; j<orderSize; j++){
+            for (int j = 0; j < orderSize; j++) {
                 int itemId = Integer.parseInt(star.nextToken().trim());
                 String name = star.nextToken().trim();
                 int quantity = Integer.parseInt(star.nextToken().trim());
                 double price = Double.parseDouble(star.nextToken().trim());
-                order.addOrderItem(itemId,quantity,name,price);
+                order.addOrderItem(itemId, quantity, name, price);
             }
             //add order to order list
-            alr.add(order);      //ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+            alr.add(order);
         }
         return alr;
+
     }
 }

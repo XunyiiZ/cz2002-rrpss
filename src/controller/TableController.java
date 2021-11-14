@@ -163,6 +163,12 @@ public class TableController {
         System.out.println("Table " + tableId + "Occupied: " + listOfTables[tableId].getOccupied() + " Number of Seats: " + listOfTables[tableId].getNumOfSeats());
     }
 
+    public ArrayList<Integer> getAvailableTableID(int tablePax) {
+        ArrayList<Integer> tableList = tableController.getTableByTablePax(tablePax);
+        tableList.removeAll(tableController.getCurrentReservedTableID(tablePax));
+        return tableList;
+    }
+
     public int getTablePax(int pax){
         int tablePax=0;
         switch (pax)
@@ -190,7 +196,7 @@ public class TableController {
         }
         return tablePax;
     }
-    /**get table by pax*/
+
     public ArrayList<Integer> getTableByTablePax(int pax){
 
         ArrayList<Integer> tables = new ArrayList<>();
@@ -203,7 +209,7 @@ public class TableController {
         return tables;
     }
 
-    public ArrayList<Integer> getCurrentReservedTableID(int tablePax) throws IOException {
+    public ArrayList<Integer> getCurrentReservedTableID(int tablePax){
         ArrayList<Integer> tableList = new ArrayList<>();
         LocalTime time = LocalTime.now();
         LocalDate date = LocalDate.now();

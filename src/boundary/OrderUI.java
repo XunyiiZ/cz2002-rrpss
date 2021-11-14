@@ -2,28 +2,49 @@ package boundary;
 import controller.*;
 import Entity.*;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+/**
+ * This boundary class provides users with access to various functionalities of
+ * order management.
+ *
+ * @author Zeng Xunyi
+ * @version 1.0
+ * @Date 2021-11
+ */
 public class OrderUI {
-
+    /**
+     * This field provides an instance of orderController
+     */
     private OrderController oc = OrderController.getInstance();
+    /**
+     * This field provides an instance of order UI
+     */
     private static OrderUI orderUI = null;
+    /**
+     * This field provides an instance of member Controller
+     */
     private MenuController mc = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
-
-    public OrderUI() throws IOException {
+    /**
+     * This constructor initializes the OrderUI
+     */
+    public OrderUI() {
     }
-
-    public static OrderUI getInstance() throws IOException {
+    /**
+     * This method is to get instance of OrderUI
+     */
+    public static OrderUI getInstance() {
         if (orderUI == null) {
             orderUI = new OrderUI();
         }
         return orderUI;
     }
-    public void run() throws IOException {
+    /**
+     * This method provides user interface for all functionalities.
+     * User can create and view an order, add order item, remove order item from order and check all orders
+     */
+    public void run() {
         int option;
         option = choose();
         while(option != 0){
@@ -59,7 +80,11 @@ public class OrderUI {
             option = choose();
         }
     }
-
+    /**
+     * This method displays information of the order of given id
+     * @param id
+     *          the ID of the target order
+     */
     private void displayOrder(int id){
         Order order = oc.getOrderByID(id);
         if(order == null) System.out.println("Invalid Order ID");
@@ -67,25 +92,42 @@ public class OrderUI {
             order.displayOrder();
         }
     }
-
-    private void addItem(int orderId) throws IOException {
+    /**
+     * This method is to add order item to a specific order by given order id
+     * @param orderId
+     *          the ID of the target order
+     */
+    private void addItem(int orderId){
         Order order = oc.getOrderByID(orderId);
         if(order == null) System.out.println("Invalid Order ID");
+        else if(!order.getIsActive()) {
+            System.out.println("Order is not active");
+        }
         else{
             System.out.println("Order found");
             oc.addItemToOrder(orderId);
         }
     }
-
-    private void removeItem(int orderId) throws IOException {
+    /**
+     * This method is to remove order item from a specific order by given order id
+     * @param orderId
+     *          the ID of the target order
+     */
+    private void removeItem(int orderId){
         Order order = oc.getOrderByID(orderId);
         if(order == null) System.out.println("Invalid Order ID");
+        else if(!order.getIsActive()) {
+            System.out.println("Order is not active");
+        }
         else{
             System.out.println("order found");
             oc.removeItemFromOrder(orderId);
         }
     }
-
+    /**
+     * Displays the order menu
+     * @return user's choice
+     */
     private static int choose(){
         System.out.println("--------Order System--------");
         System.out.println("0. Go back to MainUI");
