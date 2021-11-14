@@ -3,6 +3,12 @@ package boundary;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import controller.*;
+/**
+* Boundary class for the Table User Interface that allows staff to access table information, methods to udisplay occupied or unoccupied tables
+* @author Sydney
+* @version 1.0
+* @since 2021-11-14
+*/
 public class TableUI {
 
     Scanner in = new Scanner(System.in);
@@ -10,6 +16,10 @@ public class TableUI {
     private TableController tableController = TableController.getInstance();
     public TableUI() {}
 
+    /**
+    * Get instance
+    * @return TableUI instance and creates a new instance if there was none previously
+    */
     public static TableUI getInstance() {
         if(tableUI == null) {
             tableUI = new TableUI();
@@ -17,6 +27,9 @@ public class TableUI {
         return tableUI;
     }
 
+    /**
+    *Display options for users to access control of menu related methods
+    */
     public void run() {
 
         int choice = this.displayOptions();
@@ -41,7 +54,10 @@ public class TableUI {
 
     }
 
-
+    /**
+    * Method to display options available for interface
+    * @return the integer choice of method to call
+    */
     private int displayOptions() {
         System.out.println("--------TableUI--------");
         System.out.println("0. Go back to MainUI" +
