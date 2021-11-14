@@ -6,8 +6,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import Entity.*;
 
+
+/**
+ * The tableController is for table related logic / use cases
+ */
 public class TableController {
 
+    /**
+     * An array of tables holding the table instances to mimic the behavior of a database
+     */
     private Table[] listOfTables;
     final int SIZE=20;
     private static TableController tableController = null;
@@ -147,6 +154,10 @@ public class TableController {
 
     }
 
+    /**
+     * Getter method for the table ID
+     * Print the ID of the table
+     */
     public void getTableByID(int tableId)
     {
         System.out.println("Table " + tableId + "Occupied: " + listOfTables[tableId].getOccupied() + " Number of Seats: " + listOfTables[tableId].getNumOfSeats());
