@@ -1,21 +1,28 @@
 package controller;
 
+/**
+ * @YiXuan
+ * @14-11-2021
+ * MemberController allows the staff to manage the various functions related to membership such as creating and removing a member. The MemberController also implements the fileIO handling methods
+ * */
+
 import java.io.*;
 import java.util.*;
 
 import Entity.*;
 
 public class MemberController extends AbstractController{
-    /**
-     * An ArrayList of members holding the member instances to mimic the behavior of a database
-     * Each query to this list is equivalent to a query to a database
-     */
+    
     private ArrayList<Member> members;
     private static MemberController memberController = null;
     private double discountRate = 0.95;
     private static final String dir = "src/data/member.txt";
 
-
+    /**
+     * Method that creates an memberController object if it doesn't exist. If it exists, it returns the object reference of the current memberController
+     * @return an instance of memberController
+     * @throws IOException
+     */
     public static MemberController getInstance() throws IOException {
         if (memberController == null) {
             memberController = new MemberController();
@@ -23,6 +30,9 @@ public class MemberController extends AbstractController{
         return memberController;
     }
 
+    /**
+     * Constructor of MemberController aims to load all the members from the member.txt file if it exists. If the text file does not exist. It creates a new text file, to store the details of the new members 
+     */
     public MemberController() throws IOException {
         /** using text method */
         File file = new File(dir);
@@ -34,13 +44,10 @@ public class MemberController extends AbstractController{
             members = new ArrayList<Member>();
             save(dir, members);
         }
-
-//      invoices = new ArrayList<>(); // need to have file
-//      memberController = MemberController.getInstance();
     }
 
     /**
-     * Create a new member and add into the member list
+     * Create a new member and adds into the member list
      *  @param name the name of the new member
      *  @param contact the contact of the new member
      */
@@ -63,7 +70,11 @@ public class MemberController extends AbstractController{
 
     }
 
-
+    /**
+     * Method to check whether a customer is a member 
+     * @param contact contact number of the customer
+     * @return
+     */
     public boolean checkIsMember(String contact) {
         for (Member m : members) {
             if (m.getContact().contains(contact)) {
@@ -74,7 +85,7 @@ public class MemberController extends AbstractController{
     }
 
     /**
-     * Delete the member with the given contact
+     * Deletes the member with the given contact
      *
      * @param contact the contact of the member to be deleted
      */
@@ -96,21 +107,33 @@ public class MemberController extends AbstractController{
         }
 
     }
-
+    
+    /**
+     * Method that returns the array list of the members
+     * @return array list of members
+     */
     public ArrayList<Member> getAllMembers() {
         return members;
     }
 
+    /**
+     * Method to get the discount rate of membership 
+     * @return the discount rate
+     */
     public double getDiscountRate() {
         return discountRate;
     }
 
+    /**
+     * Method that allows the staff to change the membership discount rate
+     * @param rate new discount rate
+     */
     public void setDiscountRate(double rate){
         this.discountRate = rate;
     }
 
     /**
-     * Print a list of Members
+     * Print the list of Members
      */
     public void displayAllMembers(){
         for (Member m : memberController.getAllMembers()) {
@@ -118,6 +141,9 @@ public class MemberController extends AbstractController{
        }
     }
 
+    /**
+     * Method that creates the Member objects from the its details stored in member.txt file.
+     */
     public ArrayList load(String filename) throws IOException {
         ArrayList stringArray = (ArrayList) read(filename);
         ArrayList alr = new ArrayList();  // to store invoices data
@@ -141,10 +167,8 @@ public class MemberController extends AbstractController{
 
 
     /**
-     * save method
-     * save method will be different with different controlelr
+     * Method that saves the details of all the Members into the member.txt file
      */
-
     public void save(String filename, List al) throws IOException {
         List alw = new ArrayList();  //to store data
 

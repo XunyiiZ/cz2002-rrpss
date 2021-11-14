@@ -6,7 +6,6 @@ import java.util.Scanner;
 import controller.*;
 
 
-//test
 public class MainUI {
 
     private static Scanner in = new Scanner(System.in);

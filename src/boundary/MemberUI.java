@@ -1,6 +1,13 @@
 package boundary;
 import controller.*;
 
+/**
+* Boundary class for the Member User Interface that allows staff to retrieve and access member particulars
+* @author Timothy
+* @version 1.0
+* @since 2021-11-13
+*/
+
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -12,6 +19,11 @@ public class MemberUI {
 
     private MemberUI() throws IOException {};
 
+    /**
+    * Method that creates an MemberUI object if it doesn't exist. If it exists, it returns the object reference of the current MemberUI
+    * @return The instance of the memberUI object 
+    * @throws IOException
+    */
     public static MemberUI getInstance() throws IOException {
         if (memberUI == null) {
             memberUI = new MemberUI();
@@ -19,6 +31,9 @@ public class MemberUI {
         return memberUI;
     }
 
+    /**
+     * Display options for users to access control of member details
+     */
     public void run() {
         String name;
         String contact;
@@ -88,10 +103,6 @@ public class MemberUI {
                     break;
 
                 case 4:
-//                    for (Member m : memberController.getAllMembers()) {
-//                        System.out.println(m.toString());
-//                    }
-//                    break;
                     memberController.displayAllMembers();
                     break;
                 case 5:
@@ -112,6 +123,10 @@ public class MemberUI {
         }
     }
 
+    /**
+    * Method to display options available for interface
+    * @return the integer choice of method to call
+    */
     private int displayOptions() {
         System.out.println("--------Member System--------");
         System.out.println("0. Go back to MainUI");

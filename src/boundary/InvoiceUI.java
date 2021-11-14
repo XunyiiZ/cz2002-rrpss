@@ -1,8 +1,11 @@
 package boundary;
 /**
- * 
- * 
- */
+* Boundary class for the Invoice User Interface that allows staff to create invoices and generate revenue reports
+* @author Timothy
+* @version 1.0
+* @since 2021-11-13
+*/
+
 import Entity.Member;
 import Entity.Order;
 import controller.*;
@@ -29,6 +32,11 @@ public class InvoiceUI {
 
     private InvoiceUI() throws IOException {}
 
+    /**
+        * Get instance
+        * @return InvoiceUI instance and creates a new instance if there was none previously
+        * @throws IOException
+    */
     public static InvoiceUI getInstance() throws IOException {
         if (invoiceUI == null)
             invoiceUI = new InvoiceUI();
