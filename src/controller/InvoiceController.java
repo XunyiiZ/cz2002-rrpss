@@ -1,13 +1,13 @@
 package controller;
 
 /**
-    InvoiceController
-    @Xunyi Zeng
-    1. make use of InvoiceList
+ * InvoiceController is control class that supports operations related to
+ * invoice.
+ *
+ * @author Zeng Xunyi
+ * @version 1.0
+ * @Since 2021-11
  */
-
-//import FileReadWrite.SerializeDB;
-
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,32 +17,55 @@ import java.util.*;
 import Entity.*;
 
 public class InvoiceController extends AbstractController{
-    //    private ArrayList<Invoice> invoices;
-    private MemberController memberController = MemberController.getInstance();
-    private OrderController orderController = OrderController.getInstance();
-    private TableController tableController = TableController.getInstance();
-    private final double GST_RATE = 0.07;
-    private final double SERVICE_RATE = 0.1;
-
     /**
-     * new feature
+     * This constant defines the file path that stores all data of invoice list
+     */
+    private static final String dir = "src/data/invoice.txt";
+    /**
+     * This constant defines the gst rate
+     */
+    private final double GST_RATE = 0.07;
+    /**
+     * This constant defines service charge rate
+     */
+    private final double SERVICE_RATE = 0.1;
+    /**
+     * This field provides an instance of member Controller
+     */
+    private MemberController memberController = MemberController.getInstance();
+    /**
+     * This field provides an instance of order Controller
+     */
+    private OrderController orderController = OrderController.getInstance();
+    /**
+     * This field provides an instance of table Controller
+     */
+    private TableController tableController = TableController.getInstance();
+    /**
+     * This field provides an instance of invoice Controller
      */
     private static InvoiceController InvoiceController = null;
-    private static final String dir = "src/data/invoice.txt";
+    /**
+     * This field holds all invoice list
+     */
     private ArrayList<Invoice> invoiceList;
 
 
     /**
-     * add a getInstance() method
+     * This methods returns an instance of InvoiceController
+     * @return InvoiceController
      */
-    public static InvoiceController getInstance() throws IOException {
+    public static InvoiceController getInstance(){
         if (InvoiceController == null) {
             InvoiceController = new InvoiceController();
         }
         return InvoiceController;
     }
-
-    public InvoiceController() throws IOException {
+    /**
+     * This is the constructor of this class. It will load invoices from
+     * external files.
+     */
+    public InvoiceController(){
         /** using serialization method, have an error */
 //        File file = new File(dir);
 //        if(file.exists()){
@@ -55,23 +78,28 @@ public class InvoiceController extends AbstractController{
 //            SerializeDB.writeSerializedObject(dir,invoiceList);
 //        }
         /** using text method */
-        File file = new File(dir);
-        if (file.exists()) {
-            invoiceList = load(dir);
-        } else {
-            file.getParentFile().mkdir();
-            file.createNewFile();
-            invoiceList = new ArrayList<Invoice>();
-            save(dir, invoiceList);
+        try{
+            File file = new File(dir);
+            if (file.exists()) {
+                invoiceList = load(dir);
+            } else {
+                file.getParentFile().mkdir();
+                file.createNewFile();
+                invoiceList = new ArrayList<Invoice>();
+                save(dir, invoiceList);
+            }
+            } catch (IOException e) {
+                System.out.println("load file unsuccessfully");
+                e.printStackTrace();
         }
-
-//      invoices = new ArrayList<>(); // need to have file
-//      memberController = MemberController.getInstance();
     }
-
+    /**
+     * This methods prints the daily report of the given date.
+     * It will display all invoices for the day and the total revenue of that day
+     * @param reportDate specifies the date to be checked
+     */
     public void printDailyReport(LocalDate reportDate) {
 
-    //    ZoneId defaultZoneId = ZoneId.systemDefault();
         double overallRevenue = 0.0;
             for (Invoice i : invoiceList) {
                 LocalDate invoiceDate = i.getDate();
@@ -82,7 +110,12 @@ public class InvoiceController extends AbstractController{
             }
             System.out.println("|||"+reportDate + ":  Total for the day is $" + String.format("%.2f", overallRevenue)+"|||");
     }
-    
+
+    /**
+     * This methods prints the monthly report of the given month.
+     * It will display total revenue of the month and find out the day with highest revenue and lowest revenue respectively
+     * @param dateStr specifies the month to be checked
+     */
     public void printMonthlyReport(String dateStr) {
 
         double totalRev = 0.0;
@@ -92,7 +125,7 @@ public class InvoiceController extends AbstractController{
         int month = Integer.parseInt(date[0]);
         int year = Integer.parseInt(date[1]);
 
-        Calendar cal = new GregorianCalendar(year, month, 1);  // why do we need to -1？
+        Calendar cal = new GregorianCalendar(year, month, 1);
         int length = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         double[] revenue = new double[length];
 
@@ -102,11 +135,10 @@ public class InvoiceController extends AbstractController{
 
         for (Invoice i : invoiceList) {
 
-            int invoice_d = i.getDate().getDayOfMonth() - 1;   //minus one as a index in the array
+            int invoice_d = i.getDate().getDayOfMonth() - 1;
             int invoice_m = i.getDate().getMonthValue();
             int invoice_y = i.getDate().getYear();
 
-            //           System.out.println("invoice: " + invoice_d + invoice_m+ invoice_y +"\n");
 
             if (invoice_m == month && invoice_y == year) {
                 revenue[invoice_d] += i.getTotal();
@@ -132,71 +164,64 @@ public class InvoiceController extends AbstractController{
             }
         }
 
-        System.out.println("total revenue for the month is " + String.format("%.2f", totalRev));
-        System.out.println("Highest revenue is $" + String.format("%.2f", maxRev) + " on " + maxDay + "-" + month + "-" + year);        //没有算重复的
+        System.out.println("Total revenue for the month is " + String.format("%.2f", totalRev));
+        System.out.println("Highest revenue is $" + String.format("%.2f", maxRev) + " on " + maxDay + "-" + month + "-" + year);
         System.out.println("Lowest revenue is $" + String.format("%.2f", minRev) + " on " + minDay + "-" + month + "-" + year);
 
     }
 
     /**
-    * prints invoice by passing in int id and String contact
-    */
+     * Prints invoice for the given order id. the contact is to check for membership
+     * @param id specifies the order to be checked
+     * @param contact specifies the customer and check for membership
+     */
     public void printInvoice(int id, String contact) {
         Invoice invoice = addInvoice(id, contact);
-        System.out.println(invoice.toString());
+        System.out.println(invoice);
     }
+    /**
+     * Creates and adds a new invoice to the invoice list
+     * @param id specifies the order to be checked
+     * @param contact specifies the customer and check for membership
+     */
+    private Invoice addInvoice(int id, String contact) {
+        int invoiceId = invoiceList.get(invoiceList.size()-1).getInvoiceID() + 1;       // USE arrayList size to get the invoice ID  /
+        Order order = orderController.getOrderByID(id);
+        double subtotal = order.getOrderPrice();
+        double afterDiscount = subtotal;
+        double GST;
+        double serviceCharge;
+        double total;
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
-    private Invoice addInvoice(int id, String number) {
-        try {
-            /** +1 make id start from 1 */
-            int invoiceId = invoiceList.size() + 1;       // USE arrayList size to get the invoice ID  /
-            Order order = orderController.getOrderByID(id);
-            double subtotal = order.getOrderPrice();
-            double afterDiscount = subtotal;
-            double GST;
-            double serviceCharge;
-            double total;
-            LocalDate date = LocalDate.now();
-            LocalTime time = LocalTime.now();
-
-//            String name = memberController.getMember(number).getName();
-
-            if (memberController.checkIsMember(number)) {
-                System.out.println(" (" + number + ") is a member");
-                System.out.println("Member discount rate is "+String.format("%.2f",memberController.getDiscountRate()));
-                afterDiscount = subtotal * memberController.getDiscountRate();
-            } else; //System.out.println(name + " (" + number + ") is not a member");
-
-            GST = subtotal * GST_RATE;
-            serviceCharge = subtotal * SERVICE_RATE;
-            total = afterDiscount + GST + serviceCharge;
-
-            Invoice invoice = new Invoice(invoiceId, id, date, time, order, subtotal, afterDiscount, serviceCharge, GST, total);
-            invoiceList.add(invoice);
-            save(dir, invoiceList);
-
-            tableController.setUnoccupied(order.getTableId());
-            return invoice;
-
-        } catch (IOException e) {
-            System.out.println("shen me error? ");
-            e.printStackTrace();
-            return null;
+        if (memberController.checkIsMember(contact)) {
+            System.out.println(" (" + contact + ") is a member");
+            System.out.println("Member discount rate is "+String.format("%.2f",memberController.getDiscountRate()));
+            afterDiscount = subtotal * memberController.getDiscountRate();
         }
 
+        GST = subtotal * GST_RATE;
+        serviceCharge = subtotal * SERVICE_RATE;
+        total = afterDiscount + GST + serviceCharge;
+
+        Invoice invoice = new Invoice(invoiceId, id, date, time, order, subtotal, afterDiscount, serviceCharge, GST, total);
+        invoiceList.add(invoice);
+        orderController.inactivateOrder(order);
+        save(dir, invoiceList);
+        tableController.setUnoccupied(order.getTableId());
+        return invoice;
+
     }
 
-
-    public void printAll() {
-        for (Invoice i : invoiceList) {
-            System.out.println(i);
-        }
-    }
-
-
-
-    //   load method will be different between different controller
-    public ArrayList load(String filename) throws IOException {
+    /**
+     * This method is to load invoices from external files
+     * @param filename
+     *            specifies where the external files stored
+     * @return all reservations read from the file
+     */
+    @Override
+    public ArrayList load(String filename){
         ArrayList stringArray = (ArrayList) read(filename);
         ArrayList alr = new ArrayList();  // to store invoices data
         for (int i = 0; i < stringArray.size(); i++) {
@@ -223,15 +248,15 @@ public class InvoiceController extends AbstractController{
         }
         return alr;
     }
-
-
-
     /**
-     * save method
-     * save method will be different with different controller
+     * This method is to save current invoices to external files.
+     * @param filename
+     *          specifies where the data to be stored
+     * @param al
+     *          specifies the list to be saved to the file
      */
-
-    public void save(String filename, List al) throws IOException {
+    @Override
+    public void save(String filename, List al) {
         List alw = new ArrayList();  //to store data
 
         for (int i = 0; i < al.size(); i++) {

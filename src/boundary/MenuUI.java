@@ -12,21 +12,35 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+* Boundary class for the Menu User Interface that allows staff to access menu information, methods to update menu items and generate the menu
+* @author Timothy
+* @version 1.0
+* @since 2021-11-13
+*/
+
 public class MenuUI {
     private static MenuUI menuUI = null;
     private MenuController menuController = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
 
-    public MenuUI() throws IOException {
+    public MenuUI(){
     }
 
-    public static MenuUI getInstance() throws IOException {
+    /**
+    * Get instance
+    * @return MenuUI instance and creates a new instance if there was none previously
+    */
+    public static MenuUI getInstance() {
         if (menuUI == null) {
             menuUI = new MenuUI();
         }
         return menuUI;
     }
 
+    /**
+    *Display options for users to access control of menu related methods
+    */
     public void run() {
         
         int choice = displayOptions();
@@ -56,6 +70,10 @@ public class MenuUI {
         }
     }
 
+    /**
+    * Method to display options available for interface
+    * @return the integer choice of method to call
+    */
     private int displayOptions() {
         System.out.println("--------Menu System--------");
         System.out.println("0. Go back to MainUI");
@@ -81,6 +99,9 @@ public class MenuUI {
         return choice;
     }
 
+    /**
+    * Method that allows the staff to enter the parameters and details needed to add an AlaCarte item 
+    */
     private void addAlaCarte(){
         System.out.println("Enter name of dish");
         String name = sc.nextLine();
@@ -127,6 +148,9 @@ public class MenuUI {
         System.out.println("AlaCarte added to menu");
     }
 
+    /**
+     * Method that allows the staff to enter the parameters and details needed to add a Set item
+     */
     private void addSet(){
         System.out.println("Enter set name");
         String name = sc.nextLine();
@@ -137,6 +161,9 @@ public class MenuUI {
         menuController.manageSet(setItem);        
     }    
 
+    /**
+     * Method to allow the staff to choose which menu item he would like to update 
+    */
     private void updateMenuItem(){
         menuController.displayMenu();        
         int idx;        
@@ -167,6 +194,10 @@ public class MenuUI {
         }
     }    
 
+    /**
+     * Method that allows the staff to input the menu item number to be removed.
+     * After which, the control logic will be passed onto menuController's method to remove the menu item.
+     */
     private void removeMenuItem() {
         menuController.displayMenu();        
         int idx;        

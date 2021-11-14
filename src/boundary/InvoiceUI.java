@@ -1,51 +1,62 @@
 package boundary;
-/**
- * 
- * 
- */
-import Entity.Member;
+
 import Entity.Order;
 import controller.*;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.LocalDate;
-
+/**
+ * Boundary class for the Invoice User Interface that allows staff to create invoices and generate revenue reports
+ * @author Timothy
+ * @version 1.0
+ * @since 2021-11-13
+ */
 public class InvoiceUI {
-    private static InvoiceUI invoiceUI = null;
-    private InvoiceController invoiceController = InvoiceController.getInstance();
-    private OrderController orderController = OrderController.getInstance();
+    /**
+     * This constant defines the correct date input format
+     */
     private final String DATE_FORMAT = "dd/MM/yyyy";
-    private final String TIME_FORMAT = "HH:mm";
+    /**
+     * This constant defines the correct month input format
+     */
     private final String MONTH_FORMAT = "MM/yyyy";
+    /**
+     * This field provides an instance of InvoiceUI
+     */
+    private static InvoiceUI invoiceUI = null;
+    /**
+     * This field provides an instance of InvoiceController
+     */
+    private InvoiceController invoiceController = InvoiceController.getInstance();
+    /**
+     * This field provides an instance of OrderController
+     */
+    private OrderController orderController = OrderController.getInstance();
+
     private static Scanner in = new Scanner(System.in);
 
-    private InvoiceUI() throws IOException {}
+    private InvoiceUI(){}
 
-    public static InvoiceUI getInstance() throws IOException {
+    /**
+        * Get instance
+        * @return InvoiceUI instance and creates a new instance if there was none previously
+    */
+    public static InvoiceUI getInstance() {
         if (invoiceUI == null)
             invoiceUI = new InvoiceUI();
         return invoiceUI;
     }
-
+    /**
+     * This method provides user interface for all functionalities.
+     * User can create an invoice, print daily revenue report and print monthly revenue report
+     */
     public void run(){
 
-
-        /* System.out.println("--------Invoice and Report Panel--------");
-        System.out.println("0. Go back to MainUI" +
-                "\n1. printInvoice"+
-                "\n2. print daily revenue report"+
-                "\n3. print monthly revenue report"+
-                "\n4. back to main panel");
-
-        int choice = in.nextInt(); */
         int choice = displayOptions();
         while(choice != 0) {
             switch (choice) {
@@ -67,7 +78,10 @@ public class InvoiceUI {
             choice = displayOptions();
         }
     }
-
+    /**
+     * Displays the reservation menu
+     * @return user's choice
+     */
     private int displayOptions() {
         System.out.println("--------Invoice and Report Panel--------");
         System.out.println("0. Go back to MainUI" +
@@ -90,20 +104,24 @@ public class InvoiceUI {
         }
         return choice;
     }
-
+    /**
+     * Creates a new invoice according to the information entered.
+     */
     private void createInvoice(){
         int orderId;
-        /* System.out.print("Enter order ID:");                                // handle invalid input  1. in the orderList
-        //                                                                                            2. not been checked out
-        orderId = in.nextInt();  */      
         while (true) {
             try {      
                 System.out.print("Enter order ID:");                      
                 orderId = in.nextInt(); 
                 in.nextLine();
-                if(orderController.getOrderByID(orderId) == null){
-                    System.out.println("the order is not found");
+
+                Order order = orderController.getOrderByID(orderId);
+                if(order == null){
+                    System.out.println("The order is not found");
                     return;
+                }
+                else {
+                    order.setIsActive(false);
                 }
                         
             } catch (InputMismatchException e) {
@@ -132,7 +150,10 @@ public class InvoiceUI {
         invoiceController.printInvoice(orderId, contact);
 
     }
-
+    /**
+     * print the daily revenue of the day,
+     * which will show the total revenue of that day and all invoices for that day
+     */
     private void printRevenueReportByDay(){
         String dateStr;
         boolean validDateFormat;
@@ -151,6 +172,10 @@ public class InvoiceUI {
 
         invoiceController.printDailyReport(date);
     }
+    /**
+     * print the monthly revenue  report of the given month,
+     * which will show the total revenue of that month and highest revenue day and lowest revenue day
+     */
     private void printRevenueReportByMonth(){
         String dateStr;
         boolean validDateFormat;
@@ -169,7 +194,12 @@ public class InvoiceUI {
 
         invoiceController.printMonthlyReport(dateStr);
     }
-
+    /**
+     * to check whether the input date string is in correct date format
+     * @param dateTime the date string need to be checked
+     * @param FORMAT specifies the correct format
+     * @return whether the date string is in correct format or not
+     */
     private boolean isValidDateFormat(String dateTime, String FORMAT){
         try {
             DateFormat dateFormat = new SimpleDateFormat(FORMAT);
@@ -181,7 +211,12 @@ public class InvoiceUI {
             return false;
         }
     }
-
+    /**
+     * To check whether the date is in the past or not.
+     * the system can only check for daily revenue of the past days
+     * @param appointmentDate specifies the date string need to be checked
+     * @return whether the date string is in the past or not
+     */
     private boolean isValidDate(LocalDate appointmentDate){
         if(!appointmentDate.isAfter(LocalDate.now())) {
             return true;}
