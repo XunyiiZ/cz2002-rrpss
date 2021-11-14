@@ -3,9 +3,13 @@ package boundary;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import controller.*;
-
-
+/**
+ * This boundary class provides users with access to different boundaries
+ *
+ * @author Zeng Xunyi
+ * @version 1.0
+ * @Date 2021-11
+ */
 public class MainUI {
 
     private static Scanner in = new Scanner(System.in);
@@ -52,6 +56,10 @@ public class MainUI {
 
     }
 
+    /**
+     * Displays the main control system
+     * @return user's choice
+     */
     private static int displayOptions() {
         System.out.println("--------Main Control System--------");
         System.out.println("0. Exit");

@@ -185,7 +185,7 @@ public class TableController {
         }
         return tablePax;
     }
-    /**get table by pax*/
+
     public ArrayList<Integer> getTableByTablePax(int pax){
 
         ArrayList<Integer> tables = new ArrayList<>();

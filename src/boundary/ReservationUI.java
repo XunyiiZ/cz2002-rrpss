@@ -45,9 +45,6 @@ public class ReservationUI {
      * This field provides an instance of ReservationUI
      */
     private static ReservationUI reservationUI = null;
-    /**
-     * This field provides an instance of ReservationUI                     ----???????
-     */
     private static Scanner in = new Scanner(System.in);
 
 

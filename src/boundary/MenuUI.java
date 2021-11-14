@@ -24,15 +24,14 @@ public class MenuUI {
     private MenuController menuController = MenuController.getInstance();
     private static Scanner sc = new Scanner(System.in);
 
-    public MenuUI() throws IOException {
+    public MenuUI(){
     }
 
     /**
     * Get instance
     * @return MenuUI instance and creates a new instance if there was none previously
-    * @throws IOException
     */
-    public static MenuUI getInstance() throws IOException {
+    public static MenuUI getInstance() {
         if (menuUI == null) {
             menuUI = new MenuUI();
         }
@@ -196,7 +195,8 @@ public class MenuUI {
     }    
 
     /**
-     * Method that allows the staff to input the menu item number to be removed. After which, the control logic will be passed onto menuController's method to remove the menu item.
+     * Method that allows the staff to input the menu item number to be removed.
+     * After which, the control logic will be passed onto menuController's method to remove the menu item.
      */
     private void removeMenuItem() {
         menuController.displayMenu();        

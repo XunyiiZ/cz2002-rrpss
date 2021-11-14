@@ -289,9 +289,18 @@ public class OrderController extends AbstractController {
             order.displayOrder();
         }
     }
+    /**
+     * This method is to inactivate the given order
+     * When an order is inactivated, it no longer can be added in or removed the order item
+     * @param order the order need to be inactivated
+     */
+    public void inactivateOrder(Order order){
+        order.setIsActive(false);
+        save(dir,orders);
+    }
 
     /**
-     * This method is to save current reservations to external files.
+     * This method is to save current orders to external files.
      * @param filename
      *          specifies where the data to be stored
      * @param al
@@ -333,55 +342,45 @@ public class OrderController extends AbstractController {
 
             alw.add(st.toString());
         }
-        try {
-            write(filename, alw);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        write(filename, alw);
     }
 
     /**
-     * This method is to load reservations from external files
+     * This method is to load orders from external files
      * @param filename
      *            specifies where the external files stored
      * @return all reservations read from the file
      */
     @Override
     public ArrayList load(String filename) {
-        try {
-            ArrayList stringArray = (ArrayList) read(filename);
-            ArrayList alr = new ArrayList();
+        ArrayList stringArray = (ArrayList) read(filename);
+        ArrayList alr = new ArrayList();
 
-            for (int i = 0; i < stringArray.size(); i++) {
-                String st = (String) stringArray.get(i);
-                StringTokenizer star = new StringTokenizer(st, "|");
+        for (int i = 0; i < stringArray.size(); i++) {
+            String st = (String) stringArray.get(i);
+            StringTokenizer star = new StringTokenizer(st, "|");
 
-                int orderId = Integer.parseInt(star.nextToken().trim());
-                int staffId = Integer.parseInt(star.nextToken().trim());
-                int tableId = Integer.parseInt(star.nextToken().trim());
-                int numberOfPax = Integer.parseInt(star.nextToken().trim());
-                int orderSize = Integer.parseInt(star.nextToken().trim());  // write the orderSize in the file in order to read different size of order items
-                boolean isActive = Boolean.parseBoolean(star.nextToken().trim());
+            int orderId = Integer.parseInt(star.nextToken().trim());
+            int staffId = Integer.parseInt(star.nextToken().trim());
+            int tableId = Integer.parseInt(star.nextToken().trim());
+            int numberOfPax = Integer.parseInt(star.nextToken().trim());
+            int orderSize = Integer.parseInt(star.nextToken().trim());  // write the orderSize in the file in order to read different size of order items
+            boolean isActive = Boolean.parseBoolean(star.nextToken().trim());
 
-                //create order with no order item
-                Order order = new Order(orderId, staffId, tableId, numberOfPax, isActive);
-                //add order item in order
-                for (int j = 0; j < orderSize; j++) {
-                    int itemId = Integer.parseInt(star.nextToken().trim());
-                    String name = star.nextToken().trim();
-                    int quantity = Integer.parseInt(star.nextToken().trim());
-                    double price = Double.parseDouble(star.nextToken().trim());
-                    order.addOrderItem(itemId, quantity, name, price);
-                }
-                //add order to order list
-                alr.add(order);
+            //create order with no order item
+            Order order = new Order(orderId, staffId, tableId, numberOfPax, isActive);
+            //add order item in order
+            for (int j = 0; j < orderSize; j++) {
+                int itemId = Integer.parseInt(star.nextToken().trim());
+                String name = star.nextToken().trim();
+                int quantity = Integer.parseInt(star.nextToken().trim());
+                double price = Double.parseDouble(star.nextToken().trim());
+                order.addOrderItem(itemId, quantity, name, price);
             }
-            return alr;
-        } catch (IOException e) {
-            System.out.println("loading file unsuccessful");
-            e.printStackTrace();
-            return null;
+            //add order to order list
+            alr.add(order);
         }
+        return alr;
 
     }
 }

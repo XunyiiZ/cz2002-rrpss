@@ -38,9 +38,6 @@ public class ReservationController extends AbstractController {
      * This field provides access to control over Table objects
      */
     private TableController tableController = TableController.getInstance();
-    /**
-     * This field provides access to control over Table objects                               -- how to write this ?
-     */
     private static Scanner in = new Scanner(System.in);
 
     /**
@@ -307,36 +304,30 @@ public class ReservationController extends AbstractController {
      */
     @Override
     public ArrayList load(String filename) {
-        try{
-            ArrayList stringArray = (ArrayList) read(filename);
-            ArrayList alr = new ArrayList();  // to store reservation data
+        ArrayList stringArray = (ArrayList) read(filename);
+        ArrayList alr = new ArrayList();  // to store reservation data
 
-            for (int i = 0; i < stringArray.size(); i++) {
-                String st = (String) stringArray.get(i);
-                StringTokenizer star = new StringTokenizer(st, "|");
+        for (int i = 0; i < stringArray.size(); i++) {
+            String st = (String) stringArray.get(i);
+            StringTokenizer star = new StringTokenizer(st, "|");
 
 
-                int reservationId = Integer.parseInt(star.nextToken().trim());
-                String name = star.nextToken().trim();
-                String contact = star.nextToken().trim();
-                int numOfPax = Integer.parseInt(star.nextToken().trim());
-                int tableId = Integer.parseInt(star.nextToken().trim());
-                LocalDate date = LocalDate.parse(star.nextToken().trim());
-                LocalTime time = LocalTime.parse(star.nextToken().trim());
+            int reservationId = Integer.parseInt(star.nextToken().trim());
+            String name = star.nextToken().trim();
+            String contact = star.nextToken().trim();
+            int numOfPax = Integer.parseInt(star.nextToken().trim());
+            int tableId = Integer.parseInt(star.nextToken().trim());
+            LocalDate date = LocalDate.parse(star.nextToken().trim());
+            LocalTime time = LocalTime.parse(star.nextToken().trim());
 
-                // create reservation object from file data
-                Reservation reservation = new Reservation(reservationId,name,contact,numOfPax,tableId,date,time);
+            // create reservation object from file data
+            Reservation reservation = new Reservation(reservationId,name,contact,numOfPax,tableId,date,time);
 
-                //add to reservationList
-                alr.add(reservation);
-            }
-            return alr;
-            } catch (IOException e) {
-            System.out.println("read file unsuccessfully");
-            e.printStackTrace();
-            return null;
+            //add to reservationList
+            alr.add(reservation);
         }
-}
+        return alr;
+    }
     /**
      * This method is to save current reservations to external files.
      * @param filename
@@ -346,32 +337,27 @@ public class ReservationController extends AbstractController {
      */
     @Override
     public void save(String filename, List al){
-        try{
-            List alw = new ArrayList();  //to store data
+        List alw = new ArrayList();
 
-            for (int i = 0; i < al.size(); i++) {
-                Reservation reservation = (Reservation) al.get(i);
-                StringBuilder st = new StringBuilder();
-                st.append(reservation.getReservationId()); // trim() ??
-                st.append("|");
-                st.append(reservation.getName());
-                st.append("|");
-                st.append(reservation.getContact());  // ke yi ma?
-                st.append("|");
-                st.append(reservation.getNumberOfPax());
-                st.append("|");
-                st.append(reservation.getTableId());
-                st.append("|");
-                st.append(reservation.getAppointmentDate());
-                st.append("|");
-                st.append(reservation.getAppointmentTime());
-                alw.add(st.toString());
-            }
-                write(filename, alw);
-        } catch (IOException e) {
-            System.out.println("writing in file unsuccessful!");
-            e.printStackTrace();
+        for (int i = 0; i < al.size(); i++) {
+            Reservation reservation = (Reservation) al.get(i);
+            StringBuilder st = new StringBuilder();
+            st.append(reservation.getReservationId());
+            st.append("|");
+            st.append(reservation.getName());
+            st.append("|");
+            st.append(reservation.getContact());
+            st.append("|");
+            st.append(reservation.getNumberOfPax());
+            st.append("|");
+            st.append(reservation.getTableId());
+            st.append("|");
+            st.append(reservation.getAppointmentDate());
+            st.append("|");
+            st.append(reservation.getAppointmentTime());
+            alw.add(st.toString());
         }
+        write(filename, alw);
     }
 }
 

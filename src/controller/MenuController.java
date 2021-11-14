@@ -25,7 +25,8 @@ public class MenuController extends AbstractController {
     private static int menuItemId = 0;
 
     /**
-     * Method that creates an menuController object if it doesn't exist. If it exists, it returns the object reference of the current menuController
+     * Method that creates an menuController object if it doesn't exist.
+     * If it exists, it returns the object reference of the current menuController
      * @return an instance of menuController
      */
     public static MenuController getInstance() {
@@ -36,8 +37,8 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * Constructor of MenuController aims to load all the exisiting menu items from the menu.txt file if it exists. If the text file does not exist. It creates a new text file, as well as menu item objects, saving it into the text file created 
-     * @throws IOException
+     * Constructor of MenuController aims to load all the exisiting menu items from the menu.txt file if it exists.
+     * If the text file does not exist. It creates a new text file, as well as menu item objects, saving it into the text file created
      */
     public MenuController() {
         try {
@@ -124,15 +125,10 @@ public class MenuController extends AbstractController {
 	   * @param cat the category of the new Ala Carte
 	   */
     public void addAlaCarte(String name, double price, String description, AlaCarte.Category cat ){
-        
-        try {
-            menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
-            menuList.add(new AlaCarte(menuItemId,name,description,price,cat));
-            save(dir, menuList);
-        } catch (IOException e) {
-            System.out.println("Error!");
-            e.printStackTrace();
-        }
+
+        menuItemId = menuList.get(menuList.size()-1).getMenuItemId()+1;
+        menuList.add(new AlaCarte(menuItemId,name,description,price,cat));
+        save(dir, menuList);
     }
 
     /**
@@ -155,7 +151,8 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * Method that allows the staff the manage the internal functions related to a set. For example, this method allows the staff to add item into a set or to remove an item from a set.
+     * Method that allows the staff the manage the internal functions related to a set.
+     * For example, this method allows the staff to add item into a set or to remove an item from a set.
      * @param setItem the set to be managed
      */
     public void manageSet(Set setItem){
@@ -255,7 +252,8 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * Method that allows the staff to make changes to to a set, for example, the name and the description. This method allows allows the staff to also manage the internal functionalities of the set like adding and removing items from a set
+     * Method that allows the staff to make changes to a set, for example, the name and the description.
+     * This method allows the staff to also manage the internal functionalities of the set like adding and removing items from a set
      * @param mItem the menuItem object which should be set 
      */
     public void updateSet(MenuItem mItem) {
@@ -459,17 +457,17 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * Method that saves the attributes and details of all the menu items (both AlaCarte and Set) into a txt file 
+     * This method is to save current menu items to external files.
+     * @param filename
+     *          specifies where the data to be stored
+     * @param al
+     *          specifies the list to be saved to the file
      */
-    public  void save(String filename, List al) throws IOException {
+    @Override
+    public  void save(String filename, List al)  {
         List alw = new ArrayList();  //to store data
-
         for (int i = 0; i < al.size(); i++) {
-            
-            //int isAlaCarte = 1;
-
             StringBuilder st = new StringBuilder();
-
             if (al.get(i) instanceof AlaCarte)
             {
                 AlaCarte aCarte = (AlaCarte) al.get(i);
@@ -519,12 +517,15 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * Method that creates the menu item objects from the its details stored in menu.txt file.
+     * This method is to load menu items from external files
+     * @param filename
+     *            specifies where the external files stored
+     * @return all reservations read from the file
      */
-    public ArrayList<MenuItem> load(String filename) throws IOException {
-
+    @Override
+    public ArrayList<MenuItem> load(String filename) {
         ArrayList stringArray = (ArrayList) read(filename);
-        ArrayList<MenuItem> alr = new ArrayList<MenuItem>();  
+        ArrayList<MenuItem> alr = new ArrayList<MenuItem>();
 
         for (int i = 0; i < stringArray.size(); i++) {
             String st = (String) stringArray.get(i);
@@ -544,7 +545,7 @@ public class MenuController extends AbstractController {
                 price = Double.parseDouble(star.nextToken().trim());
                 String category = star.nextToken().trim();
 
-                AlaCarte.Category cat = null;
+                Category cat = null;
                 switch (category){
                     case "maincourse":
                         cat = Category.MAINCOURSE;
@@ -580,9 +581,6 @@ public class MenuController extends AbstractController {
                         }
                         index++;
                     }
-                    // MenuItem item = this.getItemById(aCarteId);
-                    // set.addAlaCarte((AlaCarte) item);
-                    //alr.stream().filter(alr -> aCarteId == alr.getItemById(aCarteId)).findAny().orElse(null);
                 }
                 alr.add(set);
             }

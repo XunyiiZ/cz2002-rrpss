@@ -3,7 +3,8 @@ package controller;
 /**
  * @YiXuan
  * @14-11-2021
- * MemberController allows the staff to manage the various functions related to membership such as creating and removing a member. The MemberController also implements the fileIO handling methods
+ * MemberController allows the staff to manage the various functions related to membership such as creating and removing a member.
+ * The MemberController also implements the fileIO handling methods
  * */
 
 import java.io.*;
@@ -19,7 +20,8 @@ public class MemberController extends AbstractController{
     private static final String dir = "src/data/member.txt";
 
     /**
-     * Method that creates an memberController object if it doesn't exist. If it exists, it returns the object reference of the current memberController
+     * Method that creates an memberController object if it doesn't exist.
+     * If it exists, it returns the object reference of the current memberController
      * @return an instance of memberController
      */
     public static MemberController getInstance(){
@@ -30,7 +32,8 @@ public class MemberController extends AbstractController{
     }
 
     /**
-     * Constructor of MemberController aims to load all the members from the member.txt file if it exists. If the text file does not exist. It creates a new text file, to store the details of the new members 
+     * Constructor of MemberController aims to load all the members from the member.txt file if it exists.
+     * If the text file does not exist. It creates a new text file, to store the details of the new members
      */
     public MemberController() {
         try {
@@ -147,8 +150,11 @@ public class MemberController extends AbstractController{
 
     /**
      * Method that creates the Member objects from the its details stored in member.txt file.
+     * @param filename specifies the direction of external file
+     * @return the list of contents read from the file
      */
-    public ArrayList load(String filename) throws IOException {
+    @Override
+    public ArrayList load(String filename){
         ArrayList stringArray = (ArrayList) read(filename);
         ArrayList alr = new ArrayList();  // to store invoices data
 
@@ -171,15 +177,19 @@ public class MemberController extends AbstractController{
 
 
     /**
-     * Method that saves the details of all the Members into the member.txt file
+     * This method is to save current members to external files.
+     * @param filename
+     *          specifies where the data to be stored
+     * @param al
+     *          specifies the list to be saved to the file
      */
-    public void save(String filename, List al) throws IOException {
-        List alw = new ArrayList();  //to store data
-
+    @Override
+    public void save(String filename, List al)  {
+        List alw = new ArrayList();
         for (int i = 0; i < al.size(); i++) {
             Member member = (Member) al.get(i);
             StringBuilder st = new StringBuilder();
-            st.append(member.getName()); // trim() ??
+            st.append(member.getName());
             st.append("|");
             st.append(member.getContact());
             alw.add(st.toString());
